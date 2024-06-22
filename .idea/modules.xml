@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Glint_BE.iml" filepath="$PROJECT_DIR$/.idea/Glint_BE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/glint/glint.iml" filepath="$PROJECT_DIR$/glint/glint.iml" />
+    </modules>
+  </component>
+</project>
