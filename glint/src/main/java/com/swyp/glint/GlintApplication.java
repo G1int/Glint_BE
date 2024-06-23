@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GlintApplication {
 
     public static void main(String[] args) {
+
+        //훅 테스트
         SpringApplication.run(GlintApplication.class, args);
     }
 
