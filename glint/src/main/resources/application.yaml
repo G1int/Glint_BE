@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: glint
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/glint?useSSL=false&allowPublicKeyRetrieval=true
+    username: glint
+    password: 1234
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+#        hbm2ddl.auto: create
+        ddl-auto: create
+        dialect: org.hibernate.dialect.MySQLDialect
+    generate-ddl: true
+
+
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+    display-request-duration: true
+  api-docs:
+    groups:
+      enabled: true
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+server:
+  servlet:
+    context-path: /glint
