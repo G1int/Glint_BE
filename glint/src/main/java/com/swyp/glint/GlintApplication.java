@@ -8,7 +8,7 @@ public class GlintApplication {
 
     public static void main(String[] args) {
 
-        //훅 테스트
+        int a = 1;
         SpringApplication.run(GlintApplication.class, args);
     }
 
