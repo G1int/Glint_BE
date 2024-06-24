@@ -1,12 +1,8 @@
 package com.swyp.glint.user.api;
 
-import com.swyp.glint.user.api.dto.UserRequest;
-import com.swyp.glint.user.api.dto.UserResponse;
-import com.swyp.glint.user.application.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
