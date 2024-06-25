@@ -57,7 +57,7 @@ def profile = project.hasProperty("profile") ? project.property("profile").toStr
 sourceSets {
     main {
         resources {
-            srcDirs = ["$frontDir/build", "$projectDir/src/main/resources", "src/main/resources/resources-${profile}"]
+            srcDirs = ["$projectDir/src/main/resources", "src/main/resources/resources-${profile}"]
         }
     }
 }
