@@ -71,7 +71,7 @@ server:
 ---
 spring:
   config:
-    import: aws-parameterstore:/config/glint/aws
+    import: aws-parameterstore:/config/glint/
     activate:
       on-profile: release
   application:
