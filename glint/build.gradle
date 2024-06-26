@@ -51,12 +51,12 @@ docker {
     buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
 }
 
-//def profile = project.hasProperty("profile") ? project.property("profile").toString() : "release"
-//
-//sourceSets {
-//    main {
-//        resources {
-//            srcDirs = ["$projectDir/src/main/resources", "src/main/resources/resources-${profile}"]
-//        }
-//    }
-//}
+def profile = project.hasProperty("profile") ? project.property("profile").toString() : "release"
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["$projectDir/src/main/resources", "src/main/resources/resources-${profile}"]
+        }
+    }
+}
