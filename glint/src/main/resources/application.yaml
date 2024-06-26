@@ -1,12 +1,14 @@
 spring:
-  config:
-    import: aws-parameterstore:/config/glint/
   application:
     name: glint
   datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://glint.cjo8aqucgzfd.ap-southeast-2.rds.amazonaws.com:3306/glint?serverTimezone=Asia/Seoul
+#    username: glint
+#    password: Glint1q2w3e4r!!
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/glint?useSSL=false&allowPublicKeyRetrieval=true
-    username: glint
+    username: root
     password: 1234
   jpa:
     properties:
@@ -14,9 +16,14 @@ spring:
         format_sql: true
         use_sql_comments: true
 #        hbm2ddl.auto: create
-        ddl-auto: create
-        dialect: org.hibernate.dialect.MySQLDialect
+        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL8Dialect
     generate-ddl: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 springdoc:
   swagger-ui:
@@ -41,10 +48,7 @@ logging:
 server:
   servlet:
     context-path: /glint
-
-
 ---
-
 spring:
   config:
     activate:
@@ -54,7 +58,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/glint?useSSL=false&allowPublicKeyRetrieval=true
-    username: glint
+    username: root
     password: 1234
   jpa:
     properties:
@@ -62,15 +66,19 @@ spring:
         format_sql: true
         use_sql_comments: true
         #        hbm2ddl.auto: create
-        ddl-auto: create
+        ddl-auto: update
         dialect: org.hibernate.dialect.MySQLDialect
     generate-ddl: true
-
+  data:
+    redis:
+      host: localhost
+      port: 6379
 ---
 spring:
   config:
     activate:
       on-profile: release
+    import: aws-parameterstore:/config/glint/
   application:
     name: glint
   datasource:
@@ -78,6 +86,7 @@ spring:
     url: ${jdbc.url}
     username: ${jdbc.username}
     password: ${jdbc.password}
+
   jpa:
     properties:
       hibernate:
@@ -85,7 +94,12 @@ spring:
         use_sql_comments: true
         #        hbm2ddl.auto: create
         ddl-auto: none
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
     generate-ddl: false
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 
