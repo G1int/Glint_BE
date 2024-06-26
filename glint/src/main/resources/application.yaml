@@ -1,9 +1,11 @@
 spring:
-  config:
-    import: aws-parameterstore:/config/glint/
   application:
     name: glint
   datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://glint.cjo8aqucgzfd.ap-southeast-2.rds.amazonaws.com:3306/glint?serverTimezone=Asia/Seoul
+#    username: glint
+#    password: Glint1q2w3e4r!!
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/glint?useSSL=false&allowPublicKeyRetrieval=true
     username: glint
@@ -15,7 +17,7 @@ spring:
         use_sql_comments: true
 #        hbm2ddl.auto: create
         ddl-auto: create
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MySQL8InnoDBDialect
     generate-ddl: true
 
 springdoc:
@@ -43,32 +45,33 @@ server:
     context-path: /glint
 
 
+#---
+#
+#spring:
+#  config:
+#    activate:
+#      on-profile: local
+#  application:
+#    name: glint
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/glint?useSSL=false&allowPublicKeyRetrieval=true
+#    username: glint
+#    password: 1234
+#  jpa:
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        use_sql_comments: true
+#        #        hbm2ddl.auto: create
+#        ddl-auto: create
+#        dialect: org.hibernate.dialect.MySQLDialect
+#    generate-ddl: true
+#
 ---
-
 spring:
   config:
-    activate:
-      on-profile: local
-  application:
-    name: glint
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/glint?useSSL=false&allowPublicKeyRetrieval=true
-    username: glint
-    password: 1234
-  jpa:
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
-        #        hbm2ddl.auto: create
-        ddl-auto: create
-        dialect: org.hibernate.dialect.MySQLDialect
-    generate-ddl: true
-
----
-spring:
-  config:
+    import: aws-parameterstore:/config/glint/aws
     activate:
       on-profile: release
   application:
@@ -85,7 +88,7 @@ spring:
         use_sql_comments: true
         #        hbm2ddl.auto: create
         ddl-auto: none
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MySQL8InnoDBDialect
     generate-ddl: false
 
 
