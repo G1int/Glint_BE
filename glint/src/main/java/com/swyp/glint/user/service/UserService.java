@@ -1,4 +1,4 @@
-package com.swyp.glint.user.application;
+package com.swyp.glint.user.service;
 
 import com.swyp.glint.user.api.dto.UserRequest;
 import com.swyp.glint.user.api.dto.UserResponse;

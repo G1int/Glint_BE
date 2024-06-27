@@ -1,4 +1,4 @@
-package com.swyp.glint.system.util.logtrace;
+package com.swyp.glint.system.logtrace;
 
 public class TraceStatus {
 

@@ -1,8 +1,6 @@
-package com.swyp.glint.system.aop;
+package com.swyp.glint.system.logtrace;
 
 
-import com.swyp.glint.system.util.logtrace.LogTrace;
-import com.swyp.glint.system.util.logtrace.TraceStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,7 +14,7 @@ public class LoggingAspect {
 
     private final LogTrace logTrace;
 
-    @Around("com.swyp.glint.system.aop.PointCuts.all()")
+    @Around("com.swyp.glint.system.logtrace.PointCuts.all()")
     public Object logging(ProceedingJoinPoint joinPoint) throws Throwable {
         TraceStatus traceStatus = null;
 

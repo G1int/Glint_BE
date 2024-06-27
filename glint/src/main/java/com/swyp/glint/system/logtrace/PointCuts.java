@@ -1,4 +1,4 @@
-package com.swyp.glint.system.aop;
+package com.swyp.glint.system.logtrace;
 
 import org.aspectj.lang.annotation.Pointcut;
 

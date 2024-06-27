@@ -1,8 +1,8 @@
-package com.swyp.glint.user.application.impl;
+package com.swyp.glint.user.service.impl;
 
 import com.swyp.glint.user.api.dto.UserRequest;
 import com.swyp.glint.user.api.dto.UserResponse;
-import com.swyp.glint.user.application.UserService;
+import com.swyp.glint.user.service.UserService;
 import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
