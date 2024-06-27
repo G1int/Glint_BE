@@ -1,4 +1,3 @@
-
 ---
 name: Bug Template
 about: 버그 템플릿
