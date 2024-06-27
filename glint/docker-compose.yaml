@@ -1,0 +1,32 @@
+version: '1'
+services:
+  mysql:
+    image: mysql:8.0
+    networks:
+      - glint_network
+    ports:
+      - "3306:3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_USER=glint
+      - MYSQL_PASSWORD=1234
+
+  glint:
+    image: glint:latest
+    networks:
+      glint_network:
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/glint?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+networks:
+  glint_network:
+    driver: bridge
