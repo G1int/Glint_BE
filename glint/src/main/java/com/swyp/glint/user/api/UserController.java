@@ -2,8 +2,7 @@ package com.swyp.glint.user.api;
 
 import com.swyp.glint.user.api.dto.UserRequest;
 import com.swyp.glint.user.api.dto.UserResponse;
-import com.swyp.glint.user.application.UserService;
-import com.swyp.glint.user.application.impl.UserServiceImpl;
+import com.swyp.glint.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

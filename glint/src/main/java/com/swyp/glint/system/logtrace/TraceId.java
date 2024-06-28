@@ -1,4 +1,4 @@
-package com.swyp.glint.system.util.logtrace;
+package com.swyp.glint.system.logtrace;
 
 import java.util.UUID;
 
