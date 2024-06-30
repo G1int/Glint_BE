@@ -1,40 +1,64 @@
 package com.swyp.glint.user.domain;
 
+import com.swyp.glint.common.baseentity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Table(name = "user")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "role")
+    private String role;
+
+    @Column(name = "provider")
+    // GOOGLE
+    private String provider;
+
+    @Column(name = "archived")
+    private Boolean archived;
+
+    @Column
+    private Long userDetailId;
+
+    @Column
+    private Long userProfileId;
+
     @Builder(access = AccessLevel.PRIVATE)
-    private User(Long id, String username, String email) {
+    private User(Long id, String name, String email, String role, String provider, Boolean archived) {
         this.id = id;
-        this.username = username;
+        this.name = name;
         this.email = email;
+        this.role = role;
+        this.provider = provider;
+        this.archived = archived;
     }
 
 
-    public static User createNewUser(String username, String email){
+
+    public static User createNewUser(String name, String email, String role, String provider){
         return User.builder()
-                .username(username)
+                .name(name)
                 .email(email)
+                .role(role)
+                .archived(false)
+                .provider(provider)
                 .build();
-    }
-
-    public void updateUserName(String newUser) {
-        this.username = newUser;
     }
 
 
