@@ -99,7 +99,7 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: ${cache.url}
       port: 6379
 
 
