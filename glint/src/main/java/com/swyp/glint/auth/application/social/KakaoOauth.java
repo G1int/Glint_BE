@@ -21,10 +21,10 @@ public class KakaoOauth implements SocialOauth {
     private String USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
     private final String TOKEN_BASE_URL = "https://kauth.kakao.com/oauth/token";
 
-    @Value("$spring.oauth.kakao.client-id")
+    @Value("${spring.oauth.kakao.client-id}")
     private String CLIENT_ID;
 
-    @Value("$spring.oauth.kakao.callback-url")
+    @Value("${spring.oauth.kakao.callback-url}")
     private String CALLBACK_URL = "http://localhost:8080/glint/auth/kakao/callback";
 
 
