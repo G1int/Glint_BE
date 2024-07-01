@@ -21,11 +21,11 @@ spring:
     generate-ddl: true
   data:
     redis:
-      host: localhost
+      host: glint-cache.b5anhz.ng.0001.apse2.cache.amazonaws.com
       port: 6379
   oauth:
     kakao:
-      client-id:
+      client-id: 2f1c3e44470545c1f7d74701a8a202d7
       callback-url: http://localhost:8080/glint/auth/kakao/callback
 
 springdoc:
@@ -78,7 +78,8 @@ spring:
       port: 6379
   oauth:
     kakao:
-      client-id:
+      client-id: 2f1c3e44470545c1f7d74701a8a202d7
+      callback-url: http://localhost:8080/glint/auth/kakao/callback
 ---
 spring:
   config:
@@ -108,6 +109,6 @@ spring:
   oauth:
     kakao:
       client-id: ${oauth.kakao.client-id}
-      callback-url: http://3.27.84.199:8080//glint/auth/kakao/callback
+      callback-url: http://3.27.84.199:8080/glint/auth/kakao/callback
 
 
