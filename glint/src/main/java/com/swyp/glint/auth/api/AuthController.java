@@ -48,7 +48,7 @@ public class AuthController {
         KakaoUserInfoResponse kakaoUserInfoResponse = socialOauth.getUserInfo(oauthTokenResponse.getAccess_token());
 
         UserLoginResponse userLoginResponse = userService.oauthLoginUser(
-                UserRequest.of(kakaoUserInfoResponse.getKakao_account().getName(), kakaoUserInfoResponse.getKakao_account().getEmail(), "ROLE_OAUTH_KAKAO", SocialType.KAKAO.name())
+                UserRequest.of(kakaoUserInfoResponse.getKakao_account().getName(), kakaoUserInfoResponse.getKakao_account().getEmail(), kakaoUserInfoResponse.getKakao_account().getGender(), "ROLE_OAUTH_KAKAO", SocialType.KAKAO.name())
         );
 
         return ResponseEntity.ok(userLoginResponse);
