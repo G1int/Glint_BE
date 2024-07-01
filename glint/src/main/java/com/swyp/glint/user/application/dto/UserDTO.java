@@ -7,12 +7,13 @@ import lombok.Builder;
 public record UserDTO(
         String name,
         String email,
+        String gender,
         String role,
         String provider
 ) {
 
     public static User toEntity(UserDTO userDTO) {
-        return User.createNewUser(userDTO.name(), userDTO.email(), userDTO.role(), userDTO.provider());
+        return User.createNewUser(userDTO.name(), userDTO.email(), userDTO.gender(), userDTO.role(), userDTO.provider());
     }
 
 }
