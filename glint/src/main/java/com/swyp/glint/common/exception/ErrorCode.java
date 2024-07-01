@@ -14,12 +14,12 @@ public enum ErrorCode {
     INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
 
-
     // user
     EMAIL_DUPLICATION(400, "U001", "Email is Duplication"),
     LOGIN_INPUT_INVALID(400, "U002", "Login input is invalid"),
 
-    // chat
+    // social
+    INVALID_SOCIAL_TYPE(400, "S001", "Invalid Social Type"),
 
 
     ;
