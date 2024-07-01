@@ -1,24 +1,21 @@
-package com.swyp.glint.user.api.dto;
+package com.swyp.glint.user.application.dto;
 
 
 import com.swyp.glint.user.domain.User;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
-
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.*;
 
 @Builder
 public record UserResponse(
         Long id,
-        String username,
-        String email
+        String email,
+        String role
 ){
 
     public static UserResponse from(User user) {
         return UserResponse.builder()
                 .id(user.getId())
-                .username(user.getUsername())
                 .email(user.getEmail())
+                .role(user.getRole())
                 .build();
     }
 
