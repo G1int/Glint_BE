@@ -27,11 +27,24 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.3.1'
+    implementation 'org.springframework.boot:spring-boot-starter-cache:3.1.2'
+    implementation 'org.redisson:redisson-spring-boot-starter:3.32.0'
+    implementation 'com.auth0:java-jwt:4.4.0'
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     //AWS Parameter Store
-    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.1.0")
+    implementation platform('io.awspring.cloud:spring-cloud-aws-dependencies:3.1.1')
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
+
+    //JsonWebToken
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    runtimeOnly  'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly  'io.jsonwebtoken:jjwt-jackson:0.12.6'
+    runtimeOnly  'io.jsonwebtoken:0.12.5'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -43,20 +56,21 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+ext.profile = project.hasProperty("profile") ? project.property("profile").toString() : "release"
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources", "src/main/resources/resources-${profile}"]
+        }
+    }
+}
+
+
 docker {
     println(tasks.bootJar.outputs.files)
     name rootProject.name+'-'+project.name + ":" + version
     dockerfile file('../Dockerfile')
     files tasks.bootJar.outputs.files
     buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
-}
-
-def profile = project.hasProperty("profile") ? project.property("profile").toString() : "release"
-
-sourceSets {
-    main {
-        resources {
-            srcDirs = ["$projectDir/src/main/resources", "src/main/resources/resources-${profile}"]
-        }
-    }
 }
