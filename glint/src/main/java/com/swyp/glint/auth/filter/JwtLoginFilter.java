@@ -66,7 +66,6 @@ public class JwtLoginFilter extends OncePerRequestFilter {
         }
 
         try{
-            refreshToken = cookieUtil.getCookie(request,AuthorityHelper.REFRESH_TOKEN_NAME).getValue();
             if(refreshToken != null) {
                 email = authorityHelper.getEmail(refreshToken);
 
