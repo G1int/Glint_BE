@@ -1,7 +1,6 @@
 package com.swyp.glint.auth.application.social;
 
 
-import com.swyp.glint.auth.api.SocialType;
 import com.swyp.glint.auth.api.response.OauthTokenResponse;
 
 public interface SocialOauth {

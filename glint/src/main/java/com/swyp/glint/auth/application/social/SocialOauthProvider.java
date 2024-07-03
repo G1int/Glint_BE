@@ -1,6 +1,5 @@
 package com.swyp.glint.auth.application.social;
 
-import com.swyp.glint.auth.api.SocialType;
 import com.swyp.glint.common.exception.ErrorCode;
 import com.swyp.glint.common.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
