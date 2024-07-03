@@ -14,11 +14,12 @@ public class UserDetail {
 
     private String nickname;
 
+    private String gender;
+
     private Integer height;
 
     private String profileImage;
 
 
-    // 닉네임, 키, 생년월일, 프로필 사진,
 
 }
