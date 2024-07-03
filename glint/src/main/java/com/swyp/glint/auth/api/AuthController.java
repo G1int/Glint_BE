@@ -5,6 +5,7 @@ import com.swyp.glint.auth.api.response.OauthTokenResponse;
 import com.swyp.glint.auth.application.social.KakaoOauth;
 import com.swyp.glint.auth.application.social.SocialOauth;
 import com.swyp.glint.auth.application.social.SocialOauthProvider;
+import com.swyp.glint.auth.application.social.SocialType;
 import com.swyp.glint.user.application.UserService;
 import com.swyp.glint.user.application.dto.UserLoginResponse;
 import com.swyp.glint.user.application.dto.UserRequest;
@@ -29,7 +30,7 @@ public class AuthController {
     @Operation(hidden = true)
     @GetMapping(value = "/auth/{socialType}")
     @ResponseStatus(HttpStatus.OK)
-    public void socialAuth(@PathVariable SocialType socialType, String code, HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws IOException {
+    public void socialAuth(@PathVariable SocialType socialType, String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         SocialOauth socialOauth = socialOauthProvider.getSocialOauth(socialType);
 
         try {
@@ -48,7 +49,7 @@ public class AuthController {
         KakaoUserInfoResponse kakaoUserInfoResponse = socialOauth.getUserInfo(oauthTokenResponse.getAccess_token());
 
         UserLoginResponse userLoginResponse = userService.oauthLoginUser(
-                UserRequest.of(kakaoUserInfoResponse.getKakao_account().getName(), kakaoUserInfoResponse.getKakao_account().getEmail(), kakaoUserInfoResponse.getKakao_account().getGender(), "ROLE_OAUTH_KAKAO", SocialType.KAKAO.name())
+                UserRequest.of(kakaoUserInfoResponse.getKakao_account().getEmail(),"ROLE_OAUTH_KAKAO", SocialType.KAKAO.name())
         );
 
         return ResponseEntity.ok(userLoginResponse);
