@@ -13,16 +13,21 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "C004", "Server Error"),
     INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
+    DATETIME_PARSE_WRONG(400, "C007", "DateTime Parse is Wrong"),
+    UNEXPECTED_TYPE(400, "C008", "Request Param Type is Wrong"),
 
     // user
     EMAIL_DUPLICATION(400, "U001", "Email is Duplication"),
-    LOGIN_INPUT_INVALID(400, "U002", "Login input is invalid"),
+    NICKNAME_INVALID(400, "U002", "NickName is Invalid"),
+    NICKNAME_DUPLICATED(400, "U003", "NickName is Duplicated"),
+    LOGIN_INPUT_INVALID(400, "U004", "Login input is invalid"),
 
     // social
     INVALID_SOCIAL_TYPE(400, "S001", "Invalid Social Type"),
 
 
     ;
+
     private final String code;
     private final String message;
     private int status;
