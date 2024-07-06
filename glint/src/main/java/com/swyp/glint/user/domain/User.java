@@ -30,10 +30,6 @@ public class User extends BaseTimeEntity {
     @Column(name = "archived")
     private Boolean archived;
 
-    @OneToOne
-    @JoinColumn(name = "userDetailId")
-    private UserDetail userDetail;
-
     @Column
     private Long userProfileId;
 
