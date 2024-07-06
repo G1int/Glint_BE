@@ -31,7 +31,7 @@ public class AuthController {
     @GetMapping(value = "/auth/{socialType}")
     @ResponseStatus(HttpStatus.OK)
     public void socialAuth(@PathVariable SocialType socialType, String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
-        SocialOauth socialOauth = socialOauthProvider.getSocialOauth(socialType);
+        KakaoOauth socialOauth = (KakaoOauth) socialOauthProvider.getSocialOauth(socialType);
 
         try {
             httpServletResponse.sendRedirect(socialOauth.getOauthRedirectURL());
@@ -40,11 +40,11 @@ public class AuthController {
         }
     }
 
-    @Operation(hidden = true)
     @GetMapping("/auth/{socialType}/callback")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserLoginResponse> socialAuthCallBack(@PathVariable SocialType socialType, @RequestParam(name = "code") String code, HttpServletRequest request, HttpServletResponse response) {
         KakaoOauth socialOauth = (KakaoOauth) socialOauthProvider.getSocialOauth(socialType);
+
         OauthTokenResponse oauthTokenResponse = socialOauth.requestAccessToken(code);
         KakaoUserInfoResponse kakaoUserInfoResponse = socialOauth.getUserInfo(oauthTokenResponse.getAccess_token());
 
