@@ -14,28 +14,29 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @Column(name = "role")
     private String role;
 
     @Column(name = "provider")
+    // GOOGLE
     private String provider;
 
     @Column(name = "archived")
     private Boolean archived;
 
     @Column
-    private Long userDetailId;
-
-    @Column
     private Long userProfileId;
 
-
     @Builder(access = AccessLevel.PRIVATE)
-    private User(Long id, String email, String role, String provider, Boolean archived) {
+    private User(Long id, String name, String email, String role, String provider, Boolean archived) {
         this.id = id;
+        this.name = name;
         this.email = email;
         this.role = role;
         this.provider = provider;
@@ -52,6 +53,5 @@ public class User extends BaseTimeEntity {
                 .provider(provider)
                 .build();
     }
-
 
 }
