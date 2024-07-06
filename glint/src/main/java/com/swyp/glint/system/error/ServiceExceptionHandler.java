@@ -2,6 +2,7 @@ package com.swyp.glint.system.error;
 
 import com.swyp.glint.common.exception.BusinessException;
 import com.swyp.glint.common.exception.ErrorCode;
+import jakarta.validation.UnexpectedTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.nio.file.AccessDeniedException;
+import java.time.format.DateTimeParseException;
 
 @ControllerAdvice
 @Slf4j
@@ -75,6 +77,24 @@ public class ServiceExceptionHandler {
         log.error("handleAccessDeniedException", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.HANDLE_ACCESS_DENIED);
         return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.HANDLE_ACCESS_DENIED.getStatus()));
+    }
+
+
+    /**
+     * DateTimeParsing 형식이 잘못된 경우 발생
+     */
+    @ExceptionHandler(DateTimeParseException.class)
+    protected ResponseEntity<ErrorResponse> handleDateTimeParseException(final DateTimeParseException e) {
+        log.error("handleDateTimeParseException", e);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.DATETIME_PARSE_WRONG);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnexpectedTypeException.class)
+    protected ResponseEntity<ErrorResponse> handleUnexpectedTypeException(final UnexpectedTypeException e) {
+        log.error("handleUnexpectedTypeException", e);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.UNEXPECTED_TYPE);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BusinessException.class)
