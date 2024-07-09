@@ -10,20 +10,21 @@ import java.util.Optional;
 
 @Repository
 public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
+
     @Query(
             """
-                select ud
-                from UserDetail ud
-                where ud.nickname = :nickname
+                SELECT ud
+                FROM UserDetail ud
+                WHERE ud.nickname = :nickname
             """
     )
     Optional<UserDetail> findByNickname(String nickname);
 
     @Query(
             """
-                select ud
-                from UserDetail ud
-                where ud.userId = :userId
+                SELECT ud
+                FROM UserDetail ud
+                WHERE ud.userId = :userId
             """
     )
     Optional<UserDetail> findByUserId(Long userId);
