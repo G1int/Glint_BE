@@ -38,3 +38,4 @@ out/
 
 resources/application.yaml
 *.ymal
+.DS_Store
