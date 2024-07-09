@@ -10,7 +10,6 @@ public class GlintApplication {
 
     public static void main(String[] args) {
 
-
         SpringApplication.run(GlintApplication.class, args);
     }
 
