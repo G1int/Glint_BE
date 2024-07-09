@@ -1,18 +1,29 @@
 package com.swyp.glint.keyword.domain;
 
+import com.swyp.glint.common.baseentity.BaseTimeEntity;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Table(name = "work_category")
+@Entity
 @Getter
-public enum WorkCategory {
-    MAJOR_COMPANY("대기업"),
-    GOVERNMENT_COMPANY("공기업"),
-    PROFESSION("전문직"),
-    GOVERNMENT_EMPLOYEE("공무원");
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class WorkCategory extends BaseTimeEntity {
 
-    private final String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    WorkCategory(String description) {
-        this.description = description;
+    @Column(name = "work_category_name")
+    private String workCategoryName;
+
+    @Builder(access = AccessLevel.PRIVATE)
+    private WorkCategory(Long id, String workCategoryName) {
+        this.id = id;
+        this.workCategoryName = workCategoryName;
     }
 
 }

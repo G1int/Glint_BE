@@ -25,25 +25,22 @@ public class UserProfile { // 회사or학교, 위치, 자기소개, 키워드(�
     private Work work;
 
     @Embedded
-    private Uni uni;
+    private University university;
 
     @Embedded
     private Location location;
 
-    @Enumerated(EnumType.STRING)
-    private Religion religion;
+    @Column(name = "religion_id")
+    private Long religionId;
 
-    @Enumerated(EnumType.STRING)
-    private Smoking smoking;
+    @Column(name = "smoking_id")
+    private Long smokingId;
 
-    @Enumerated(EnumType.STRING)
-    private Drinking drinking;
+    @Column(name = "drinking_id")
+    private Long drinkingId;
 
-    //@Column
-    //private String shortIntroduction;
-
-    @Column(length = 50)
-    private String bio;
+    @Column
+    private String selfIntroduction;
 
     @ElementCollection
     private List<String> hashtags;
@@ -58,17 +55,17 @@ public class UserProfile { // 회사or학교, 위치, 자기소개, 키워드(�
     */
 
    @Builder(access = AccessLevel.PRIVATE)
-   public UserProfile(Long id, Long userId, Work work, Uni uni, Location location, Religion religion,
-                      Smoking smoking, Drinking drinking, String bio, List<String> hashtags) {
+   public UserProfile(Long id, Long userId, Work work, University university, Location location, Long religionId,
+                      Long smokingId, Long drinkingId, String selfIntroduction, List<String> hashtags) {
        this.id = id;
        this.userId = userId;
        this.work = work;
-       this.uni = uni;
+       this.university = university;
        this.location = location;
-       this.religion = religion;
-       this.smoking = smoking;
-       this.drinking = drinking;
-       this.bio = bio;
+       this.religionId = religionId;
+       this.smokingId = smokingId;
+       this.drinkingId = drinkingId;
+       this.selfIntroduction = selfIntroduction;
        this.hashtags = hashtags;
    }
 }
