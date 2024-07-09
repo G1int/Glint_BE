@@ -1,21 +1,29 @@
 package com.swyp.glint.keyword.domain;
 
+import com.swyp.glint.common.baseentity.BaseTimeEntity;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@Table(name = "religion")
+@Entity
 @Getter
-public enum Religion {
-    NOT_RELIGIOUS("무교"),
-    CHRISTIAN("기독교"),
-    CATHOLIC("천주교"),
-    BUDDHISM("불교"),
-    OTHERS("기타");
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Religion extends BaseTimeEntity {
 
-    private final String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    Religion(String description) {
-        this.description = description;
+    @Column(name = "religion_state")
+    private String state;
+
+    @Builder(access = AccessLevel.PRIVATE)
+    private Religion(Long id, String state) {
+        this.id = id;
+        this.state = state;
     }
-
 
 }
