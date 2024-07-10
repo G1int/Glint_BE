@@ -1,5 +1,6 @@
 package com.swyp.glint.chatting.domain;
 
+import com.swyp.glint.common.baseentity.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 //@Document(collection = "chat")
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
-public class Chat {
+public class Chat extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)

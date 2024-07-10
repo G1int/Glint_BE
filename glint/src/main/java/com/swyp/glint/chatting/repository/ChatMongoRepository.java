@@ -1,11 +1,11 @@
 package com.swyp.glint.chatting.repository;
 
-import com.swyp.glint.chatting.application.dto.response.ChatResponse;
-import com.swyp.glint.chatting.domain.Chat;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
-import org.springframework.stereotype.Repository;
+//import com.swyp.glint.chatting.application.dto.response.ChatResponse;
+//import com.swyp.glint.chatting.domain.Chat;
+//import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.mongodb.repository.MongoRepository;
+//import org.springframework.data.mongodb.repository.Query;
+//import org.springframework.stereotype.Repository;
 
 import java.util.List;
 //

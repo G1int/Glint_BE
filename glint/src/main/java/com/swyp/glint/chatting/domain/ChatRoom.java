@@ -1,5 +1,6 @@
 package com.swyp.glint.chatting.domain;
 
+import com.swyp.glint.common.baseentity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import java.util.List;
 @Table(name = "chat_room")
 @Entity
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
-public class ChatRoom {
+public class ChatRoom extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
