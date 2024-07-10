@@ -13,13 +13,16 @@ public record UserDetailRequest(
         String nickname,
 
         @Parameter(description = "성별", example = "MALE|FEMALE", required = true)
-        @Pattern(regexp = "(MALE|FEMALE)") String gender,
+        @Pattern(regexp = "(MALE|FEMALE)")
+        String gender,
 
         @Parameter(description = "생년월일", example = "2000-01-01", required = true)
-        @Pattern(regexp = "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$") String birthdate,
+        @Pattern(regexp = "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$")
+        String birthdate,
 
         @Parameter(description = "키", example = "180", required = true)
-        @Pattern(regexp = "^[0-9]{3}$") String height,
+        @Pattern(regexp = "^[0-9]{3}$")
+        String height,
 
         @Parameter(description = "프로필 이미지", example = "https://glint-image.s3.ap-northeast-2.amazonaws.com/profile/profile_1720106931.png", required = true)
         String profileImage

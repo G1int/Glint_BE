@@ -35,15 +35,16 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Cookie accessToken = cookieUtil.getCookie(request, AuthorityHelper.ACCESS_TOKEN_NAME);
-//        String accessToken = null;
+//        Cookie accessToken = cookieUtil.getCookie(request, AuthorityHelper.ACCESS_TOKEN_NAME);
+        String accessToken = request.getHeader("Authorization");
         String refreshToken = null;
 
         String email = null;
 
         try{
             if(accessToken != null){
-                email = authorityHelper.getEmail(accessToken.getValue());
+//                email = authorityHelper.getEmail(accessToken.getValue());
+                email = authorityHelper.getEmail(accessToken.replace("bearer ", ""));
             }
             if(email != null) {
                 UserDetails userDetails = userPrincipalDetailsService.loadUserByUsername(email);
@@ -51,23 +52,25 @@ public class JwtLoginFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =  new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                refreshTokenCookie(response, email);
+
+//                refreshTokenCookie(response, email);
+                refreshTokenHeader(response, email);
 
             }
 
         } catch (ExpiredJwtException e){
-            Cookie refreshTokenCookie = cookieUtil.getCookie(request,AuthorityHelper.REFRESH_TOKEN_NAME);
-
-            if(refreshTokenCookie != null){
-                refreshToken = refreshTokenCookie.getValue();
-            }
+//            Cookie refreshTokenCookie = cookieUtil.getCookie(request,AuthorityHelper.REFRESH_TOKEN_NAME);
+            refreshToken = request.getHeader("refreshToken");
+//            if(refreshTokenCookie != null){
+//                refreshToken = refreshTokenCookie.getValue();
+//            }
         } catch (Exception e){
             logger.error("error" + e.getMessage());
         }
 
         try{
             if(refreshToken != null) {
-                email = authorityHelper.getEmail(refreshToken);
+                email = authorityHelper.getEmail(refreshToken.replace("bearer ", ""));
 
                 UserDetails userDetails = userPrincipalDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =  new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
@@ -75,13 +78,8 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-//                String generateAccessToken = authorityHelper.generateToken(email);
-//                String generateRefreshToken = authorityHelper.generateRefreshToken(email);
-
-//                response.setHeader("access-token", "Bearer"  + generateAccessToken);
-//                response.setHeader("refreshToken", "Bearer"  + generateRefreshToken);
-//                Cookie tokenCookie = cookieUtil.createTokenCookie(AuthorityHelper.ACCESS_TOKEN_NAME, generateToken);
-                refreshTokenCookie(response, email);
+//                refreshTokenCookie(response, email);
+                refreshTokenHeader(response, email);
             }
         } catch (ExpiredJwtException ignored){
             logger.error("error");
@@ -92,6 +90,18 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request,response);
 
+    }
+
+
+    private void refreshTokenHeader(HttpServletResponse response, String email) {
+        String generateAccessToken = authorityHelper.generateToken(email);
+        String generateRefreshToken = authorityHelper.generateToken(email);
+
+        response.setHeader("Authorization", "bearer "  + generateAccessToken);
+        response.setHeader("refreshToken", "bearer "  + generateRefreshToken);
+
+        redisUtil.setDataExpire(email, generateAccessToken, AuthorityHelper.ACCESS_TOKEN_VALIDATION_SECOND);
+        redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
     private void refreshTokenCookie(HttpServletResponse response, String email) {

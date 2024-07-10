@@ -36,6 +36,11 @@ dependencies {
     implementation 'org.redisson:redisson-spring-boot-starter:3.32.0'
     implementation 'com.auth0:java-jwt:4.4.0'
 
+    //STOMP
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.webjars:sockjs-client:1.5.1'
+    implementation 'org.webjars:stomp-websocket:2.3.4'
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     //AWS Parameter Store
     implementation platform('io.awspring.cloud:spring-cloud-aws-dependencies:3.1.1')
@@ -47,6 +52,9 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     runtimeOnly  'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly  'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    //mongoDB
+//    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
