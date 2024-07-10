@@ -6,8 +6,6 @@ import com.swyp.glint.chatting.domain.ChatRoom;
 import com.swyp.glint.chatting.repository.ChatRoomRepository;
 import com.swyp.glint.common.exception.InvalidValueException;
 import com.swyp.glint.common.exception.NotFoundEntityException;
-import com.swyp.glint.meeting.application.MeetingService;
-import com.swyp.glint.meeting.domain.Meeting;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,6 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
 
-    private final MeetingService meetingService;
 
     public ChatRoomResponse createChatRoom(Long meetingId, ChatRoomRequest chatRoomRequest) {
         ChatRoom chatRoom = chatRoomRequest.toEntity(meetingId);

@@ -8,7 +8,6 @@ import com.swyp.glint.chatting.domain.ChatRoom;
 import com.swyp.glint.chatting.repository.ChatRepository;
 import com.swyp.glint.common.exception.InvalidValueException;
 import com.swyp.glint.common.exception.NotFoundEntityException;
-import com.swyp.glint.meeting.application.MeetingService;
 import com.swyp.glint.user.application.UserFacade;
 import com.swyp.glint.user.domain.UserDetailAggregation;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +27,6 @@ public class ChatService {
     private final UserFacade userFacade;
 
     private final ChatRoomService chatRoomService;
-
-    private final MeetingService meetingService;
-
 
     public ChatResponse createChatMessage(CreateChatMessageRequest createChatMessageRequest) {
         Chat chat = createChatMessageRequest.toEntity();
