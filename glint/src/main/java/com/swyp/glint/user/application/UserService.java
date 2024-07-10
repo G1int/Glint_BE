@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -27,6 +29,11 @@ public class UserService {
 
     }
 
+    public User getUserEntity(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundEntityException("id : " + id + " not found"));
+
+    }
+
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundEntityException("email : " + email + " not found"));
     }
@@ -40,4 +47,10 @@ public class UserService {
 
         return UserLoginResponse.from(foundUser);
     }
+
+
+    public List<User> getUsers(List<Long> userIds) {
+        return userRepository.findAllById(userIds);
+    }
+
 }
