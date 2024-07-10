@@ -32,8 +32,16 @@ public class UserDetailService {
     }
 
     public UserDetailResponse getUserDetailById(Long userId) {
-        return UserDetailResponse.from(userDetailRepository.findByUserId(userId)
-                .orElseThrow(() -> new NotFoundEntityException("UserDetail with userId: " + userId + " not found")));
+        return UserDetailResponse.from(getUserEntityOrElseThrow(userId));
+    }
+
+    public UserDetail getUserDetail(Long userId) {
+        return getUserEntityOrElseThrow(userId);
+    }
+
+    public UserDetail getUserEntityOrElseThrow(Long userId) {
+        return userDetailRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundEntityException("UserDetail with userId: " + userId + " not found"));
     }
 
 
