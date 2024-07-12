@@ -25,16 +25,16 @@ public class KakaoOauth implements SocialOauth {
     private String CLIENT_ID;
 
     @Value("${spring.oauth.kakao.callback-url}")
-    private String CALLBACK_URL = "http://localhost:8080/glint/auth/kakao/callback";
+    private String CALLBACK_URL = "http://localhost:3000/glint/auth/kakao/callback";
 
 
     @Override
     public String getOauthRedirectURL() {
         Map<String, Object> params = new HashMap<>();
-        params.put("grant_type", "authorization_code");
+        params.put("response_type", "code");
         params.put("client_id", CLIENT_ID);
         params.put("redirect_uri", CALLBACK_URL);
-        params.put("cide", "");
+//        params.put("code", "");
 
         String parameterString = params.entrySet().stream()
                 .map(x -> x.getKey() + "=" + x.getValue())
