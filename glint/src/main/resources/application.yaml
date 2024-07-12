@@ -121,7 +121,7 @@ spring:
   oauth:
     kakao:
       client-id: ${oauth.kakao.client-id}
-      callback-url: http://3.27.84.199:8080/glint/auth/kakao/callback
+      callback-url: ${oauth.kakao.callback-url}
 
 cloud:
   aws:
