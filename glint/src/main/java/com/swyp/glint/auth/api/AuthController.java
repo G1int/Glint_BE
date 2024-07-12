@@ -3,9 +3,10 @@ package com.swyp.glint.auth.api;
 import com.swyp.glint.auth.api.response.KakaoUserInfoResponse;
 import com.swyp.glint.auth.api.response.OauthTokenResponse;
 import com.swyp.glint.auth.application.social.KakaoOauth;
-import com.swyp.glint.auth.application.social.SocialOauth;
 import com.swyp.glint.auth.application.social.SocialOauthProvider;
 import com.swyp.glint.auth.application.social.SocialType;
+import com.swyp.glint.common.authority.AuthorityHelper;
+import com.swyp.glint.common.util.RedisUtil;
 import com.swyp.glint.user.application.UserService;
 import com.swyp.glint.user.application.dto.UserLoginResponse;
 import com.swyp.glint.user.application.dto.UserRequest;
@@ -27,10 +28,14 @@ public class AuthController {
 
     private final SocialOauthProvider socialOauthProvider;
 
+    private final AuthorityHelper authorityHelper;
+
+    private final RedisUtil redisUtil;
+
     @Operation(hidden = true)
     @GetMapping(value = "/auth/{socialType}")
     @ResponseStatus(HttpStatus.OK)
-    public void socialAuth(@PathVariable SocialType socialType, String code, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+    public void socialAuth(@PathVariable SocialType socialType, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         KakaoOauth socialOauth = (KakaoOauth) socialOauthProvider.getSocialOauth(socialType);
 
         try {
@@ -39,6 +44,7 @@ public class AuthController {
             throw new IOException(e.getMessage());
         }
     }
+
 
     @GetMapping("/auth/{socialType}/callback")
     @ResponseStatus(HttpStatus.OK)
@@ -52,8 +58,21 @@ public class AuthController {
                 UserRequest.of(kakaoUserInfoResponse.getKakao_account().getEmail(),"OAUTH_USER", SocialType.KAKAO.name())
         );
 
+        refreshTokenHeader(response, userLoginResponse.email());
+
         return ResponseEntity.ok(userLoginResponse);
 
+    }
+
+    private void refreshTokenHeader(HttpServletResponse response, String email) {
+        String generateAccessToken = authorityHelper.generateToken(email);
+        String generateRefreshToken = authorityHelper.generateToken(email);
+
+        response.setHeader("Authorization", "bearer "  + generateAccessToken);
+        response.setHeader("refreshToken", "bearer "  + generateRefreshToken);
+
+        redisUtil.setDataExpire(email, generateAccessToken, AuthorityHelper.ACCESS_TOKEN_VALIDATION_SECOND);
+        redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
 }
