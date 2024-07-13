@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -50,6 +52,7 @@ public class SecurityConfig  {
 //                                .requestMatchers("/user/**").hasRole("ADMIN")
                                 .anyRequest().permitAll()
                 )
+                .cors(withDefaults()) //CORS 설정 추가
                 //UsernamePasswordAuthenticationFilter 필터 전에 jwtLoginFilter를 추가한다.
                 .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilter(corsConfig.corsFilter())
