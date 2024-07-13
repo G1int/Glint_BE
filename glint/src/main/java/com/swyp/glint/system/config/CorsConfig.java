@@ -16,10 +16,12 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
+        config.addAllowedOrigin("http://3.27.84.199:8080");
+
         // 내 서버가 응답을 할 때 json을 자바스크립트에서 처리할 수 있게 할지 설정
         config.setAllowCredentials(true);
         // 모든 ip에 응답을 허용
-        config.addAllowedOrigin("*");
+        //config.addAllowedOrigin("*");
         // 모든 Header에 응답을 허용
         config.addAllowedHeader("*");
         // 모든 post,get,put,delete,patch 요청을 허용
@@ -37,7 +39,8 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("*")
+                        .allowedOriginPatterns("http://3.27.84.199:8080")
+                        //.allowedOriginPatterns("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true)
