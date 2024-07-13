@@ -13,31 +13,38 @@ import java.util.List;
 @Table(name = "user_profile")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserProfile { // 회사or학교, 위치, 자기소개, 키워드(위치, 종교, 흡연여부, 음주여부), 자유 태그("적극적", "ENTJ", "러닝")
+public class UserProfile { // 회사 or 학교, 위치, 자기소개, 키워드(위치, 종교, 흡연여부, 음주여부), 자유 태그("적극적", "ENTJ", "러닝")
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_id")
     private Long userId;
 
-    @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "work_id")
     private Work work;
 
-    @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_id")
     private University university;
 
-    @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
     private Location location;
 
-    @Column(name = "religion_id")
-    private Long religionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "religion_id")
+    private Religion religion;
 
-    @Column(name = "smoking_id")
-    private Long smokingId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "smoking_id")
+    private Smoking smoking;
 
-    @Column(name = "drinking_id")
-    private Long drinkingId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drinking_id")
+    private Drinking drinking;
 
     @Column
     private String selfIntroduction;
@@ -45,27 +52,47 @@ public class UserProfile { // 회사or학교, 위치, 자기소개, 키워드(�
     @ElementCollection
     private List<String> hashtags;
 
-   /*
-    @Column
-    @ElementCollection
-    private List<Long> informationKeywordIds;
+    @Builder(access = AccessLevel.PRIVATE)
+    public UserProfile(Long id, Long userId, Work work, University university, Location location, Religion religion,
+                       Smoking smoking, Drinking drinking, String selfIntroduction, List<String> hashtags) {
+        this.id = id;
+        this.userId = userId;
+        this.work = work;
+        this.university = university;
+        this.location = location;
+        this.religion = religion;
+        this.smoking = smoking;
+        this.drinking = drinking;
+        this.selfIntroduction = selfIntroduction;
+        this.hashtags = hashtags;
+    }
 
-    @ElementCollection
-    private List<String> keywords;
-    */
+    public static UserProfile createNewUserProfile(Long userId, Work work, University university, Location location, Religion religion,
+                                                   Smoking smoking, Drinking drinking, String selfIntroduction, List<String> hashtags) {
+        return UserProfile.builder()
+                .userId(userId)
+                .work(work)
+                .university(university)
+                .location(location)
+                .religion(religion)
+                .smoking(smoking)
+                .drinking(drinking)
+                .selfIntroduction(selfIntroduction)
+                .hashtags(hashtags)
+                .build();
+    }
 
-   @Builder(access = AccessLevel.PRIVATE)
-   public UserProfile(Long id, Long userId, Work work, University university, Location location, Long religionId,
-                      Long smokingId, Long drinkingId, String selfIntroduction, List<String> hashtags) {
-       this.id = id;
-       this.userId = userId;
-       this.work = work;
-       this.university = university;
-       this.location = location;
-       this.religionId = religionId;
-       this.smokingId = smokingId;
-       this.drinkingId = drinkingId;
-       this.selfIntroduction = selfIntroduction;
-       this.hashtags = hashtags;
-   }
+    public void updateUserProfile(Work work, University university, Location location, Religion religion,
+                                  Smoking smoking, Drinking drinking, String selfIntroduction, List<String> hashtags) {
+        this.work = work;
+        this.university = university;
+        this.location = location;
+        this.religion = religion;
+        this.smoking = smoking;
+        this.drinking = drinking;
+        this.selfIntroduction = selfIntroduction;
+        this.hashtags = hashtags;
+    }
+
+
 }
