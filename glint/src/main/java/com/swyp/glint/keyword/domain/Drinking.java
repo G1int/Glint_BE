@@ -17,13 +17,13 @@ public class Drinking extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "drinking_state")
-    private String state;
+    @Column(name = "drinking_name")
+    private String drinkingName;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Drinking(Long id, String state) {
+    private Drinking(Long id, String drinkingName) {
         this.id = id;
-        this.state = state;
+        this.drinkingName = drinkingName;
     }
 
 }

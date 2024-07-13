@@ -17,13 +17,13 @@ public class Religion extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "religion_state")
-    private String state;
+    @Column(name = "religion_name")
+    private String religionName;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Religion(Long id, String state) {
+    private Religion(Long id, String religionName) {
         this.id = id;
-        this.state = state;
+        this.religionName = religionName;
     }
 
 }

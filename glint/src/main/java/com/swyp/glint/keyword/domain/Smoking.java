@@ -17,13 +17,13 @@ public class Smoking extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "smoking_state")
-    private String state;
+    @Column(name = "smoking_name")
+    private String smokingName;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Smoking(Long id, String state) {
+    private Smoking(Long id, String smokingName) {
         this.id = id;
-        this.state = state;
+        this.smokingName = smokingName;
     }
 
 }
