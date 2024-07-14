@@ -15,6 +15,7 @@ public class WorkCategory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "work_category_id")
     private Long id;
 
     @Column(name = "work_category_keyword")

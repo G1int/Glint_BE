@@ -1,10 +1,13 @@
 package com.swyp.glint.keyword.domain;
 
+import com.swyp.glint.user.domain.UserDetail;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Table(name = "work")
 @Entity
@@ -14,6 +17,7 @@ public class Work {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "work_id")
     private Long id;
 
     @Column(name = "work_name")
@@ -27,6 +31,16 @@ public class Work {
         this.id = id;
         this.workName = workName;
         this.workCategoryId = workCategoryId;
+    }
+
+    public static Work createNewWork(String workName) {
+        return Work.builder()
+                .workName(workName)
+                .build();
+    }
+
+    public void updateWork(String workName) {
+        this.workName = workName;
     }
 
 }

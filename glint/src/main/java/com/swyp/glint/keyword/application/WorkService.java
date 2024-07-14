@@ -1,7 +1,6 @@
 package com.swyp.glint.keyword.application;
 
 import com.swyp.glint.common.exception.NotFoundEntityException;
-import com.swyp.glint.keyword.domain.University;
 import com.swyp.glint.keyword.domain.Work;
 import com.swyp.glint.keyword.domain.WorkCategory;
 import com.swyp.glint.keyword.repository.WorkCategoryRepository;
@@ -21,6 +20,27 @@ public class WorkService {
     public Work findById(Long workId) { // work id를 통한 Work 엔티티 반환
         return workRepository.findById(workId)
                 .orElseThrow(() -> new NotFoundEntityException("Work not found with id: " + workId));
+    }
+
+    public Work findByName(String workName) {
+        return workRepository.findByWorkName(workName)
+                .orElseThrow(() -> new NotFoundEntityException("Work not found with name: " + workName));
+    }
+
+    public Work createNewWork(String workName) { // Work 엔티티 생성 및 저장
+        if (workName == null) {
+            throw new IllegalArgumentException("Work name must not be null");
+        }
+        return workRepository.save(Work.createNewWork(workName)); // Save the provided Work entity to the database
+    }
+
+    public Work updateWork(String workName) {
+        Work work = workRepository.findByWorkName(workName)
+                .orElseGet(() -> {
+                    return Work.createNewWork(workName);
+                });
+        work.updateWork(workName);
+        return workRepository.save(work); // 저장하는 과정 꼭 필요
     }
 
     public List<Work> getAllWork() { // 직업 전체 조회
