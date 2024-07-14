@@ -57,7 +57,6 @@ public class SecurityConfig  {
                                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                         .anyRequest().permitAll()
                 )
-                .cors(withDefaults()) //CORS 설정 추가
                 //UsernamePasswordAuthenticationFilter 필터 전에 jwtLoginFilter를 추가한다.
                 .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilter(corsConfig.corsFilter())
