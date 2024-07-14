@@ -50,7 +50,7 @@ public class SecurityConfig  {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable) //csrf 사용하지 않겠다.
-//                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .httpBasic(AbstractHttpConfigurer::disable) //httpBasic 방식을 사용하지 않겠다.
                 .formLogin(AbstractHttpConfigurer::disable) //formLogin 방식을 사용하지 않겠다.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
