@@ -17,6 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -69,8 +71,12 @@ public class SecurityConfig  {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
-            config.setAllowedOriginPatterns(List.of("*","http://localhost:3000","https://api.g1int.com")); //️ 허용할 origin
+            config.setAllowedOriginPatterns(List.of("*")); //️ 허용할 origin
             config.setAllowCredentials(true);
+
+            final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", config);
+
             return config;
         };
     }
