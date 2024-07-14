@@ -3,7 +3,6 @@ package com.swyp.glint.user.application;
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.application.*;
 import com.swyp.glint.keyword.domain.*;
-import com.swyp.glint.keyword.repository.*;
 import com.swyp.glint.user.application.dto.UserProfileRequest;
 import com.swyp.glint.user.application.dto.UserProfileResponse;
 import com.swyp.glint.user.application.dto.UserResponse;
@@ -12,6 +11,8 @@ import com.swyp.glint.user.repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +31,12 @@ public class UserProfileService {
     @Transactional
     public UserProfileResponse createUserProfile(Long userId, UserProfileRequest userProfileRequest) {
 
-        Work work = workService.findById(userProfileRequest.workId());
-        University university = universityService.findById(userProfileRequest.universityId());
-        Location location = locationService.getLocationByStateAndCityName(userProfileRequest.locationState(), userProfileRequest.locationCity());
-        Religion religion = religionService.findById(userProfileRequest.religionId());
-        Smoking smoking = smokingService.findById(userProfileRequest.smokingId());
-        Drinking drinking = drinkingService.findById(userProfileRequest.drinkingId());
+        Work work = workService.createNewWork(userProfileRequest.workName());
+        University university = universityService.findByName(userProfileRequest.universityName());
+        Location location = locationService.findByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
+        Religion religion = religionService.findByName(userProfileRequest.religionName());
+        Smoking smoking = smokingService.findByName(userProfileRequest.smokingName());
+        Drinking drinking = drinkingService.findByName(userProfileRequest.drinkingName());
 
         UserProfile userProfile = userProfileRequest.toEntity(userId, work, university, location, religion, smoking, drinking);
         return UserProfileResponse.from(userProfileRepository.save(userProfile));
@@ -47,16 +48,20 @@ public class UserProfileService {
                 .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found")));
     }
 
+    public List<UserProfile> getAllUserProfile() {
+        return userProfileRepository.findAll();
+    }
+
     @Transactional
     public UserProfileResponse updateUserProfile(Long userId, UserProfileRequest userProfileRequest) {
         UserResponse userResponse = userService.getUserById(userId);
 
-        Work work = workService.findById(userProfileRequest.workId());
-        University university = universityService.findById(userProfileRequest.universityId());
-        Location location = locationService.getLocationByStateAndCityName(userProfileRequest.locationState(), userProfileRequest.locationCity());
-        Religion religion = religionService.findById(userProfileRequest.religionId());
-        Smoking smoking = smokingService.findById(userProfileRequest.smokingId());
-        Drinking drinking = drinkingService.findById(userProfileRequest.drinkingId());
+        Work work = workService.updateWork(userProfileRequest.workName());
+        University university = universityService.findByName(userProfileRequest.universityName());
+        Location location = locationService.findByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
+        Religion religion = religionService.findByName(userProfileRequest.religionName());
+        Smoking smoking = smokingService.findByName(userProfileRequest.smokingName());
+        Drinking drinking = drinkingService.findByName(userProfileRequest.drinkingName());
 
         UserProfile userProfile = userProfileRepository.findByUserId(userResponse.id())
                 .orElse(userProfileRequest.toEntity(userId, work, university, location, religion, smoking, drinking));
