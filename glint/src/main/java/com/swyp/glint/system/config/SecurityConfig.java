@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -38,6 +40,7 @@ public class SecurityConfig  {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+        http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()));
 
         return http
                 .csrf(AbstractHttpConfigurer::disable) //csrf 사용하지 않겠다.
@@ -45,10 +48,11 @@ public class SecurityConfig  {
                 .formLogin(AbstractHttpConfigurer::disable) //formLogin 방식을 사용하지 않겠다.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
-                        authorize
+                                authorize
 //                                .requestMatchers("/manager/**").hasRole("ADMIN or MANAGER")
 //                                .requestMatchers("/user/**").hasRole("ADMIN")
-                                .anyRequest().permitAll()
+                                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                                        .anyRequest().permitAll()
                 )
                 //UsernamePasswordAuthenticationFilter 필터 전에 jwtLoginFilter를 추가한다.
                 .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
