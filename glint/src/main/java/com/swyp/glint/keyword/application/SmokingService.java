@@ -19,6 +19,11 @@ public class SmokingService {
                 .orElseThrow(() -> new NotFoundEntityException("Smoking not found with id: " + smokingId));
     }
 
+    public Smoking findByName(String smokingName) { // 흡연명을 통한 Smoking 엔티티 반환
+        return smokingRepository.findBySmokingName(smokingName)
+                .orElseThrow(() -> new NotFoundEntityException("Smoking not found with name: " + smokingName));
+    }
+
     public List<Smoking> getAllSmoking() {
         return smokingRepository.findAll();
     }

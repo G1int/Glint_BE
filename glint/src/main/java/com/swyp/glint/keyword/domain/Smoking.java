@@ -15,6 +15,7 @@ public class Smoking extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "smoking_id")
     private Long id;
 
     @Column(name = "smoking_name")
