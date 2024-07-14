@@ -72,7 +72,7 @@ public class SecurityConfig  {
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setAllowedOriginPatterns(List.of("*")); //️ 허용할 origin
             config.setAllowedOrigins(List.of("http://localhost:3000")); //️ 허용할 origin
-            config.setAllowCredentials(true);
+//            config.setAllowCredentials(true);
 
             final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
