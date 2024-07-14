@@ -34,7 +34,7 @@ import java.util.List;
 //@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig  {
 
-    private final JwtLoginFilter jwtLoginFilter;
+//    private final JwtLoginFilter jwtLoginFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -60,7 +60,7 @@ public class SecurityConfig  {
                                         .anyRequest().permitAll()
                 )
                 //UsernamePasswordAuthenticationFilter 필터 전에 jwtLoginFilter를 추가한다.
-                .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
 //                .addFilter(corsConfig.corsFilter())
                 .build();
     }

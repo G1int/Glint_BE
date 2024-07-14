@@ -60,7 +60,7 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
         } catch (ExpiredJwtException e){
 //            Cookie refreshTokenCookie = cookieUtil.getCookie(request,AuthorityHelper.REFRESH_TOKEN_NAME);
-            refreshToken = request.getHeader("refreshToken");
+            refreshToken = request.getHeader("RefreshToken");
 //            if(refreshTokenCookie != null){
 //                refreshToken = refreshTokenCookie.getValue();
 //            }
@@ -98,7 +98,7 @@ public class JwtLoginFilter extends OncePerRequestFilter {
         String generateRefreshToken = authorityHelper.generateToken(email);
 
         response.setHeader("Authorization", "bearer "  + generateAccessToken);
-        response.setHeader("refreshToken", "bearer "  + generateRefreshToken);
+        response.setHeader("RefreshToken", "bearer "  + generateRefreshToken);
 
         redisUtil.setDataExpire(email, generateAccessToken, AuthorityHelper.ACCESS_TOKEN_VALIDATION_SECOND);
         redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
