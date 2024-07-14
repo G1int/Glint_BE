@@ -30,9 +30,6 @@ public class User extends BaseTimeEntity {
     @Column(name = "archived")
     private Boolean archived;
 
-    @Column
-    private Long userProfileId;
-
     @Builder(access = AccessLevel.PRIVATE)
     private User(Long id, String name, String email, String role, String provider, Boolean archived) {
         this.id = id;
