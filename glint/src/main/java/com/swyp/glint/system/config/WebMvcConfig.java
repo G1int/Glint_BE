@@ -6,6 +6,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -15,6 +17,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedOriginPatterns("*")
                 .allowedMethods("*")
                 .allowedHeaders("*")
+                .allowedOrigins("http://localhost:3000")
                 .allowCredentials(true)
                 ;
     }

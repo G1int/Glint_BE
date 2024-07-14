@@ -70,14 +70,13 @@ public class SecurityConfig  {
     CorsConfigurationSource corsConfigurationSource() {
         return request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.addAllowedOrigin("^https?:\\/\\/linklinklink~~.com$"); // e.g. /**, http://domain1.com
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setAllowedOriginPatterns(List.of("*")); //️ 허용할 origin
+            config.setAllowedOrigins(List.of("http://localhost:3000")); //️ 허용할 origin
             config.setAllowCredentials(true);
 
             final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("^https?:\\/\\/linklinklink~~.com$", config);
 
             return config;
         };
