@@ -1,6 +1,7 @@
 package com.swyp.glint.keyword.repository;
 
 import com.swyp.glint.keyword.domain.Location;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
                 FROM Location l
                 WHERE l.state = :state AND l.city = :city
             """)
-    Optional<Location> findByStateAndCity(String state, String city);
+    Optional<Location> findByStateAndCity(@Param("state") String state, @Param("city") String city);
 
     //모든 '시도(state)' 찾기
     @Query("""
@@ -32,7 +33,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
                 FROM Location l
                 WHERE l.state = :state
             """)
-    Optional<List<String>> findAllCityByState(String state);
+    Optional<List<String>> findAllCityByState(@Param("state") String state);
 
     //'시군구(city)'로 해당하는 '시도(state)' 찾기
     @Query("""
@@ -40,7 +41,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
                 FROM Location l
                 WHERE l.city = :city
             """)
-    Optional<String> findStateByCity(String city);
+    Optional<String> findStateByCity(@Param("city") String city);
 
     //특정 '시군구(city)'가 '시도(state)'에 존재하는지 확인
     @Query("""
@@ -51,6 +52,6 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
                 FROM Location l
                 WHERE l.state = :state AND l.city = :city
             """)
-    Optional<Boolean> existsByStateAndCity(String state, String city);
+    Optional<Boolean> existsByStateAndCity(@Param("state") String state, @Param("city") String city);
 
 }
