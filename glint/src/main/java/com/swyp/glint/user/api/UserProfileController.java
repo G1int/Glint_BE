@@ -35,17 +35,18 @@ public class UserProfileController {
         return ResponseEntity.ok(userProfileService.getUserProfileById(userId));
     }
 
-    @GetMapping(path = "/profiles", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "List all User's Profile", description = "모든 유저 프로필 조회")
-    public ResponseEntity<List<UserProfile>> getAllUserProfile() {
-        List<UserProfile> userProfiles = userProfileService.getAllUserProfile();
-        return ResponseEntity.ok(userProfiles);
-    }
-
     @Operation(summary = "Update User Profile", description = "유저 프로필 수정")
     @PutMapping(path = "/{userId}/profile", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserProfileResponse> updateUserProfile(@PathVariable Long userId, @Valid @RequestBody UserProfileRequest userProfileRequest) {
         return ResponseEntity.ok(userProfileService.updateUserProfile(userId, userProfileRequest));
     }
 
+    /*
+    @GetMapping(path = "/profiles", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "List all User's Profile", description = "모든 유저 프로필 조회")
+    public ResponseEntity<List<UserProfile>> getAllUserProfile() {
+        List<UserProfile> userProfiles = userProfileService.getAllUserProfile();
+        return ResponseEntity.ok(userProfiles);
+    }
+     */
 }
