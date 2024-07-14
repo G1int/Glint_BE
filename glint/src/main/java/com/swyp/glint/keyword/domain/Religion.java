@@ -15,6 +15,7 @@ public class Religion extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "religion_id")
     private Long id;
 
     @Column(name = "religion_name")
