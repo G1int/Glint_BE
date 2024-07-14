@@ -11,12 +11,10 @@ import java.util.Optional;
 @Repository
 public interface UniversityRepository extends JpaRepository<University, Long> {
 
-    @Query(
-            """
+    @Query("""
                 SELECT uni
                 FROM University uni
                 WHERE uni.universityName = :universityName
-            """
-    )
+            """)
     Optional<University> findByUniversityName(@Param("universityName") String universityName);
 }
