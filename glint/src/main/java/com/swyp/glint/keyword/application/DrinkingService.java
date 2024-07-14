@@ -19,6 +19,11 @@ public class DrinkingService {
                 .orElseThrow(() -> new NotFoundEntityException("Drinking not found with id: " + drinkingId));
     }
 
+    public Drinking findByName(String drinkingName) {
+        return drinkingRepository.findByDrinkingName(drinkingName)
+                .orElseThrow(() -> new NotFoundEntityException("Drinking not found with id: " + drinkingName));
+    }
+
     public List<Drinking> getAllDrinking() { // 전체 조회
         return drinkingRepository.findAll();
     }

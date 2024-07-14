@@ -16,6 +16,6 @@ public interface DrinkingRepository extends JpaRepository<Drinking, Long> {
                 FROM Drinking d
                 WHERE d.drinkingName = :drinkingName
             """)
-    Optional<Drinking> findByDrinkingName(@Param("drinkingState") String drinkingName);
+    Optional<Drinking> findByDrinkingName(@Param("drinkingName") String drinkingName);
 
 }
