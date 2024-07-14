@@ -15,6 +15,7 @@ public class Drinking extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "drinking_id")
     private Long id;
 
     @Column(name = "drinking_name")
