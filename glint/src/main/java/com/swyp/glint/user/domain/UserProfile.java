@@ -1,5 +1,6 @@
 package com.swyp.glint.user.domain;
 
+import com.swyp.glint.common.baseentity.BaseTimeEntity;
 import com.swyp.glint.keyword.domain.*;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,13 +14,13 @@ import java.util.List;
 @Table(name = "user_profile")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserProfile { // 회사 or 학교, 위치, 자기소개, 키워드(위치, 종교, 흡연여부, 음주여부), 자유 태그("적극적", "ENTJ", "러닝")
+public class UserProfile extends BaseTimeEntity { // 회사 or 학교, 위치, 자기소개, 키워드(위치, 종교, 흡연여부, 음주여부), 자유 태그("적극적", "ENTJ", "러닝")
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,10 +47,12 @@ public class UserProfile { // 회사 or 학교, 위치, 자기소개, 키워드(
     @JoinColumn(name = "drinking_id")
     private Drinking drinking;
 
-    @Column
+    @Column(name = "self_introduction")
     private String selfIntroduction;
 
     @ElementCollection
+    @CollectionTable(name = "user_profile_hashtags", joinColumns = @JoinColumn(name = "user_profile_id"))
+    @Column(name = "hashtag")
     private List<String> hashtags;
 
     @Builder(access = AccessLevel.PRIVATE)
