@@ -60,7 +60,7 @@ public class SecurityConfig  {
                 )
                 //UsernamePasswordAuthenticationFilter 필터 전에 jwtLoginFilter를 추가한다.
                 .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilter(corsConfig.corsFilter())
+//                .addFilter(corsConfig.corsFilter())
                 .build();
     }
 
