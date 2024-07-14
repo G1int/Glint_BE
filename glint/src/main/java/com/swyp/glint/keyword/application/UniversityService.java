@@ -22,6 +22,11 @@ public class UniversityService {
                 .orElseThrow(() -> new NotFoundEntityException("University not found with id: " + universityId));
     }
 
+    public University findByName(String universityName) { // university name을 통한 University 엔티티 반환
+        return universityRepository.findByUniversityName(universityName)
+                .orElseThrow(() -> new NotFoundEntityException("University not found with name: " + universityName));
+    }
+
     public List<University> getAllUniversity() { // 대학 전체 조회
         return universityRepository.findAll();
     }

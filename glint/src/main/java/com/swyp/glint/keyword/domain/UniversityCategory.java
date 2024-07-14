@@ -15,6 +15,7 @@ public class UniversityCategory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "university_category_id")
     private Long id;
 
     @Column(name = "university_category_name")
