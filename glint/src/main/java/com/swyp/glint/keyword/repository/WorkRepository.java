@@ -16,7 +16,7 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
     @Query("""
                 SELECT w
                 FROM Work w
-                WHERE w.workName = :workName
+                WHERE :workName LIKE CONCAT('%', w.workName, '%')
             """)
     Optional<Work> findByWorkName(@Param("workName") String workName);
 
