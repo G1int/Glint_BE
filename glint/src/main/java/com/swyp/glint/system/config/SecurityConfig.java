@@ -73,7 +73,6 @@ public class SecurityConfig  {
             config.addAllowedOrigin("^https?:\\/\\/linklinklink~~.com$"); // e.g. /**, http://domain1.com
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
-            config.setAllowedOrigins(Arrays.asList("*"));
             config.setAllowedOriginPatterns(List.of("*")); //️ 허용할 origin
             config.setAllowCredentials(true);
 
