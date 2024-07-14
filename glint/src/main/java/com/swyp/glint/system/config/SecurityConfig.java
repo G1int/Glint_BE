@@ -31,12 +31,10 @@ import java.util.List;
 // @Controller에 @Secured 메소드를 사용하여 간단히 권한 체크를 할 수 있다. @Secured('ROLE_MANAGER')
 // @PreAuthorize 어노테이션을 통해 권한점사 이전에 수행 여러 권한 허용할 때 @PreAuthorize("hasRole('ROLE_MANAGER')or haRole('ROLE_ADMIN')")
 // @postAuthorize
-@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
+//@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig  {
 
     private final JwtLoginFilter jwtLoginFilter;
-
-    private final CorsConfig corsConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
