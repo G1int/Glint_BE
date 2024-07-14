@@ -16,9 +16,14 @@ public class LocationService {
 
     private final LocationRepository locationRepository;
 
-    private Location findById(Long locationId) { // location id를 통한 Location 엔티티 반환
+    public Location findById(Long locationId) { // location id를 통한 Location 엔티티 반환
         return locationRepository.findById(locationId)
                 .orElseThrow(() -> new NotFoundEntityException("Location not found with id: " + locationId));
+    }
+
+    public Location findByName(String state, String city) {
+        return locationRepository.findByStateAndCity(state, city)
+                .orElseThrow(() -> new NotFoundEntityException("Location not foun with state: " + state + " and city: " + city));
     }
 
     public List<Location> getAllLocation() { // 전체 조회
