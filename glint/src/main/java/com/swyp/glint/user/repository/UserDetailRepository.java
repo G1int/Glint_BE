@@ -4,6 +4,7 @@ import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.domain.UserDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -18,7 +19,7 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
                 WHERE ud.nickname = :nickname
             """
     )
-    Optional<UserDetail> findByNickname(String nickname);
+    Optional<UserDetail> findByNickname(@Param("nickname") String nickname);
 
     @Query(
             """
@@ -27,5 +28,5 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
                 WHERE ud.userId = :userId
             """
     )
-    Optional<UserDetail> findByUserId(Long userId);
+    Optional<UserDetail> findByUserId(@Param("userId") Long userId);
 }
