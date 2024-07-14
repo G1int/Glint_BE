@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class SecurityConfig  {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable) //csrf 사용하지 않겠다.
-                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+//                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .httpBasic(AbstractHttpConfigurer::disable) //httpBasic 방식을 사용하지 않겠다.
                 .formLogin(AbstractHttpConfigurer::disable) //formLogin 방식을 사용하지 않겠다.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -71,6 +72,7 @@ public class SecurityConfig  {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
+            config.setAllowedOrigins(Arrays.asList("*"));
             config.setAllowedOriginPatterns(List.of("*")); //️ 허용할 origin
             config.setAllowCredentials(true);
 
