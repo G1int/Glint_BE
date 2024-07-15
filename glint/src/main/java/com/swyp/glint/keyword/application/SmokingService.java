@@ -40,4 +40,25 @@ public class SmokingService {
                 .orElseThrow(() -> new NotFoundEntityException("Smoking id not found with name: " + smokingName));
     }
 
+    public Smoking createNewSmoking(String smokingName) {
+        return smokingRepository.findBySmokingName(smokingName)
+                .orElseGet(() -> {
+                    Smoking newSmoking = Smoking.createNewSmoking(smokingName);
+                    return smokingRepository.save(newSmoking);
+                });
+    }
+
+    public Smoking updateSmokingById(Long smokingId, String smokingName) {
+        Smoking smoking = smokingRepository.findById(smokingId)
+                .orElseThrow(() -> new NotFoundEntityException("Smoking not found with smoking id: " + smokingId));
+        smoking.updateSmoking(smokingName);
+        return smokingRepository.save(smoking);
+    }
+
+    public void deleteSmoking(Long smokingId) {
+        Smoking smoking = smokingRepository.findById(smokingId)
+                .orElseThrow(() -> new NotFoundEntityException("Smoking not found with smoking id: " + smokingId));
+        smokingRepository.delete(smoking);
+    }
+
 }
