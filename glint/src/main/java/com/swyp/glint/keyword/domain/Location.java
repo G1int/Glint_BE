@@ -28,4 +28,16 @@ public class Location extends BaseTimeEntity {
         this.city = city;
     }
 
+    public static Location createNewLocation(String state, String city) {
+        return Location.builder()
+                .state(state)
+                .city(city)
+                .build();
+    }
+
+    public void updateLocation(String state, String city) {
+        this.state = state;
+        this.city = city;
+    }
+
 }
