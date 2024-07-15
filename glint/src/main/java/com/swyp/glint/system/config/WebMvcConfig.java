@@ -1,21 +1,26 @@
 package com.swyp.glint.system.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@EnableWebMvc
+import java.util.List;
+
+
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+    public static final String ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,TRACE,OPTIONS,PATCH";
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*","http://localhost:3000","https://api.g1int.com")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-                .allowedHeaders("*")
+                .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
+                .allowedOriginPatterns("*")
                 .allowCredentials(true)
+                .exposedHeaders("*");
                 ;
     }
 }
