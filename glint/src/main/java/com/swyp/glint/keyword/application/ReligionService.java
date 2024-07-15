@@ -40,4 +40,24 @@ public class ReligionService {
                 .orElseThrow(() -> new NotFoundEntityException("Religion id not found with name: " + religionName));
     }
 
+    public Religion createNewReligion(String religionName) {
+        if (religionName == null) {
+            throw new IllegalArgumentException("Religion name must not be null");
+        }
+        return religionRepository.save(Religion.createNewReligion(religionName));
+    }
+
+    public Religion updateReligionById(Long religionId, String religionName) {
+        Religion religion = religionRepository.findById(religionId)
+                .orElseThrow(() -> new NotFoundEntityException("Religion not found with religion id: " + religionId));
+        religion.updateReligion(religionName);
+        return religionRepository.save(religion);
+    }
+
+    public void deleteReligion(Long religionId) {
+        Religion religion = religionRepository.findById(religionId)
+                .orElseThrow(() -> new NotFoundEntityException("Religion not found with religion id: " + religionId));
+        religionRepository.delete(religion);
+    }
+
 }

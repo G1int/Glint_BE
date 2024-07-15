@@ -5,10 +5,13 @@ import com.swyp.glint.keyword.domain.Religion;
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/religions")
@@ -27,18 +30,39 @@ public class ReligionController {
         return ResponseEntity.ok(religionService.getAllReligion());
     }
 
-    @GetMapping("/{religionId}")
+    @GetMapping("/religion")
+    @Operation(summary = "Get a religion by its name", description = "종교명을 통한 종교 조회")
+    public ResponseEntity<Religion> getReligionByName(@RequestParam String religionName) {
+        Religion religion = religionService.findByName(religionName);
+        return ResponseEntity.ok(religion);
+    }
+
+    @GetMapping("/{religionId}/religion")
     @Operation(summary = "Get a religion by its ID", description = "Religion Id를 통한 종교 조회")
     public ResponseEntity<Religion> getReligionById(@PathVariable Long religionId) {
         Religion religion = religionService.findById(religionId);
         return ResponseEntity.ok(religion);
     }
 
-    @GetMapping("/by-name")
-    @Operation(summary = "Get a religion by its name", description = "종교명을 통한 종교 조회")
-    public ResponseEntity<Religion> getReligionByName(@RequestParam String religionName) {
-        Religion religion = religionService.findByName(religionName);
+    @PostMapping(path = "/{religionId}/religion", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create a new Religion", description = "새로운 종교 생성")
+    public ResponseEntity<Religion> createReligion(@RequestParam String religionName) {
+        Religion religion = religionService.createNewReligion(religionName);
+        return new ResponseEntity<>(religion, HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{religionId}/religion", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Update an existing religion by its religion ID", description = "religion id를 통한 종교 수정")
+    public ResponseEntity<Religion> updateReligion(@PathVariable Long religionId, @RequestParam String religionName) {
+        Religion religion = religionService.updateReligionById(religionId, religionName);
         return ResponseEntity.ok(religion);
+    }
+
+    @DeleteMapping(path = "/{religionId}/religion")
+    @Operation(summary = "Delete a religion by its religion ID", description = "religion id를 통한 종교 삭제")
+    public ResponseEntity<Void> deleteReligion(@PathVariable Long religionId) {
+        religionService.deleteReligion(religionId);
+        return ResponseEntity.noContent().build();
     }
 
 }
