@@ -29,7 +29,7 @@ public class UserProfileController {
         return ResponseEntity.ok(userProfileService.createUserProfile(userId, userProfileRequest));
     }
 
-    @Operation(summary = "Get User Profile by User Id", description = "유저 프로필 조회")
+    @Operation(summary = "Get User Profile by User Id", description = "user id를 통한 유저 프로필 조회")
     @GetMapping(path = "/{userId}/profile", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable Long userId) {
         return ResponseEntity.ok(userProfileService.getUserProfileById(userId));
