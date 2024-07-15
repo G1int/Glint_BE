@@ -4,11 +4,9 @@ import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.keyword.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,17 +29,19 @@ public class LocationService {
     }
 
     public List<String> getAllLocationSate() { // 전체 state 조회
-        Optional<List<String>> optionalStates = locationRepository.findAllState();
-        if(optionalStates.isPresent()) {
-            return optionalStates.get();
-        } else {
+        List<String> states = locationRepository.findAllState();
+        if(states.isEmpty()) {
             throw new NotFoundEntityException("State not found");
         }
+        return states;
     }
 
     public List<String> getAllCityByState(String state) { // 특정 state에 해당하는 모든 city 조회
-        return locationRepository.findAllCityByState(state)
-                .orElseThrow(() -> new NotFoundEntityException("Cities not dound with state: " + state));
+        List<String> cities = locationRepository.findAllCityByState(state);
+        if(cities.isEmpty()) {
+            throw new NotFoundEntityException("cities not found with state: " + state);
+        }
+        return cities;
     }
 
     public String getStateByCity(String city) { // 특정 city에 해당하는 state 조회
@@ -65,4 +65,26 @@ public class LocationService {
                 .map(Location::getId)
                 .orElseThrow(() -> new NotFoundEntityException("Location id not found with state: " + state + " and city: " + city));
     }
+
+    public Location createNewLocation(String state, String city) {
+        return locationRepository.findByStateAndCity(state, city)
+                .orElseGet(() -> {
+                    Location newWLocation = Location.createNewLocation(state, city);
+                    return locationRepository.save(newWLocation);
+                });
+    }
+
+    public Location updateLocationById(Long locationId, String state, String city) {
+        Location location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new NotFoundEntityException("Location not found with location id: " + locationId));
+        location.updateLocation(state,city);
+        return locationRepository.save(location);
+    }
+
+    public void deleteLocation(Long locationId) {
+        Location location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new NotFoundEntityException("Location not found with location id: " + locationId));
+        locationRepository.delete(location);
+    }
+
 }

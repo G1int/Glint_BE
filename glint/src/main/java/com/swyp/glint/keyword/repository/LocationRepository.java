@@ -25,7 +25,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
                 SELECT DISTINCT l.state
                 FROM Location l
             """)
-    Optional<List<String>> findAllState();
+    List<String> findAllState();
 
     //'시도(state)'로 모든 '시군구(city)' 찾기
     @Query("""
@@ -33,7 +33,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
                 FROM Location l
                 WHERE l.state = :state
             """)
-    Optional<List<String>> findAllCityByState(@Param("state") String state);
+    List<String> findAllCityByState(@Param("state") String state);
 
     //'시군구(city)'로 해당하는 '시도(state)' 찾기
     @Query("""
