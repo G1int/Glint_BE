@@ -27,20 +27,19 @@ public class WorkService {
                 .orElseThrow(() -> new NotFoundEntityException("Work not found with name: " + workName));
     }
 
-    public Work createNewWork(String workName) { // Work 엔티티 생성 및 저장
-        if (workName == null) {
-            throw new IllegalArgumentException("Work name must not be null");
-        }
-        return workRepository.save(Work.createNewWork(workName)); // Save the provided Work entity to the database
+    public Work createNewWork(String workName) { // 이미 해당하는 workName을 가진 work가 있다면, 해당 객체를 반환하고, 없다면 work객체를 새로 생성하고 저장한 후 반환.
+        return workRepository.findByWorkName(workName)
+                .orElseGet(() -> {
+                   Work newWork = Work.createNewWork(workName);
+                   return workRepository.save(newWork);
+                });
     }
 
-    public Work updateWork(String workName) {
-        Work work = workRepository.findByWorkName(workName)
-                .orElseGet(() -> {
-                    return Work.createNewWork(workName);
-                });
+    public Work updateWorkById(Long workId, String workName) { // workId를 통한 직업명 업데이트
+        Work work = workRepository.findById(workId)
+                .orElseThrow(() -> new NotFoundEntityException("Work not found with work id: " + workId));
         work.updateWork(workName);
-        return workRepository.save(work); // 저장하는 과정 꼭 필요
+        return workRepository.save(work);
     }
 
     public List<Work> getAllWork() { // 직업 전체 조회
@@ -64,8 +63,17 @@ public class WorkService {
     }
 
     public List<WorkCategory> getWorkCategoryByName(String workName) { // 직업명에 카테고리키워드가 포함되어 있다면 해당 카테고리 반환
-        return workCategoryRepository.findByWorkNameContainingKeyword(workName)
-                .orElseThrow(() -> new NotFoundEntityException("Work Categories not found with name: " + workName));
+        List<WorkCategory> categories = workCategoryRepository.findByWorkNameContainingKeyword(workName);
+        if(categories.isEmpty()) {
+            throw new NotFoundEntityException("Work Categories not found with name: " + workName);
+        }
+        return categories;
+    }
+
+    public void deleteWork(Long workId) {
+        Work work = workRepository.findById(workId)
+                .orElseThrow(() -> new NotFoundEntityException("Work not found with id: " + workId));
+        workRepository.delete(work);
     }
 
 }
