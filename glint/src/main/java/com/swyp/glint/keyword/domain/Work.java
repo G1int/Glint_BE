@@ -1,5 +1,6 @@
 package com.swyp.glint.keyword.domain;
 
+import com.swyp.glint.common.baseentity.BaseTimeEntity;
 import com.swyp.glint.user.domain.UserDetail;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Work {
+public class Work extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
