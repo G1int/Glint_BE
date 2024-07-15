@@ -20,14 +20,30 @@ public class University {
     @Column(name = "university_name")
     private  String universityName;
 
-    @Column(name = "university_Category_id")
+    @Column(name = "university_department")
+    private  String universityDepartment;
+
+    @Column(name = "university_category_id")
     private  Long universityCategoryId;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private University(Long id, String universityName, Long universityCategoryId) {
+    private University(Long id, String universityName, String universityDepartment, Long universityCategoryId) {
         this.id = id;
         this.universityName = universityName;
+        this.universityDepartment = universityDepartment;
         this.universityCategoryId = universityCategoryId;
+    }
+
+    public static University createNewUniversity(String universityName, String universityDepartment) {
+        return University.builder()
+                .universityName(universityName)
+                .universityDepartment(universityDepartment)
+                .build();
+    }
+
+    public void updateUniversity(String universityName, String universityDepartment) {
+        this.universityName = universityName;
+        this.universityDepartment = universityDepartment;
     }
 
 }
