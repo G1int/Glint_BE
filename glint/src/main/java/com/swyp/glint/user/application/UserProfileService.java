@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class UserProfileService {
     public UserProfileResponse createUserProfile(Long userId, UserProfileRequest userProfileRequest) {
 
         Work work = workService.createNewWork(userProfileRequest.workName());
-        University university = universityService.findByName(userProfileRequest.universityName());
+        University university = universityService.findByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
         Location location = locationService.findByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
         Religion religion = religionService.findByName(userProfileRequest.religionName());
         Smoking smoking = smokingService.findByName(userProfileRequest.smokingName());
@@ -48,16 +49,19 @@ public class UserProfileService {
                 .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found")));
     }
 
-    public List<UserProfile> getAllUserProfile() {
-        return userProfileRepository.findAll();
+    public List<UserProfileResponse> getAllUserProfile() {
+        List<UserProfile> userProfiles = userProfileRepository.findAll();
+        return userProfiles.stream()
+                .map(UserProfileResponse::from)
+                .collect(Collectors.toList());
     }
 
     @Transactional
     public UserProfileResponse updateUserProfile(Long userId, UserProfileRequest userProfileRequest) {
         UserResponse userResponse = userService.getUserById(userId);
 
-        Work work = workService.updateWork(userProfileRequest.workName());
-        University university = universityService.findByName(userProfileRequest.universityName());
+        Work work = workService.createNewWork(userProfileRequest.workName());
+        University university = universityService.findByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
         Location location = locationService.findByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
         Religion religion = religionService.findByName(userProfileRequest.religionName());
         Smoking smoking = smokingService.findByName(userProfileRequest.smokingName());

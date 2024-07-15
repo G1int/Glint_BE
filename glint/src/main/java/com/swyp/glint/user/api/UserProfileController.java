@@ -35,18 +35,17 @@ public class UserProfileController {
         return ResponseEntity.ok(userProfileService.getUserProfileById(userId));
     }
 
-    @Operation(summary = "Update User Profile", description = "유저 프로필 수정")
+    @Operation(summary = "Update User Profile", description = "유저 프로필 수정 (직업의 경우, 사용자 직접 입력이기 때문에 DB에 존재하지 않는 경우 새로 생성해서 반환해드리지만, 나머지 대학교, 위치, 종교, 흡연, 음주의 경우에는 보내주시는 값이 DB의 값과 정확히 일치해야 합니다.)")
     @PutMapping(path = "/{userId}/profile", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserProfileResponse> updateUserProfile(@PathVariable Long userId, @Valid @RequestBody UserProfileRequest userProfileRequest) {
         return ResponseEntity.ok(userProfileService.updateUserProfile(userId, userProfileRequest));
     }
 
-    /*
+
     @GetMapping(path = "/profiles", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "List all User's Profile", description = "모든 유저 프로필 조회")
-    public ResponseEntity<List<UserProfile>> getAllUserProfile() {
-        List<UserProfile> userProfiles = userProfileService.getAllUserProfile();
-        return ResponseEntity.ok(userProfiles);
+    public ResponseEntity<List<UserProfileResponse>> getAllUserProfile() {
+        return ResponseEntity.ok(userProfileService.getAllUserProfile());
     }
-     */
+
 }
