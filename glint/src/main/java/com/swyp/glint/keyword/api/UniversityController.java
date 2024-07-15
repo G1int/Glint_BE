@@ -9,7 +9,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/universities")
@@ -44,9 +46,13 @@ public class UniversityController {
 
     @GetMapping("/{universityId}/category")
     @Operation(summary = "Get a university category by its university Id", description = "University Id를 통학 대학 카테고리 조회")
-    public ResponseEntity<UniversityCategory> getUniversityCategoryById(@PathVariable Long universityId) {
+    public ResponseEntity<Map<String, Object>> getUniversityCategoryById(@PathVariable Long universityId) {
+        University university = universityService.findById(universityId);
         UniversityCategory category = universityService.getUniversityCategoryByUniversityId(universityId);
-        return ResponseEntity.ok(category);
+        Map<String, Object> response = new HashMap<>();
+        response.put("University", university);
+        response.put("Category", category);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/category")
