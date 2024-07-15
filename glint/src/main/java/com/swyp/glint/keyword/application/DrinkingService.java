@@ -31,13 +31,34 @@ public class DrinkingService {
     public String getDrinkingNameById(Long drinkingId) { // drinking id를 통한 음주명 반환
         return drinkingRepository.findById(drinkingId)
                 .map(Drinking::getDrinkingName)
-                .orElseThrow(() -> new NotFoundEntityException("Drinking name with drinkingId: " + drinkingId + " not found"));
+                .orElseThrow(() -> new NotFoundEntityException("Drinking name with drinking id: " + drinkingId + " not found"));
     }
 
     public Long getDrinkingIdByName(String drinkingName) { // 음주명을 통한 drinking id 반환
         return drinkingRepository.findByDrinkingName(drinkingName)
                 .map(Drinking::getId)
                 .orElseThrow(() -> new NotFoundEntityException("Drinking id not found with name: " + drinkingName));
+    }
+
+    public Drinking createNewDrinking(String drinkingName) {
+        return drinkingRepository.findByDrinkingName(drinkingName)
+                .orElseGet(() -> {
+                    Drinking newDrinking = Drinking.createNewDrinking(drinkingName);
+                    return drinkingRepository.save(newDrinking);
+                });
+    }
+
+    public Drinking updateDrinkingById(Long drinkingId, String drinkingName) {
+        Drinking drinking = drinkingRepository.findById(drinkingId)
+                .orElseThrow(() -> new NotFoundEntityException("Drinking not found with drinking id: " + drinkingId));
+        drinking.updateDrinking(drinkingName);
+        return drinkingRepository.save(drinking);
+    }
+
+    public void deleteDrinking(Long drinkingId) {
+        Drinking drinking = drinkingRepository.findById(drinkingId)
+                .orElseThrow(() -> new NotFoundEntityException("Drinking not found with drinking id:" + drinkingId));
+        drinkingRepository.delete(drinking);
     }
 
 }
