@@ -2,6 +2,7 @@ package com.swyp.glint.user.application;
 
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.user.application.dto.UserLoginResponse;
+import com.swyp.glint.user.application.dto.UserMeetingResponse;
 import com.swyp.glint.user.application.dto.UserRequest;
 import com.swyp.glint.user.application.dto.UserResponse;
 import com.swyp.glint.user.domain.User;
@@ -52,5 +53,11 @@ public class UserService {
     public List<User> getUsers(List<Long> userIds) {
         return userRepository.findAllById(userIds);
     }
+
+
+    public List<UserMeetingResponse> getUserMeetingResponseList(List<Long> userIds) {
+        return userRepository.findByUserIds(userIds);
+    }
+
 
 }

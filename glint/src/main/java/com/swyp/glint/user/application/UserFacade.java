@@ -1,6 +1,7 @@
 package com.swyp.glint.user.application;
 
 import com.swyp.glint.chatting.domain.UserChat;
+import com.swyp.glint.user.application.dto.UserMeetingResponse;
 import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserDetailAggregation;

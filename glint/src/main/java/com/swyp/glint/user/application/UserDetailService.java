@@ -66,7 +66,7 @@ public class UserDetailService {
 
         Optional<UserDetail> userDetailOptional = userDetailRepository.findByNickname(nickname);
 
-        if(userDetailOptional.isPresent()) {
+        if(userDetailOptional.isPresent() && ! userDetailOptional.get().getUserId().equals(userId)) {
             throw new InvalidValueException(ErrorCode.NICKNAME_DUPLICATED);
         }
 
