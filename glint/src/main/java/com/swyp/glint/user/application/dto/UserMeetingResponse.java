@@ -2,6 +2,7 @@ package com.swyp.glint.user.application.dto;
 
 import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.domain.UserDetailAggregation;
+import com.swyp.glint.user.domain.UserMeeting;
 import lombok.Builder;
 
 @Builder
@@ -18,12 +19,12 @@ public record UserMeetingResponse(
         this(id, profileImage, nickname, gender, "");
     }
 
-    public static UserMeetingResponse from(UserDetailAggregation userDetailAggregation) {
+    public static UserMeetingResponse from(UserMeeting userMeeting) {
         return UserMeetingResponse.builder()
-                .id(userDetailAggregation.getUserId())
-                .profileImage(userDetailAggregation.getProfileImage())
-                .nickname(userDetailAggregation.getNickname())
-                .gender(userDetailAggregation.getGender())
+                .id(userMeeting.getUserId())
+                .profileImage(userMeeting.getProfileImage())
+                .nickname(userMeeting.getNickname())
+                .gender(userMeeting.getGender())
                 .affiliation("삼성전자")
 //                .affiliation(userDetailAggregation.getAffiliation())
                 .build();

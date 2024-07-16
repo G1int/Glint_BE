@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
-@NoArgsConstructor
+@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class AgeRange {
 
-    Integer minAge;
+    private Integer minAge;
 
-    Integer maxAge;
+    private Integer maxAge;
 
     @Builder(access = lombok.AccessLevel.PRIVATE)
     private AgeRange(Integer minAge, Integer maxAge) {

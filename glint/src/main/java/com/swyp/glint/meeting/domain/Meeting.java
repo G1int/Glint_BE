@@ -1,5 +1,6 @@
 package com.swyp.glint.meeting.domain;
 
+import com.swyp.glint.common.baseentity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Meeting {
+public class Meeting extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +41,6 @@ public class Meeting {
     @Column(name = "location_id")
     private List<Long> locationIds;
 
-    //동성 조건
     @Embedded
 //    @JoinColumn(name = "our_condition")
     @Column(name = "our_condition")
@@ -56,9 +56,9 @@ public class Meeting {
             @AttributeOverride(name = "drinking", column = @Column(name = "our_drinking")),
     })
     private JoinConditionElement ourCondition;
-    // 상대 조건
+
     @Embedded
-//    @JoinColumn(name = "other_condition")
+    @Column(name = "other_condition")
     @AttributeOverrides({
             @AttributeOverride(name = "selectConditions", column = @Column(name = "other_select_conditions")),
             @AttributeOverride(name = "affiliation", column = @Column(name = "other_affiliation")),
@@ -102,7 +102,7 @@ public class Meeting {
                 .ourCondition(ourCondition)
                 .otherCondition(otherCondition)
                 .peopleCapacity(peopleCapacity)
-                .status("WAIT")
+                .status(JoinStatus.WAITING.getName())
                 .build();
 
     }

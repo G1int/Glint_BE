@@ -30,4 +30,12 @@ public class Join {
         this.meetingId = meetingId;
         this.status = status;
     }
+
+    public static Join createByRequest(Long userId, Long meetingId) {
+        return Join.builder()
+                .userId(userId)
+                .meetingId(meetingId)
+                .status(JoinStatus.WAITING.getName())
+                .build();
+    }
 }

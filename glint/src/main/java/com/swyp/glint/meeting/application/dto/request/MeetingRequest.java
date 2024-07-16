@@ -13,7 +13,7 @@ public record MeetingRequest(
         String title,
         @Parameter(description = "Meeting 설명", example = "모두 모여모라", required = true)
         String description,
-        @Parameter(description = "미팅장 UserId", example = "1", required = true)
+        @Parameter(description = "미팅장(개설한 멤버) UserId", example = "1", required = true)
         Long leaderUserId,
         String location,
         List<String> selectConditionCategoryNames,

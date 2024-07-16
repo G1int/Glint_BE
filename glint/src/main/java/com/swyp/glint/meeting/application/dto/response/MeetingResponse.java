@@ -1,11 +1,7 @@
-package com.swyp.glint.meeting.application;
+package com.swyp.glint.meeting.application.dto.response;
 
-import com.swyp.glint.meeting.application.dto.response.JoinConditionResponse;
-import com.swyp.glint.meeting.application.dto.response.JoinConditionValueResponse;
-import com.swyp.glint.meeting.domain.JoinConditionValue;
 import com.swyp.glint.meeting.domain.Meeting;
 import com.swyp.glint.user.application.dto.UserMeetingResponse;
-import jakarta.persistence.ElementCollection;
 import lombok.Builder;
 
 import java.util.List;

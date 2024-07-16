@@ -56,7 +56,7 @@ public class UserService {
 
 
     public List<UserMeetingResponse> getUserMeetingResponseList(List<Long> userIds) {
-        return userRepository.findByUserIds(userIds);
+        return userRepository.findByUserIds(userIds).stream().map(UserMeetingResponse::from).toList();
     }
 
 

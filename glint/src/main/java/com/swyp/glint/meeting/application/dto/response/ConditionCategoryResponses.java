@@ -1,7 +1,6 @@
 package com.swyp.glint.meeting.application.dto.response;
 
 import com.swyp.glint.meeting.application.dto.request.ConditionCategoryResponse;
-import com.swyp.glint.meeting.domain.ConditionCategory;
 
 import java.util.List;
 

@@ -11,7 +11,7 @@ import java.util.List;
 //참가 조건
 @Embeddable
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class JoinConditionElement {
 
     // 적용선택 조건
@@ -25,9 +25,11 @@ public class JoinConditionElement {
     private List<String> affiliation;
 
     @Embedded
+    @Column(name = "age_range")
     private AgeRange ageRange;
 
     @Embedded
+    @Column(name = "height_range")
     private HeightRange heightRange;
 
     //종교
@@ -45,8 +47,8 @@ public class JoinConditionElement {
     private JoinConditionElement(List<String> selectConditionKeywords, List<String> affiliation, AgeRange ageRange, HeightRange heightRange, String religion, String smoking, String drinking) {
         this.selectConditions = selectConditionKeywords;
         this.affiliation = affiliation;
-//        this.ageRange = ageRange;
-//        this.heightRange = heightRange;
+        this.ageRange = ageRange;
+        this.heightRange = heightRange;
         this.religion = religion;
         this.smoking = smoking;
         this.drinking = drinking;
