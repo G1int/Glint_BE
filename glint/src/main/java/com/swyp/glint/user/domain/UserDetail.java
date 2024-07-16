@@ -59,11 +59,14 @@ public class UserDetail extends BaseTimeEntity {
                 .build();
     }
 
-    public static UserDetail createTempUserDetailByNickName(Long userId, String nickname) {
+    public static UserDetail createTempUserDetailByNickName(Long userId) {
         return UserDetail.builder()
                 .userId(userId)
-                .nickname(nickname)
                 .build();
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public void updateUserDetail(String nickname, String gender, LocalDate birthdate, Integer height, String profileImage) {

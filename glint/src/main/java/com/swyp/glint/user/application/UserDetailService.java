@@ -58,17 +58,23 @@ public class UserDetailService {
         return UserNickNameValidationResponse.from(true, nickname);
     }
 
+    @Transactional
     public UserDetailResponse createTempUserDetail(Long userId, String nickname) {
         if (!NickNameValidator.isValid(nickname)) {
             throw new InvalidValueException(ErrorCode.NICKNAME_INVALID);
         }
 
         Optional<UserDetail> userDetailOptional = userDetailRepository.findByNickname(nickname);
+
         if(userDetailOptional.isPresent()) {
             throw new InvalidValueException(ErrorCode.NICKNAME_DUPLICATED);
         }
 
-        UserDetail userDetail = userDetailRepository.save(UserDetail.createTempUserDetailByNickName(userId, nickname));
+        UserDetail userDetail = userDetailRepository.findByUserId(userId).orElseGet(() -> {
+            return userDetailRepository.save(UserDetail.createTempUserDetailByNickName(userId));
+        });
+
+        userDetail.updateNickname(nickname);
 
         return UserDetailResponse.from(userDetail);
     }
