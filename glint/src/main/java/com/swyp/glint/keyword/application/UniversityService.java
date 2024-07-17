@@ -5,7 +5,16 @@ import com.swyp.glint.keyword.domain.University;
 import com.swyp.glint.keyword.domain.UniversityCategory;
 import com.swyp.glint.keyword.repository.UniversityCategoryRepository;
 import com.swyp.glint.keyword.repository.UniversityRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,6 +76,7 @@ public class UniversityService {
                 .orElseThrow(() -> new NotFoundEntityException("University category not found for university: " + universityName));
     }
 
+    @Transactional
     public University createNewUniversity(String universityName, String universityDepartment) {
         return universityRepository.findByUniversityNameAndUniversityDepartment(universityName, universityDepartment)
                 .orElseGet(() -> {
@@ -75,6 +85,7 @@ public class UniversityService {
                 });
     }
 
+    @Transactional
     public University updateUniversityById(Long universityId, String universityName, String universityDepartment) {
         University university = universityRepository.findById(universityId)
                 .orElseThrow(() -> new NotFoundEntityException("University not found with university id: " + universityId));
@@ -82,6 +93,7 @@ public class UniversityService {
         return  universityRepository.save(university);
     }
 
+    @Transactional
     public void deleteUniversity(Long universityId) {
         University university = universityRepository.findById(universityId)
                 .orElseThrow(() -> new NotFoundEntityException("University not found with university id: " + universityId));
