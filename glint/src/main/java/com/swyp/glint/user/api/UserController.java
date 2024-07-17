@@ -17,7 +17,7 @@ public class UserController {
 
     @Operation(summary = "Get user", description = "User Id를 통한 User 정보 조회")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> getUser(@PathVariable("id") Long id) {
 
         return ResponseEntity.ok(userService.getUserById(id));
     }

@@ -43,8 +43,7 @@ public record UserDetailRequest(
                 .nickname(nickname)
                 .gender(gender)
                 .birthdate(birthdate)
-                .height(height.toString()
-                )
+                .height(height.toString())
                 .profileImage(profileImage)
                 .build();
     }
