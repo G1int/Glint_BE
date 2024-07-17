@@ -69,7 +69,7 @@ public class AuthController {
         String generateRefreshToken = authorityHelper.generateToken(email);
 
         response.setHeader("Authorization", "bearer "  + generateAccessToken);
-        response.setHeader("refreshToken", "bearer "  + generateRefreshToken);
+        response.setHeader("RefreshToken", "bearer "  + generateRefreshToken);
 
         redisUtil.setDataExpire(email, generateAccessToken, AuthorityHelper.ACCESS_TOKEN_VALIDATION_SECOND);
         redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
