@@ -3,9 +3,12 @@ package com.swyp.glint.user.application;
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.application.*;
 import com.swyp.glint.keyword.domain.*;
+import com.swyp.glint.user.application.dto.UserDetailResponse;
 import com.swyp.glint.user.application.dto.UserProfileRequest;
 import com.swyp.glint.user.application.dto.UserProfileResponse;
 import com.swyp.glint.user.application.dto.UserResponse;
+import com.swyp.glint.user.domain.User;
+import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
 import com.swyp.glint.user.repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
@@ -22,6 +25,7 @@ public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
 
     private final UserService userService;
+    private final UserDetailService userDetailService;
     private final DrinkingService drinkingService;
     private final LocationService locationService;
     private final ReligionService religionService;
@@ -40,19 +44,24 @@ public class UserProfileService {
         Drinking drinking = drinkingService.findByName(userProfileRequest.drinkingName());
 
         UserProfile userProfile = userProfileRequest.toEntity(userId, work, university, location, religion, smoking, drinking);
-        return UserProfileResponse.from(userProfileRepository.save(userProfile));
+        UserDetail userDetail = userDetailService.getUserDetail(userId);
+        return UserProfileResponse.from(userProfileRepository.save(userProfile), userDetail);
     }
 
     public UserProfileResponse getUserProfileById(Long userId) {
         UserResponse userResponse = userService.getUserById(userId);
+        UserDetail userDetail = userDetailService.getUserDetail(userId);
         return UserProfileResponse.from(userProfileRepository.findByUserId(userResponse.id())
-                .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found")));
+                .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found")), userDetail);
     }
 
     public List<UserProfileResponse> getAllUserProfile() {
         List<UserProfile> userProfiles = userProfileRepository.findAll();
         return userProfiles.stream()
-                .map(UserProfileResponse::from)
+                .map(userProfile -> {
+                    UserDetail userDetail = userDetailService.getUserDetail(userProfile.getUserId());
+                    return UserProfileResponse.from(userProfile, userDetail);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -81,6 +90,8 @@ public class UserProfileService {
                 userProfileRequest.hashtags()
         );
 
-        return UserProfileResponse.from(userProfileRepository.save(userProfile));
+        UserDetail userDetail = userDetailService.getUserDetail(userId);
+
+        return UserProfileResponse.from(userProfileRepository.save(userProfile), userDetail);
     }
 }

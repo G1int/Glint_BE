@@ -44,6 +44,8 @@ public class SmokingController {
         return ResponseEntity.ok(smoking);
     }
 
+    /* // 생성, 수정, 조회 주석 처리
+
     @PostMapping(path = "/{smokingId}/smoking", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new smoking", description = "새로운 흡연 생성")
     public ResponseEntity<Smoking> createSmoking(@RequestParam String smokingName) {
@@ -64,5 +66,7 @@ public class SmokingController {
         smokingService.deleteSmoking(smokingId);
         return ResponseEntity.noContent().build();
     }
+
+     */
 
 }

@@ -3,6 +3,7 @@ package com.swyp.glint.keyword.application;
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.keyword.repository.LocationRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +67,7 @@ public class LocationService {
                 .orElseThrow(() -> new NotFoundEntityException("Location id not found with state: " + state + " and city: " + city));
     }
 
+    @Transactional
     public Location createNewLocation(String state, String city) {
         return locationRepository.findByStateAndCity(state, city)
                 .orElseGet(() -> {
@@ -74,6 +76,7 @@ public class LocationService {
                 });
     }
 
+    @Transactional
     public Location updateLocationById(Long locationId, String state, String city) {
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new NotFoundEntityException("Location not found with location id: " + locationId));
@@ -81,6 +84,7 @@ public class LocationService {
         return locationRepository.save(location);
     }
 
+    @Transactional
     public void deleteLocation(Long locationId) {
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new NotFoundEntityException("Location not found with location id: " + locationId));

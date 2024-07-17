@@ -3,6 +3,7 @@ package com.swyp.glint.keyword.application;
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.domain.Religion;
 import com.swyp.glint.keyword.repository.ReligionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,7 @@ public class ReligionService {
                 .orElseThrow(() -> new NotFoundEntityException("Religion id not found with name: " + religionName));
     }
 
+    @Transactional
     public Religion createNewReligion(String religionName) {
         if (religionName == null) {
             throw new IllegalArgumentException("Religion name must not be null");
@@ -47,6 +49,7 @@ public class ReligionService {
         return religionRepository.save(Religion.createNewReligion(religionName));
     }
 
+    @Transactional
     public Religion updateReligionById(Long religionId, String religionName) {
         Religion religion = religionRepository.findById(religionId)
                 .orElseThrow(() -> new NotFoundEntityException("Religion not found with religion id: " + religionId));
@@ -54,6 +57,7 @@ public class ReligionService {
         return religionRepository.save(religion);
     }
 
+    @Transactional
     public void deleteReligion(Long religionId) {
         Religion religion = religionRepository.findById(religionId)
                 .orElseThrow(() -> new NotFoundEntityException("Religion not found with religion id: " + religionId));

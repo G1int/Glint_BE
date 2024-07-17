@@ -16,7 +16,8 @@ public interface WorkCategoryRepository extends JpaRepository<WorkCategory, Long
     @Query("""
                 SELECT wc
                 FROM WorkCategory wc
-                WHERE :workName LIKE CONCAT('%', wc.workCategoryKeyword, '%')
+                JOIN wc.workCategoryKeywords kw
+                WHERE :workName LIKE CONCAT('%', kw, '%')
             """)
     List<WorkCategory> findByWorkNameContainingKeyword(@Param("workName") String workName);
 
@@ -27,7 +28,8 @@ public interface WorkCategoryRepository extends JpaRepository<WorkCategory, Long
                     ELSE false
                 END
                 FROM WorkCategory wc
-                WHERE :workName LIKE CONCAT('%', wc.workCategoryKeyword, '%')
+                JOIN wc.workCategoryKeywords kw
+                WHERE :workName LIKE CONCAT('%', kw, '%')
             """)
     Optional<Boolean> existsByWorkNameContainingKeyword(@Param("workName") String workName);
 

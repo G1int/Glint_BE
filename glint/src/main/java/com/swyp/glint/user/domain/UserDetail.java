@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "user_detail")
@@ -77,5 +78,13 @@ public class UserDetail extends BaseTimeEntity {
         this.profileImage = profileImage;
     }
 
+    public Integer calculateAgeByBirthdate() {
+        if (birthdate == null) {
+            return null;
+            //throw new IllegalArgumentException("Birthdate can not be null");
+        }
+        LocalDate today = LocalDate.now();
+        return Period.between(birthdate, today).getYears();
+    }
 
 }

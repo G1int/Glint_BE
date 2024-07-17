@@ -65,6 +65,8 @@ public class UniversityController {
         return ResponseEntity.ok(response);
     }
 
+    /*
+
     @GetMapping("/{universityId}/category")
     @Operation(summary = "Get a university category by its university Id", description = "University Id를 통학 대학 카테고리 조회")
     public ResponseEntity<Map<String, Object>> getUniversityCategoryById(@PathVariable Long universityId) {
@@ -75,6 +77,8 @@ public class UniversityController {
         response.put("Category", category);
         return ResponseEntity.ok(response);
     }
+
+    /* // 생성, 수정, 조회 주석 처리
 
     @PostMapping(path = "/{universityId}/university", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new university", description = "새로운 대학 생성")
@@ -96,6 +100,8 @@ public class UniversityController {
         universityService.deleteUniversity(universityId);
         return ResponseEntity.noContent().build();
     }
+
+     */
 
 
 
