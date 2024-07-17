@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "user_detail")
@@ -78,4 +79,31 @@ public class UserDetail extends BaseTimeEntity {
     }
 
 
+    public boolean sameGender(String gender) {
+        return this.getGender().equals(gender);
+    }
+
+    public static int calculateAge(LocalDate birthDate) {
+        return Period.between(birthDate, LocalDate.now()).getYears();
+    }
+
+    public boolean isAgeIn(Integer minAge, Integer maxAge) {
+        int age = calculateAge(this.birthdate);
+        return age >= minAge && age <= maxAge;
+    }
+
+    public boolean isHeightIn(Integer maxHeight, Integer minHeight) {
+        return height >= minHeight && height <= maxHeight;
+    }
+
+    public Integer getAge() {
+        return calculateAge(birthdate);
+    }
+
+    public boolean isFemale() {
+        return gender.equals("FEMALE");
+    }
+    public boolean isMale() {
+        return gender.equals("MALE");
+    }
 }

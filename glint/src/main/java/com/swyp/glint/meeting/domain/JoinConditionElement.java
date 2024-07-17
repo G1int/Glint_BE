@@ -33,18 +33,21 @@ public class JoinConditionElement {
     private HeightRange heightRange;
 
     //종교
-    private String religion;
+    @ElementCollection
+    private List<String> religion;
 
     // 흡연
-    private String smoking;
+    @ElementCollection
+    private List<String> smoking;
 
     // 음주
-    private String drinking;
+    @ElementCollection
+    private List<String> drinking;
 
 
 
     @Builder(access = AccessLevel.PRIVATE)
-    private JoinConditionElement(List<String> selectConditionKeywords, List<String> affiliation, AgeRange ageRange, HeightRange heightRange, String religion, String smoking, String drinking) {
+    private JoinConditionElement(List<String> selectConditionKeywords, List<String> affiliation, AgeRange ageRange, HeightRange heightRange, List<String> religion, List<String> smoking, List<String> drinking) {
         this.selectConditions = selectConditionKeywords;
         this.affiliation = affiliation;
         this.ageRange = ageRange;
@@ -54,7 +57,7 @@ public class JoinConditionElement {
         this.drinking = drinking;
     }
 
-    public static JoinConditionElement createNew(List<String> selectConditionKeywords, List<String> affiliation, AgeRange ageRange, HeightRange heightRange, String religion, String smoking, String drinking){
+    public static JoinConditionElement createNew(List<String> selectConditionKeywords, List<String> affiliation, AgeRange ageRange, HeightRange heightRange, List<String> religion, List<String> smoking, List<String> drinking){
         return JoinConditionElement.builder()
                 .selectConditionKeywords(selectConditionKeywords)
                 .affiliation(affiliation)

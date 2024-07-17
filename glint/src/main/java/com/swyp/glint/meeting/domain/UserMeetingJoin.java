@@ -1,12 +1,12 @@
 package com.swyp.glint.meeting.domain;
 
-import com.swyp.glint.user.domain.UserMeeting;
+import com.swyp.glint.user.domain.UserSimpleProfile;
 
 public class UserMeetingJoin {
 
     Long joinId;
 
-    UserMeeting userMeeting;
+    UserSimpleProfile userSimpleProfile;
 
 
 }

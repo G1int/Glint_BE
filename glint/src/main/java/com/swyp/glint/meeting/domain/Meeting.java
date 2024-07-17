@@ -1,6 +1,7 @@
 package com.swyp.glint.meeting.domain;
 
 import com.swyp.glint.common.baseentity.BaseTimeEntity;
+import com.swyp.glint.meeting.exception.NumberOfPeopleException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -42,35 +43,34 @@ public class Meeting extends BaseTimeEntity {
     private List<Long> locationIds;
 
     @Embedded
-//    @JoinColumn(name = "our_condition")
-    @Column(name = "our_condition")
+    @Column(name = "man_condition")
     @AttributeOverrides({
-            @AttributeOverride(name = "selectConditions", column = @Column(name = "our_select_conditions")),
-            @AttributeOverride(name = "affiliation", column = @Column(name = "our_affiliation")),
-            @AttributeOverride(name = "ageRange.maxAge", column = @Column(name = "our_age_max_age")),
-            @AttributeOverride(name = "ageRange.minAge", column = @Column(name = "our_age_min_age")),
-            @AttributeOverride(name = "heightRange.maxHeight", column = @Column(name = "our_height_max_height")),
-            @AttributeOverride(name = "heightRange.minHeight", column = @Column(name = "our_height_min_height")),
-            @AttributeOverride(name = "religion", column = @Column(name = "our_religion")),
-            @AttributeOverride(name = "smoking", column = @Column(name = "our_smoking")),
-            @AttributeOverride(name = "drinking", column = @Column(name = "our_drinking")),
+            @AttributeOverride(name = "selectConditions", column = @Column(name = "man_select_conditions")),
+            @AttributeOverride(name = "affiliation", column = @Column(name = "man_affiliation")),
+            @AttributeOverride(name = "ageRange.maxAge", column = @Column(name = "man_age_max_age")),
+            @AttributeOverride(name = "ageRange.minAge", column = @Column(name = "man_age_min_age")),
+            @AttributeOverride(name = "heightRange.maxHeight", column = @Column(name = "man_height_max_height")),
+            @AttributeOverride(name = "heightRange.minHeight", column = @Column(name = "man_height_min_height")),
+            @AttributeOverride(name = "religion", column = @Column(name = "man_religion")),
+            @AttributeOverride(name = "smoking", column = @Column(name = "man_smoking")),
+            @AttributeOverride(name = "drinking", column = @Column(name = "man_drinking")),
     })
-    private JoinConditionElement ourCondition;
+    private JoinConditionElement manCondition;
 
     @Embedded
-    @Column(name = "other_condition")
+    @Column(name = "woman_condition")
     @AttributeOverrides({
-            @AttributeOverride(name = "selectConditions", column = @Column(name = "other_select_conditions")),
-            @AttributeOverride(name = "affiliation", column = @Column(name = "other_affiliation")),
-            @AttributeOverride(name = "ageRange.maxAge", column = @Column(name = "other_age_max_age")),
-            @AttributeOverride(name = "ageRange.minAge", column = @Column(name = "other_age_min_age")),
-            @AttributeOverride(name = "heightRange.maxHeight", column = @Column(name = "other_height_max_height")),
-            @AttributeOverride(name = "heightRange.minHeight", column = @Column(name = "other_height_min_height")),
-            @AttributeOverride(name = "religion", column = @Column(name = "other_religion")),
-            @AttributeOverride(name = "smoking", column = @Column(name = "other_smoking")),
-            @AttributeOverride(name = "drinking", column = @Column(name = "other_drinking")),
+            @AttributeOverride(name = "selectConditions", column = @Column(name = "woman_select_conditions")),
+            @AttributeOverride(name = "affiliation", column = @Column(name = "woman_affiliation")),
+            @AttributeOverride(name = "ageRange.maxAge", column = @Column(name = "woman_age_max_age")),
+            @AttributeOverride(name = "ageRange.minAge", column = @Column(name = "woman_age_min_age")),
+            @AttributeOverride(name = "heightRange.maxHeight", column = @Column(name = "woman_height_max_height")),
+            @AttributeOverride(name = "heightRange.minHeight", column = @Column(name = "woman_height_min_height")),
+            @AttributeOverride(name = "religion", column = @Column(name = "woman_religion")),
+            @AttributeOverride(name = "smoking", column = @Column(name = "woman_smoking")),
+            @AttributeOverride(name = "drinking", column = @Column(name = "woman_drinking")),
     })
-    private JoinConditionElement otherCondition;
+    private JoinConditionElement womanCondition;
 
     // 인원수
     private Integer peopleCapacity;
@@ -78,31 +78,33 @@ public class Meeting extends BaseTimeEntity {
     // 미팅 상태
     private String status;
 
+    private String meetingImage;
+
     @Builder(access = AccessLevel.PRIVATE)
-    private Meeting(Long id, Long leaderUserId, String title, String description, List<Long> joinUserIds, List<Long> locationIds, JoinConditionElement ourCondition, JoinConditionElement otherCondition, Integer peopleCapacity, String status) {
+    private Meeting(Long id, Long leaderUserId, String title, String description, List<Long> joinUserIds, List<Long> locationIds, JoinConditionElement manCondition, JoinConditionElement womanCondition, Integer peopleCapacity, String status) {
         this.id = id;
         this.leaderUserId = leaderUserId;
         this.title = title;
         this.description = description;
         this.joinUserIds = joinUserIds;
         this.locationIds = locationIds;
-        this.ourCondition = ourCondition;
-        this.otherCondition = otherCondition;
+        this.manCondition = manCondition;
+        this.womanCondition = womanCondition;
         this.peopleCapacity = peopleCapacity;
         this.status = status;
     }
 
-    public static Meeting createNewMeeting(String title, String description, Long leaderUserId, String location, JoinConditionElement ourCondition, JoinConditionElement otherCondition, Integer peopleCapacity) {
+    public static Meeting createNewMeeting(String title, String description, Long leaderUserId, List<Long> locationIds, JoinConditionElement manCondition, JoinConditionElement womanCondition, Integer peopleCapacity) {
         return Meeting.builder()
                 .title(title)
                 .description(description)
                 .leaderUserId(leaderUserId)
                 .joinUserIds(List.of(leaderUserId))
                 .locationIds(new ArrayList<>())
-                .ourCondition(ourCondition)
-                .otherCondition(otherCondition)
+                .manCondition(manCondition)
+                .womanCondition(womanCondition)
                 .peopleCapacity(peopleCapacity)
-                .status(JoinStatus.WAITING.getName())
+                .status(MeetingStatus.WAITING.getName())
                 .build();
 
     }
@@ -130,5 +132,20 @@ public class Meeting extends BaseTimeEntity {
             }
         });
         return invalidUser;
+    }
+
+    public void addUser(Long userId) {
+        if(joinUserIds.size() >= this.peopleCapacity ) {
+            throw new NumberOfPeopleException("인원수 초과");
+        }
+        joinUserIds.add(userId);
+    }
+
+    public boolean isFull() {
+        if(joinUserIds.size() == this.peopleCapacity) {
+            this.status = MeetingStatus.PROGRESS.getName();
+            return true;
+        }
+        return false;
     }
 }

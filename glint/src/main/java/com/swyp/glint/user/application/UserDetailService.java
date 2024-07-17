@@ -8,7 +8,6 @@ import com.swyp.glint.user.application.dto.UserDetailResponse;
 import com.swyp.glint.user.application.dto.UserNickNameValidationResponse;
 import com.swyp.glint.user.application.dto.UserResponse;
 import com.swyp.glint.user.domain.NickNameValidator;
-import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.repository.UserDetailRepository;
 import jakarta.transaction.Transactional;
@@ -16,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -101,4 +101,7 @@ public class UserDetailService {
         userDetailRepository.deleteById(id);
     }
 
+    public List<UserDetail> getUserDetails(List<Long> userIds) {
+        return userDetailRepository.findAllById(userIds);
+    }
 }

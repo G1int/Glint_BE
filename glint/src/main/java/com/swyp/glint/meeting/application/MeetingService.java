@@ -1,14 +1,22 @@
 package com.swyp.glint.meeting.application;
 
 
+import com.swyp.glint.chatting.application.ChatRoomService;
 import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.keyword.application.LocationService;
+import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.meeting.application.dto.request.MeetingRequest;
 import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
-import com.swyp.glint.meeting.application.dto.response.MeetingResponses;
+import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
+import com.swyp.glint.meeting.domain.LocationList;
 import com.swyp.glint.meeting.domain.Meeting;
+import com.swyp.glint.meeting.domain.MeetingInfo;
+import com.swyp.glint.meeting.domain.MeetingStatus;
 import com.swyp.glint.meeting.repository.MeetingRepository;
+import com.swyp.glint.user.application.UserDetailService;
 import com.swyp.glint.user.application.UserService;
 import com.swyp.glint.user.application.dto.UserMeetingResponse;
+import com.swyp.glint.user.domain.UserDetail;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,26 +31,85 @@ public class MeetingService {
 
     private final UserService userService;
 
+    private final ChatRoomService chatRoomService;
 
-    public MeetingResponses getUserMeeting(Long userId) {
-        meetingRepository.findByUserId(userId);
-//        return new MeetingResponses();
-        return null;
-    }
+    private final LocationService locationService;
+    private final UserDetailService userDetailService;
+
 
     @Transactional
     public MeetingResponse createMeeting(MeetingRequest meetingRequest) {
         Meeting meeting = meetingRequest.toEntity();
+        //todo MeetingResponse 리팩토링
         Meeting savedMeeting = meetingRepository.save(meeting);
         List<UserMeetingResponse> userMeetingResponseList = userService.getUserMeetingResponseList(meeting.getJoinUserIds());
-        return MeetingResponse.from(savedMeeting, userMeetingResponseList);
+        LocationList locationList = getMeetingLocationList(savedMeeting);
+
+        return MeetingResponse.from(savedMeeting, userMeetingResponseList, locationList.getLocationNames());
     }
 
 
     public MeetingResponse getMeeting(Long id) {
         Meeting meeting = meetingRepository.findById(id).orElseThrow(() -> new NotFoundEntityException("Not found meeting id : " + id));
         List<UserMeetingResponse> userMeetingResponseList = userService.getUserMeetingResponseList(meeting.getJoinUserIds());
-        return MeetingResponse.from(meeting, userMeetingResponseList);
+        LocationList meetingLocationList = getMeetingLocationList(meeting);
+
+        return MeetingResponse.from(meeting, userMeetingResponseList, meetingLocationList.getLocationNames());
     }
+
+    public Meeting getMeetingEntity(Long id) {
+        return meetingRepository.findById(id).orElseThrow(() -> new NotFoundEntityException("Not found meeting id : " + id));
+    }
+
+
+    @Transactional
+    public MeetingResponse joinUser(Long meetingId, Long userId) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new NotFoundEntityException("Not found meeting id : " + meetingId));
+        userService.getUserById(userId);
+        meeting.addUser(userId);
+
+        if(meeting.isFull()) {
+            chatRoomService.activeChatRoom(meetingId);
+        }
+
+        List<UserMeetingResponse> userMeetingResponseList = userService.getUserMeetingResponseList(meeting.getJoinUserIds());
+        LocationList meetingLocationList = getMeetingLocationList(meeting);
+
+        return MeetingResponse.from(meeting, userMeetingResponseList, meetingLocationList.getLocationNames());
+    }
+
+    public MeetingInfoResponses getUserMeeting(Long userId) {
+        List<Meeting> meetings = meetingRepository.findAllByUserId(userId);
+        List<MeetingInfo> meetingInfoList = meetings.stream()
+                .map(meeting -> {
+                    List<UserDetail> userDetails = userDetailService.getUserDetails(meeting.getJoinUserIds());
+                    List<Location> locations = locationService.getLocationsByIds(meeting.getLocationIds());
+                    return new MeetingInfo(meeting, userDetails, locations);
+                }).toList();
+
+
+        return MeetingInfoResponses.from(meetingInfoList);
+    }
+
+
+    public MeetingInfoResponses getWaitingMeeting() {
+        List<Meeting> meetings = meetingRepository.findByStatus(MeetingStatus.WAITING.getName());
+        List<MeetingInfo> meetingInfoList = meetings.stream()
+                .map(meeting -> {
+                    List<UserDetail> userDetails = userDetailService.getUserDetails(meeting.getJoinUserIds());
+                    List<Location> locations = locationService.getLocationsByIds(meeting.getLocationIds());
+                    return new MeetingInfo(meeting, userDetails, locations);
+                }).toList();
+
+
+        return MeetingInfoResponses.from(meetingInfoList);
+    }
+
+    public LocationList getMeetingLocationList(Meeting meeting) {
+        List<Location> locations = locationService.getLocationsByIds(meeting.getLocationIds());
+        return new LocationList(locations);
+    }
+
+
 
 }

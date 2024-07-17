@@ -87,4 +87,7 @@ public class LocationService {
         locationRepository.delete(location);
     }
 
+    public List<Location> getLocationsByIds(List<Long> locationIds) {
+        return locationRepository.findAllById(locationIds);
+    }
 }

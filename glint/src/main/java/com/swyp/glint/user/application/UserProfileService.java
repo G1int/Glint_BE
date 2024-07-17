@@ -49,6 +49,12 @@ public class UserProfileService {
                 .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found")));
     }
 
+    public UserProfile getUserProfileEntityById(Long userId) {
+        UserResponse userResponse = userService.getUserById(userId);
+        return userProfileRepository.findByUserId(userResponse.id())
+                .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found"));
+    }
+
     public List<UserProfileResponse> getAllUserProfile() {
         List<UserProfile> userProfiles = userProfileRepository.findAll();
         return userProfiles.stream()
