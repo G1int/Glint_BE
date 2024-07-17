@@ -1,5 +1,6 @@
 package com.swyp.glint.user.application.dto;
 
+import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Builder;
@@ -12,12 +13,20 @@ public record UserProfileResponse(
         Long id,
         @Parameter(description = "User ID", example = "1", required = true)
         Long userId,
+        @Parameter(description = "닉네임", example = "새싹이")
+        String nickname,
+        @Parameter(description = "나이", example = "28")
+        Integer age,
         @Parameter(description = "Work ID", example = "1")
         Long workId,
+        @Parameter(description = "Work Category ID", example = "1")
+        Long workCategoryId,
         @Parameter(description = "직업명", example = "삼성전자")
         String workName,
         @Parameter(description = "University ID", example = "1")
         Long universityId,
+        @Parameter(description = "University Category ID", example = "1")
+        Long universityCategoryId,
         @Parameter(description = "대학명", example = "중앙대학교")
         String universityName,
         @Parameter(description = "대학 학과명", example = "의예과")
@@ -45,13 +54,17 @@ public record UserProfileResponse(
         @Parameter(description = "나를 표현하는 키워드", example = "[적극적], [ESTJ], [애교많음]")
         List<String> hashtags
 ) {
-    public static UserProfileResponse from(UserProfile userProfile) {
+    public static UserProfileResponse from(UserProfile userProfile, UserDetail userDetail) {
         return UserProfileResponse.builder()
                 .id(userProfile.getId())
                 .userId(userProfile.getUserId())
+                .nickname(userDetail.getNickname())
+                .age(userDetail.calculateAgeByBirthdate())
                 .workId(userProfile.getWork().getId())
+                .workCategoryId(userProfile.getWork().getWorkCategoryId())
                 .workName(userProfile.getWork().getWorkName())
                 .universityId(userProfile.getUniversity().getId())
+                .universityCategoryId(userProfile.getUniversity().getUniversityCategoryId())
                 .universityName(userProfile.getUniversity().getUniversityName())
                 .universityDepartment(userProfile.getUniversity().getUniversityDepartment())
                 .locationId(userProfile.getLocation().getId())
