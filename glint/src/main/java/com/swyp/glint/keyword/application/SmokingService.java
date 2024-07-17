@@ -3,6 +3,7 @@ package com.swyp.glint.keyword.application;
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.domain.Smoking;
 import com.swyp.glint.keyword.repository.SmokingRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,7 @@ public class SmokingService {
                 .orElseThrow(() -> new NotFoundEntityException("Smoking id not found with name: " + smokingName));
     }
 
+    @Transactional
     public Smoking createNewSmoking(String smokingName) {
         return smokingRepository.findBySmokingName(smokingName)
                 .orElseGet(() -> {
@@ -48,6 +50,7 @@ public class SmokingService {
                 });
     }
 
+    @Transactional
     public Smoking updateSmokingById(Long smokingId, String smokingName) {
         Smoking smoking = smokingRepository.findById(smokingId)
                 .orElseThrow(() -> new NotFoundEntityException("Smoking not found with smoking id: " + smokingId));
@@ -55,6 +58,7 @@ public class SmokingService {
         return smokingRepository.save(smoking);
     }
 
+    @Transactional
     public void deleteSmoking(Long smokingId) {
         Smoking smoking = smokingRepository.findById(smokingId)
                 .orElseThrow(() -> new NotFoundEntityException("Smoking not found with smoking id: " + smokingId));

@@ -59,6 +59,8 @@ public class LocationController {
         return ResponseEntity.ok(cities);
     }
 
+    /* // 생성, 수정, 조회 주석 처리
+
     @PostMapping(path = "/{locationId}/location", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new location", description = "새로운 위치([시,도], [시,군,구]) 생성")
     public ResponseEntity<Location> createLocation(@RequestParam String locationState, @RequestParam String locationCity) {
@@ -79,5 +81,7 @@ public class LocationController {
         locationService.deleteLocation(locationId);
         return ResponseEntity.noContent().build();
     }
+
+     */
 
 }

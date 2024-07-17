@@ -44,6 +44,8 @@ public class DrinkingController {
         return ResponseEntity.ok(drinking);
     }
 
+    /* // 생성, 수정, 조회 주석 처리
+
     @PostMapping(path = "/{drinkingId}/drinking", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a Drinking", description = "새로운 음주 생성")
     public ResponseEntity<Drinking> createDrinking(@RequestParam String drinkingName) {
@@ -64,5 +66,7 @@ public class DrinkingController {
         drinkingService.deleteDrinking(drinkingId);
         return ResponseEntity.noContent().build();
     }
+
+     */
 
 }

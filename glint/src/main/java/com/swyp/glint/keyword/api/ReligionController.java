@@ -44,6 +44,8 @@ public class ReligionController {
         return ResponseEntity.ok(religion);
     }
 
+    /* // 생성, 수정, 조회 주석 처리
+
     @PostMapping(path = "/{religionId}/religion", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new Religion", description = "새로운 종교 생성")
     public ResponseEntity<Religion> createReligion(@RequestParam String religionName) {
@@ -64,5 +66,7 @@ public class ReligionController {
         religionService.deleteReligion(religionId);
         return ResponseEntity.noContent().build();
     }
+
+     */
 
 }
