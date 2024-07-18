@@ -43,7 +43,7 @@ public class Meeting extends BaseTimeEntity {
     private List<Long> locationIds;
 
     @Embedded
-    @Column(name = "man_condition")
+    @Column(name = "male_condition")
     @AttributeOverrides({
             @AttributeOverride(name = "selectConditions", column = @Column(name = "man_select_conditions")),
             @AttributeOverride(name = "affiliation", column = @Column(name = "man_affiliation")),
@@ -55,10 +55,10 @@ public class Meeting extends BaseTimeEntity {
             @AttributeOverride(name = "smoking", column = @Column(name = "man_smoking")),
             @AttributeOverride(name = "drinking", column = @Column(name = "man_drinking")),
     })
-    private JoinConditionElement manCondition;
+    private JoinConditionElement maleCondition;
 
     @Embedded
-    @Column(name = "woman_condition")
+    @Column(name = "female_condition")
     @AttributeOverrides({
             @AttributeOverride(name = "selectConditions", column = @Column(name = "woman_select_conditions")),
             @AttributeOverride(name = "affiliation", column = @Column(name = "woman_affiliation")),
@@ -70,7 +70,7 @@ public class Meeting extends BaseTimeEntity {
             @AttributeOverride(name = "smoking", column = @Column(name = "woman_smoking")),
             @AttributeOverride(name = "drinking", column = @Column(name = "woman_drinking")),
     })
-    private JoinConditionElement womanCondition;
+    private JoinConditionElement femaleCondition;
 
     // 인원수
     private Integer peopleCapacity;
@@ -81,28 +81,28 @@ public class Meeting extends BaseTimeEntity {
     private String meetingImage;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Meeting(Long id, Long leaderUserId, String title, String description, List<Long> joinUserIds, List<Long> locationIds, JoinConditionElement manCondition, JoinConditionElement womanCondition, Integer peopleCapacity, String status) {
+    private Meeting(Long id, Long leaderUserId, String title, String description, List<Long> joinUserIds, List<Long> locationIds, JoinConditionElement maleCondition, JoinConditionElement femaleCondition, Integer peopleCapacity, String status) {
         this.id = id;
         this.leaderUserId = leaderUserId;
         this.title = title;
         this.description = description;
         this.joinUserIds = joinUserIds;
         this.locationIds = locationIds;
-        this.manCondition = manCondition;
-        this.womanCondition = womanCondition;
+        this.maleCondition = maleCondition;
+        this.femaleCondition = femaleCondition;
         this.peopleCapacity = peopleCapacity;
         this.status = status;
     }
 
-    public static Meeting createNewMeeting(String title, String description, Long leaderUserId, List<Long> locationIds, JoinConditionElement manCondition, JoinConditionElement womanCondition, Integer peopleCapacity) {
+    public static Meeting createNewMeeting(String title, String description, Long leaderUserId, List<Long> locationIds, JoinConditionElement maleCondition, JoinConditionElement femaleCondition, Integer peopleCapacity) {
         return Meeting.builder()
                 .title(title)
                 .description(description)
                 .leaderUserId(leaderUserId)
                 .joinUserIds(List.of(leaderUserId))
-                .locationIds(new ArrayList<>())
-                .manCondition(manCondition)
-                .womanCondition(womanCondition)
+                .locationIds(locationIds)
+                .maleCondition(maleCondition)
+                .femaleCondition(femaleCondition)
                 .peopleCapacity(peopleCapacity)
                 .status(MeetingStatus.WAITING.getName())
                 .build();
