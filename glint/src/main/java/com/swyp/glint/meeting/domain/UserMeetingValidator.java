@@ -30,9 +30,9 @@ public class UserMeetingValidator {
     public JoinConditionElement getMatchCondition() {
         // todo 일치 개수 체크
         if(userDetail.sameGender(leaderUserDetail.getGender())) {
-            return meeting.getManCondition();
+            return meeting.getMaleCondition();
         }
-        return meeting.getWomanCondition();
+        return meeting.getFemaleCondition();
     }
 
     public HashMap<String, ConditionValidator> getSelectedConditionValueMap() {

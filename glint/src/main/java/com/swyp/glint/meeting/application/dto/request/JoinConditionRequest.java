@@ -11,10 +11,10 @@ import java.util.List;
 
 
 public record JoinConditionRequest(
-        @Schema(description = "선택한 참가 조건, AFFILIATION(직장,학교), AGE(나이), HEIGHT(키), RELIGION(종교), DRINKING(음주), SMOKING(흡연) ", example = "[AFFILIATION, AGE]")
+        @Schema(description = "선택한 참가 조건, AFFILIATION(직장,학교), AGE(나이), HEIGHT(키), RELIGION(종교), DRINKING(음주), SMOKING(흡연) ", example = "[\"AFFILIATION\", \"AGE\"]")
         List<String> selectConditions,
 
-        @Schema(description = "회사, 학교", example = "[삼성전자, 서울대학교]")
+        @Schema(description = "회사, 학교", example = "[\"삼성전자\", \"서울대학교\"]")
         List<String> affiliation,
 
         @Schema(description = "최소 나이", example = "20")
@@ -33,15 +33,15 @@ public record JoinConditionRequest(
         @Pattern(regexp = "^[0-9]{3}$")
         Integer minHeight,
 
-        @Schema(description = "종교", example = "기독교")
+        @Schema(description = "종교", example = "[\"기독교\"]")
 //        @Pattern(regexp = "(EMPTY,CHRISTIAN,BUDDHIST,CATHOLIC,ETC)")
         List<String> religions,
 
-        @Schema(description = "흡연", example = "비흡연")
+        @Schema(description = "흡연", example = "[\"비흡연\"]")
 //        @Pattern(regexp = "(NOT|SMOKING)")
         List<String> smoking,
 
-        @Schema(description = "음주", example = "NOT")
+        @Schema(description = "음주", example = "[\"마시지않음\"]")
 //        @Pattern(regexp = "(NOT|SOMETIME|ENJOY|LIKE|ETC)")
         List<String> drinking
 ) {

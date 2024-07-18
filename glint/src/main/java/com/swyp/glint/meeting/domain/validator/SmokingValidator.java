@@ -24,7 +24,7 @@ public class SmokingValidator implements ConditionValidator {
         }
 
         if(joinConditionElement.getSmoking() == null) {
-            return true;
+            return false;
         }
 
         return joinConditionElement.getSmoking().contains(userProfile.getSmoking().getSmokingName());

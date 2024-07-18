@@ -20,13 +20,6 @@ public class MeetingInfo {
     private String meetingImage;
     private Integer maleCount;
     private Integer femaleCount;
-    // REF
-    //  인원 (남, 여)
-    //  나이범위 (남, 여)
-    //  마감여부
-    //  제목
-    //  미팅 이미지.
-    //  지역
 
 
     public MeetingInfo(
@@ -36,8 +29,8 @@ public class MeetingInfo {
     ) {
         this.peopleCapacity = meeting.getPeopleCapacity();
         this.locationKeywords = location.stream().map(l -> l.getState() + " " + l.getCity()).toList();
-        this.manAgeRange = Optional.ofNullable(meeting.getManCondition()).map(JoinConditionElement::getAgeRange).orElse(null);
-        this.womanAgeRange =  Optional.ofNullable(meeting.getWomanCondition()).map(JoinConditionElement::getAgeRange).orElse(null);
+        this.manAgeRange = Optional.ofNullable(meeting.getMaleCondition()).map(JoinConditionElement::getAgeRange).orElse(null);
+        this.womanAgeRange =  Optional.ofNullable(meeting.getFemaleCondition()).map(JoinConditionElement::getAgeRange).orElse(null);
         this.title = meeting.getTitle();
         this.status = meeting.getStatus();
         this.meetingImage = meeting.getMeetingImage();
