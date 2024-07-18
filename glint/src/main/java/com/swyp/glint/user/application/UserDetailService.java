@@ -102,6 +102,6 @@ public class UserDetailService {
     }
 
     public List<UserDetail> getUserDetails(List<Long> userIds) {
-        return userDetailRepository.findAllById(userIds);
+        return userDetailRepository.findAllByUserId(userIds);
     }
 }
