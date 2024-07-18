@@ -20,9 +20,10 @@ public record MeetingRequest(
         JoinConditionRequest maleConditions,
         @Schema(description = "이성 참가조건", nullable = true)
         JoinConditionRequest femaleConditions,
-        @Schema(description = "정원", nullable = false)
-        @Pattern(regexp = "^[1-9]$")
-        Integer peopleCapacity
+
+        @Schema(description = "정원", example = "3", nullable = false )
+        @Pattern(regexp = "^[0-9]$")
+        String peopleCapacity
 ) {
         public Meeting toEntity() {
                 return Meeting.createNewMeeting(
@@ -32,7 +33,7 @@ public record MeetingRequest(
                         locationIds,
                         maleConditions.toEntity(),
                         femaleConditions.toEntity(),
-                        peopleCapacity
+                        Integer.parseInt(peopleCapacity)
                 );
         }
 
