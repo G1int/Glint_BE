@@ -98,4 +98,11 @@ public class UserProfile extends BaseTimeEntity { // 회사 or 학교, 위치, �
     }
 
 
+    public String getAffiliation() {
+        if(work != null) {
+            return work.getWorkName();
+
+        }
+        return university.getUniversityName();
+    }
 }

@@ -26,6 +26,10 @@ public enum ErrorCode {
     INVALID_SOCIAL_TYPE(400, "S001", "Invalid Social Type"),
 
 
+    //meeting
+    NUMBER_OF_PEOPLE(400, "M001", "Over Number of people"),
+    NOT_MATCH_CONDITION(400, "M002", "Not Match Meeting Condition"),
+
     ;
 
     private final String code;
