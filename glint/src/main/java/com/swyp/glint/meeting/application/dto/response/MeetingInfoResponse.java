@@ -35,8 +35,7 @@ public record MeetingInfoResponse(
                 meetingInfo.getTitle(),
                 meetingInfo.getStatus(),
                 meetingInfo.getMeetingImage(),
-//                meetingInfo.getLocations(),
-                List.of(),
+                meetingInfo.getLocationKeywords(),
                 meetingInfo.getPeopleCapacity()
         );
     }

@@ -43,8 +43,8 @@ public record MeetingResponse(
                 .description(meeting.getDescription())
                 .users(userMeetingResponses)
                 .locations(locations)
-                .manCondition(JoinConditionResponse.from(meeting.getManCondition()))
-                .womanCondition(JoinConditionResponse.from(meeting.getWomanCondition()))
+                .manCondition(JoinConditionResponse.from(meeting.getMaleCondition()))
+                .womanCondition(JoinConditionResponse.from(meeting.getFemaleCondition()))
                 .peopleCapacity(meeting.getPeopleCapacity())
                 .status(meeting.getStatus())
                 .build();

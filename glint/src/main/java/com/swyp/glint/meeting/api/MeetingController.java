@@ -5,6 +5,7 @@ import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
 import com.swyp.glint.meeting.application.MeetingService;
 import com.swyp.glint.meeting.application.dto.request.MeetingRequest;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +20,7 @@ public class MeetingController {
 
     @Operation(summary = "미팅 생성", description = "미팅을 생성")
     @PostMapping(path = "/meeting", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MeetingResponse> createMeeting(@RequestBody MeetingRequest meetingRequest) {
+    public ResponseEntity<MeetingResponse> createMeeting(@RequestBody @Valid MeetingRequest meetingRequest) {
 
         return new ResponseEntity<>(meetingService.createMeeting(meetingRequest), HttpStatus.CREATED);
     }
