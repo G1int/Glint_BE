@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -29,4 +30,11 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
             """
     )
     Optional<UserDetail> findByUserId(@Param("userId") Long userId);
+
+    @Query("""
+        SELECT ud
+        FROM UserDetail ud
+        WHERE ud.userId IN :userIds
+        """)
+    List<UserDetail> findAllByUserId(List<Long> userIds);
 }
