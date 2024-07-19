@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.querydsl.core.types.Projections.list;
 import static com.swyp.glint.keyword.domain.QLocation.location;
@@ -46,13 +47,13 @@ public class MeetingRepositoryImpl extends QuerydslRepositorySupport implements 
                 .leftJoin(location).on(meeting.locationIds.contains(location.id))
                 .where(meeting.status.eq(status),
                         joinMeeting.userId.eq(userId),
-                        statusEqProgress(status, userId))
+                        statusEqProgressJoinUserContain(status, userId))
                 .orderBy(meeting.id.desc())
                 .fetch();
     }
 
     @Override
-    public List<MeetingInfo> findAllProgressMeeting() {
+    public List<MeetingInfo> findAllNotFinishMeeting(Long lastId, Integer size) {
         return queryFactory
                 .select(
                         Projections.constructor(
@@ -65,14 +66,28 @@ public class MeetingRepositoryImpl extends QuerydslRepositorySupport implements 
                 .from(meeting)
                 .join(userDetail).on(meeting.joinUserIds.contains(userDetail.userId))
                 .leftJoin(location).on(meeting.locationIds.contains(location.id))
-                .where(meeting.status.eq("END")).not
-                .orderBy(meeting.id.desc())
+                .where(
+                        meeting.status.ne("END"),
+                        getLt(lastId)
+                )
+                .orderBy(meeting.createdDate.desc())
+                .limit(getSize(size))
                 .fetch();
     }
 
-    private BooleanExpression statusEqProgress(String status, Long userId) {
+    private static Integer getSize(Integer size) {
+        return Optional.ofNullable(size).orElse(10);
+    }
+
+    private static BooleanExpression getLt(Long lastId) {
+        return Optional.ofNullable(lastId).map(meeting.id::lt).orElse(null);
+    }
+
+    private BooleanExpression statusEqProgressJoinUserContain(String status, Long userId) {
         return status.equals("PROGRESS") ? meeting.joinUserIds.contains(userId) : null;
     }
+
+
 
 
 }

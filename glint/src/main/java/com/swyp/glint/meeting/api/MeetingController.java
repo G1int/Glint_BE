@@ -19,7 +19,7 @@ public class MeetingController {
 
     private final MeetingService meetingService;
 
-    @Operation(summary = "미팅 생성", description = "미팅을 생성")
+    @Operation(summary = "미팅 생성", description = "미팅 생성")
     @PostMapping(path = "/meeting", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MeetingResponse> createMeeting(@RequestBody @Valid MeetingRequest meetingRequest) {
 
@@ -35,19 +35,20 @@ public class MeetingController {
 
     @Operation(summary = "New 미팅 조회", description = "메인화면 New 미팅 조회 ")
     @GetMapping(path = "/meetings/new", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MeetingInfoResponses> getNewMeeting() {
+    public ResponseEntity<MeetingInfoResponses> getNewMeeting(
+            @RequestParam(required = false) Long lastId,
+            @RequestParam(required = false) Integer size
+    ) {
 
-        return meetingService.getNewMeeting();
+        return ResponseEntity.ok(meetingService.getNewMeeting(lastId, size));
     }
 
 
     @Operation(summary = "내가 속한 미팅 조회", description = "메인화면 New 미팅 조회, status : WAITING(대기중미팅), PROGRESS (참가미팅)")
     @GetMapping(path = "/meetings/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MeetingInfoResponses> getNewMeeting(
-            @RequestParam @Pattern(regexp = "WAITING|PROGRESS") @Valid
-            String status,
-            @PathVariable
-            Long userId
+            @RequestParam @Pattern(regexp = "WAITING|PROGRESS") @Valid String status,
+            @PathVariable Long userId
     ) {
 
         return ResponseEntity.ok(meetingService.getMyMeeting(userId, status));

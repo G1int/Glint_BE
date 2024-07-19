@@ -9,5 +9,5 @@ public interface MeetingRepositoryCustom {
 
     List<MeetingInfo> findAllMeetingInfoByStatus(Long userId, String status);
 
-    List<MeetingInfo> findAllProgressMeeting();
+    List<MeetingInfo> findAllNotFinishMeeting(Long lastId, Integer size);
 }

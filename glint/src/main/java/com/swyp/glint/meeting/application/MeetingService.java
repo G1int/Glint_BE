@@ -89,7 +89,7 @@ public class MeetingService {
         return new LocationList(locations);
     }
 
-    public MeetingInfoResponses getNewMeeting() {
-        return MeetingInfoResponses.from(meetingRepository.findAllMeetingInfoByStatus());
+    public MeetingInfoResponses getNewMeeting(Long lastId, Integer size) {
+        return MeetingInfoResponses.from(meetingRepository.findAllNotFinishMeeting(lastId, size));
     }
 }
