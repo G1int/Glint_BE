@@ -1,11 +1,13 @@
 package com.swyp.glint.meeting.domain;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.user.domain.UserDetail;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Getter
@@ -25,10 +27,10 @@ public class MeetingInfo {
     public MeetingInfo(
             Meeting meeting,
             List<UserDetail> userDetails,
-            List<Location> location
+            List<Location> locations
     ) {
         this.peopleCapacity = meeting.getPeopleCapacity();
-        this.locationKeywords = location.stream().map(l -> l.getState() + " " + l.getCity()).toList();
+        this.locationKeywords = locations.stream().filter(Objects::nonNull).map(location -> location.getState() + " " + location.getCity()).toList();
         this.manAgeRange = Optional.ofNullable(meeting.getMaleCondition()).map(JoinConditionElement::getAgeRange).orElse(null);
         this.womanAgeRange =  Optional.ofNullable(meeting.getFemaleCondition()).map(JoinConditionElement::getAgeRange).orElse(null);
         this.title = meeting.getTitle();

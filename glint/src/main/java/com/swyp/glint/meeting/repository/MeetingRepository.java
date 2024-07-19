@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Repository
-public interface MeetingRepository extends JpaRepository<Meeting, Long> {
+public interface MeetingRepository extends JpaRepository<Meeting, Long>, MeetingRepositoryCustom {
 
 
     @Query("""

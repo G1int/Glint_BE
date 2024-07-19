@@ -5,6 +5,7 @@ import com.swyp.glint.meeting.domain.JoinConditionElement;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
 
+
 public class AffiliationValidator implements ConditionValidator {
 
     private final JoinConditionElement joinConditionElement;
