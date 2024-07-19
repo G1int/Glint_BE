@@ -6,6 +6,7 @@ import com.swyp.glint.meeting.application.MeetingService;
 import com.swyp.glint.meeting.application.dto.request.MeetingRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,13 +33,27 @@ public class MeetingController {
         return ResponseEntity.ok(meetingService.getMeeting(meetingId));
     }
 
-    // 미팅 리스트 조회 메인, 검색
-    @Operation(summary = "내가 속한 미팅 조회", description = "내가 속한 미팅 조회")
-    @GetMapping(path = "/meetings/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MeetingInfoResponses> getUserMeeting(@PathVariable Long userId) {
+    @Operation(summary = "New 미팅 조회", description = "메인화면 New 미팅 조회 ")
+    @GetMapping(path = "/meetings/new", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MeetingInfoResponses> getNewMeeting() {
 
-        return ResponseEntity.ok(meetingService.getUserMeeting(userId));
+        return meetingService.getNewMeeting();
     }
+
+
+    @Operation(summary = "내가 속한 미팅 조회", description = "메인화면 New 미팅 조회, status : WAITING(대기중미팅), PROGRESS (참가미팅)")
+    @GetMapping(path = "/meetings/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MeetingInfoResponses> getNewMeeting(
+            @RequestParam @Pattern(regexp = "WAITING|PROGRESS") @Valid
+            String status,
+            @PathVariable
+            Long userId
+    ) {
+
+        return ResponseEntity.ok(meetingService.getMyMeeting(userId, status));
+    }
+
+
 
 
 
