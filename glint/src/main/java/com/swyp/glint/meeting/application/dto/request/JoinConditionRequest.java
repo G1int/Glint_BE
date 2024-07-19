@@ -34,7 +34,7 @@ public record JoinConditionRequest(
         Integer minHeight,
 
         @Schema(description = "종교", example = "[\"기독교\"]")
-//        @Pattern(regexp = "(EMPTY,CHRISTIAN,BUDDHIST,CATHOLIC,ETC)")
+//        @Pattern(regexp = "(EMPTY|CHRISTIAN|BUDDHIST|CATHOLIC|ETC)")
         List<String> religions,
 
         @Schema(description = "흡연", example = "[\"비흡연\"]")

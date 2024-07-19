@@ -22,7 +22,12 @@ public class ChatController {
 
     @MessageMapping("/chatrooms/{roomId}/chats")
     public ChatResponse chatting(@DestinationVariable Long roomId, @RequestBody CreateChatMessageRequest request) {
+        // todo room 정보 없을때 처리
+        if(roomId == null) {
+//            throw new NotFoundChatRoomException("roomId is null");
+        }
         simpMessagingTemplate.convertAndSend("/api/sub/chatrooms/" + roomId, request.message());
+
         return chatService.createChatMessage(request);
     }
 

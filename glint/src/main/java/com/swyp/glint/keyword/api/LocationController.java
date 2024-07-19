@@ -22,18 +22,18 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @GetMapping
-    @Operation(summary = "List all locations", description = "모든 위치 조회")
-    public ResponseEntity<List<Location>> getAllLocations() {
-        List<Location> locations = locationService.getAllLocation();
-        return ResponseEntity.ok(locations);
-    }
+//    @GetMapping
+//    @Operation(summary = "List all locations", description = "모든 위치 조회")
+//    public ResponseEntity<List<Location>> getAllLocations() {
+//        List<Location> locations = locationService.getAllLocation();
+//        return ResponseEntity.ok(locations);
+//    }
 
-    @GetMapping("/location")
+    @GetMapping("")
     @Operation(summary = "Get a location by state and city", description = "[시,도]와 [시,군,구]를 통한 위치 조회")
     public ResponseEntity<Location> getLocationByStateAndCity(
-            @RequestParam String state,
-            @RequestParam String city) {
+            @RequestParam(required = false) String state,
+            @RequestParam(required = false) String city) {
         Location location = locationService.findByName(state, city);
         return ResponseEntity.ok(location);
     }

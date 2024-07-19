@@ -1,15 +1,17 @@
 package com.swyp.glint.meeting.repository;
 
 import com.swyp.glint.meeting.domain.JoinMeeting;
+import com.swyp.glint.meeting.domain.Meeting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface JoinMeetingRepository extends JpaRepository<JoinMeeting, Long> {
+public interface JoinMeetingRepository extends JpaRepository<JoinMeeting, Long>, QuerydslPredicateExecutor<Meeting> {
 
 
     @Query("""
