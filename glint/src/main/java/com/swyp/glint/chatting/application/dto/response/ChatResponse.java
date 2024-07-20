@@ -37,6 +37,7 @@ public record ChatResponse(
                 .userId(userDetailAggregation.getUserId())
                 .nickname(userDetailAggregation.getNickname())
                 .sendDate(chat.getSendDate())
+                .userProfileImageUrl(userDetailAggregation.getProfileImage())
                 .build();
     }
 }
