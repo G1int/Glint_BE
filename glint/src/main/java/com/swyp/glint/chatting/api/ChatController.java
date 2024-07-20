@@ -25,8 +25,8 @@ public class ChatController {
         if(roomId == null) {
 //            throw new NotFoundChatRoomException("roomId is null");
         }
-        simpMessagingTemplate.convertAndSend("/sub/chatrooms/" + roomId, request.message());
-        chatService.createChatMessage(request);
+        ChatResponse chatMessage = chatService.createChatMessage(request);
+        simpMessagingTemplate.convertAndSend("/sub/chatrooms/" + roomId, chatMessage);
     }
 
     @GetMapping(path = "/chatrooms/{roomId}/chats", produces = "application/json")
