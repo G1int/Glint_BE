@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +19,7 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    @MessageMapping("/chatrooms/{roomId}/chats")
+    @MessageMapping("/chatrooms/{roomId}")
     public void chatting(@DestinationVariable Long roomId, @RequestBody CreateChatMessageRequest request) {
         // todo room 정보 없을때 처리
         if(roomId == null) {
@@ -28,7 +27,6 @@ public class ChatController {
         }
         simpMessagingTemplate.convertAndSend("/sub/chatrooms/" + roomId, request.message());
         chatService.createChatMessage(request);
-
     }
 
     @GetMapping(path = "/chatrooms/{roomId}/chats", produces = "application/json")
