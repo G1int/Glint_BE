@@ -104,4 +104,11 @@ public class UserDetailService {
     public List<UserDetail> getUserDetails(List<Long> userIds) {
         return userDetailRepository.findAllByUserId(userIds);
     }
+
+
+    public UserDetailResponse updateUserProfileImage(Long userId, String userProfileImageUrl) {
+        UserDetail userDetail = userDetailRepository.findByUserId(userId).orElseThrow(() -> new NotFoundEntityException("UserDetail with userId: " + userId + " not found"));
+        userDetail.updateProfileUrl(userProfileImageUrl);
+        return UserDetailResponse.from(userDetailRepository.save(userDetail));
+    }
 }

@@ -114,4 +114,8 @@ public class UserDetail extends BaseTimeEntity {
     public boolean isMale() {
         return gender.equals("MALE");
     }
+
+    public void updateProfileUrl(String userProfileImageUrl) {
+        this.profileImage = userProfileImageUrl;
+    }
 }

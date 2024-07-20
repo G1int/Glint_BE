@@ -74,6 +74,7 @@ public class UserProfileService {
     @Transactional
     public UserProfileResponse updateUserProfile(Long userId, UserProfileRequest userProfileRequest) {
         UserResponse userResponse = userService.getUserById(userId);
+        userDetailService.updateUserProfileImage(userId, userProfileRequest.profileImageUrl());
 
         Work work = workService.createNewWork(userProfileRequest.workName());
         University university = universityService.findByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
