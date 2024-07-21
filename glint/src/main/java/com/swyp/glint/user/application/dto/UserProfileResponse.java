@@ -25,7 +25,7 @@ public class UserProfileResponse {
     private LocationResponse location;
     private ReligionResponse region;
     private SmokingResponse smoking;
-    private  DrinkingResponse drinking;
+    private DrinkingResponse drinking;
     @Schema(description = "자기소개", example = "안녕하세요 저는 서울 강북구에 사는 유재석이라고 합니다.")
     private  String selfIntroduction;
     @Schema(description = "나를 표현하는 키워드", example = "[적극적, ESTJ, 애교많음]")
