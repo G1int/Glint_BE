@@ -11,19 +11,19 @@ import java.util.Optional;
 
 @Builder
 public record UserDetailResponse(
-        @Parameter(description = "UserDetail ID", example = "1", required = true)
+        @Schema(description = "UserDetail ID", example = "1", required = true)
         Long id,
-        @Parameter(description = "User ID", example = "1", required = true)
+        @Schema(description = "User ID", example = "1", required = true)
         Long userId,
-        @Parameter(description = "User Nickname", example = "nickname", required = false)
+        @Schema(description = "User Nickname", example = "nickname", required = false)
         String nickname,
-        @Parameter(description = "User Gender", example = "gender", required = false)
+        @Schema(description = "User Gender", example = "gender", required = false)
         String gender,
-        @Parameter(description = "User Birthdate", example = "2000-01-01", required = false)
+        @Schema(description = "User Birthdate", example = "2000-01-01", required = false)
         String birthdate,
-        @Parameter(description = "User Height", example = "180", required = false)
+        @Schema(description = "User Height", example = "180", required = false)
         Integer height,
-        @Parameter(description = "User Profile Image", example = "https://glint-image.s3.ap-northeast-2.amazonaws.com/profile/profile_1720106931.png", required = false)
+        @Schema(description = "User Profile Image", example = "https://glint-image.s3.ap-northeast-2.amazonaws.com/profile/profile_1720106931.png", required = false)
         String profileImage
 ) {
     public static UserDetailResponse from(UserDetail userDetail) {
