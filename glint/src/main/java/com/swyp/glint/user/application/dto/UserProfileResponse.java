@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 @Builder
 @Data
@@ -32,6 +33,8 @@ public class UserProfileResponse {
 
 
     public static UserProfileResponse from(UserProfile userProfile, WorkCategory workCategory, UniversityCategory universityCategory) {
+        if(Objects.isNull(userProfile)) return null;
+
         return UserProfileResponse.builder()
                 .id(userProfile.getId())
                 .work(WorkResponse.from(userProfile.getWork(), workCategory))
