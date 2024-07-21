@@ -83,8 +83,7 @@ public class UserDetail extends BaseTimeEntity {
             return null;
             //throw new IllegalArgumentException("Birthdate can not be null");
         }
-        LocalDate today = LocalDate.now();
-        return Period.between(birthdate, today).getYears();
+        return Period.between(birthdate, LocalDate.now()).getYears();
     }
 
     public boolean sameGender(String gender) {

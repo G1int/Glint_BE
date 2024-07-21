@@ -38,13 +38,25 @@ public class UserProfileService {
         Work work = workService.createNewWork(userProfileRequest.workName());
         University university = universityService.findByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
         Location location = locationService.findByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
-        Religion religion = religionService.findByName(userProfileRequest.religionName());
-        Smoking smoking = smokingService.findByName(userProfileRequest.smokingName());
-        Drinking drinking = drinkingService.findByName(userProfileRequest.drinkingName());
+        Religion religion = religionService.findById(userProfileRequest.religionId());
+        Smoking smoking = smokingService.findById(userProfileRequest.smokingId());
+        Drinking drinking = drinkingService.findById(userProfileRequest.drinkingId());
 
-        UserProfile userProfile = userProfileRequest.toEntity(userId, work, university, location, religion, smoking, drinking);
+        UserProfile userProfile = UserProfile.createNewUserProfile(
+                userId,
+                work,
+                university,
+                location,
+                religion,
+                smoking,
+                drinking,
+                userProfileRequest.selfIntroduction(),
+                userProfileRequest.hashtags()
+        );
+
         UserDetail userDetail = userDetailService.getUserDetail(userId);
         userDetail.updateProfileUrl(userProfileRequest.profileImageUrl());
+        userProfileRepository.save(userProfile);
 
         // todo response 수정
         //  밑에 getUserInfo를 호출하지 않고 여기서 조합해야함.
@@ -79,12 +91,24 @@ public class UserProfileService {
         Work work = workService.createNewWork(userProfileRequest.workName());
         University university = universityService.findByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
         Location location = locationService.findByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
-        Religion religion = religionService.findByName(userProfileRequest.religionName());
-        Smoking smoking = smokingService.findByName(userProfileRequest.smokingName());
-        Drinking drinking = drinkingService.findByName(userProfileRequest.drinkingName());
+        Religion religion = religionService.findById(userProfileRequest.religionId());
+        Smoking smoking = smokingService.findById(userProfileRequest.smokingId());
+        Drinking drinking = drinkingService.findById(userProfileRequest.drinkingId());
 
-        UserProfile userProfile = userProfileRepository.findByUserId(userResponse.id())
-                .orElse(userProfileRequest.toEntity(userId, work, university, location, religion, smoking, drinking));
+        UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseGet(() -> {
+            return UserProfile.createNewUserProfile(
+                    userId,
+                    work,
+                    university,
+                    location,
+                    religion,
+                    smoking,
+                    drinking,
+                    userProfileRequest.selfIntroduction(),
+                    userProfileRequest.hashtags()
+            );
+        });
+
 
         userProfile.updateUserProfile(
                 work,

@@ -16,11 +16,9 @@ public record MeetingRequest(
         Long leaderUserId,
         @Schema(description = "선택한 지역 Id", example = "[1,2]", nullable = true)
         List<Long> locationIds,
-
-        @Schema(description = "동성 참가조건", nullable = true)
+        @Schema(description = "남성 참가조건", nullable = true)
         JoinConditionRequest maleConditions,
-
-        @Schema(description = "이성 참가조건", nullable = true)
+        @Schema(description = "여성 참가조건", nullable = true)
         JoinConditionRequest femaleConditions,
 
         @Schema(description = "정원", example = "3", nullable = false )
