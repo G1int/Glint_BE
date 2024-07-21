@@ -23,8 +23,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @Operation(summary = "Get userInfo", description = "user , userDetail, userProfile 정보 조회")
-    @GetMapping(value = "/info/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Get userInfo", description = "user, userDetail, userProfile 모든 정보 조회")
+    @GetMapping(value = "/{userId}/info", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserInfoResponse> getUserInfo(@PathVariable("id") Long id) {
 
         return ResponseEntity.ok(userService.getUserInfoBy(id));
