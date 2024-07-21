@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,6 +21,7 @@ public class SmokingResponse {
     String smokingName;
 
     public static SmokingResponse from(Smoking smoking) {
+        if(Objects.isNull(smoking)) return null;
         return SmokingResponse.builder()
                 .smokingId(smoking.getId())
                 .smokingName(smoking.getSmokingName())

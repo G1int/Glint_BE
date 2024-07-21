@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,6 +21,7 @@ public class ReligionResponse {
 
 
     public static ReligionResponse from(Religion religion) {
+        if(Objects.isNull(religion)) return null;
         return ReligionResponse.builder()
                 .religionId(religion.getId())
                 .religionName(religion.getReligionName())

@@ -29,13 +29,13 @@ public record UserProfileRequest(
         @Schema(description = "위치의 [시, 군, 구]", example = "강남구")
         String locationCity,
 
-        @Schema(description = "종교명", example = "1")
+        @Schema(description = "종교Id", example = "1")
         Long religionId,
 
-        @Schema(description = "흡연명", example = "1")
+        @Schema(description = "흡연Id", example = "1")
         Long smokingId,
 
-        @Schema(description = "음주명", example = "1")
+        @Schema(description = "음주Id", example = "1")
         Long drinkingId,
 
         @Schema(description = "자기소개", example = "안녕하세요! 저는 강아지를 좋아하고 활기찹니다.")
