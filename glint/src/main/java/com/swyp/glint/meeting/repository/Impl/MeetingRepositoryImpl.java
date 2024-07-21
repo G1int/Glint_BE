@@ -3,6 +3,7 @@ package com.swyp.glint.meeting.repository.impl;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.swyp.glint.meeting.domain.JoinStatus;
 import com.swyp.glint.meeting.domain.Meeting;
 import com.swyp.glint.meeting.domain.MeetingInfo;
 import com.swyp.glint.meeting.repository.MeetingRepositoryCustom;
@@ -41,13 +42,14 @@ public class MeetingRepositoryImpl extends QuerydslRepositorySupport implements 
                                 list(location)
                         )
                 )
-                .from(joinMeeting)
-                .join(meeting).on(meeting.id.eq(joinMeeting.meetingId))
+                .from(meeting)
+                .join(joinMeeting).on(meeting.id.eq(joinMeeting.meetingId))
                 .join(userDetail).on(meeting.joinUserIds.contains(userDetail.userId))
                 .leftJoin(location).on(meeting.locationIds.contains(location.id))
-                .where(meeting.status.eq(status),
-                        joinMeeting.userId.eq(userId),
-                        statusEqProgressJoinUserContain(status, userId))
+                .where(
+                        joinMeeting.status.eq(status),
+                        statusEqProgressJoinUserContain(status, userId)
+                        )
                 .orderBy(meeting.id.desc())
                 .fetch();
     }
@@ -85,7 +87,7 @@ public class MeetingRepositoryImpl extends QuerydslRepositorySupport implements 
     }
 
     private BooleanExpression statusEqProgressJoinUserContain(String status, Long userId) {
-        return status.equals("PROGRESS") ? meeting.joinUserIds.contains(userId) : null;
+        return status.equals(JoinStatus.ACCEPTED.getName()) ? meeting.joinUserIds.contains(userId) : null;
     }
 
 
