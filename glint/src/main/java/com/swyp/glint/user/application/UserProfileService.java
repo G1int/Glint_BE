@@ -3,11 +3,10 @@ package com.swyp.glint.user.application;
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.application.*;
 import com.swyp.glint.keyword.domain.*;
-import com.swyp.glint.user.application.dto.UserDetailResponse;
+import com.swyp.glint.user.application.dto.UserInfoResponse;
 import com.swyp.glint.user.application.dto.UserProfileRequest;
-import com.swyp.glint.user.application.dto.UserProfileResponse;
+import com.swyp.glint.user.application.dto.UserProfileWithDetailResponse;
 import com.swyp.glint.user.application.dto.UserResponse;
-import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
 import com.swyp.glint.user.repository.UserProfileRepository;
@@ -34,7 +33,7 @@ public class UserProfileService {
     private final WorkService workService;
 
     @Transactional
-    public UserProfileResponse createUserProfile(Long userId, UserProfileRequest userProfileRequest) {
+    public UserInfoResponse createUserProfile(Long userId, UserProfileRequest userProfileRequest) {
 
         Work work = workService.createNewWork(userProfileRequest.workName());
         University university = universityService.findByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
@@ -45,14 +44,16 @@ public class UserProfileService {
 
         UserProfile userProfile = userProfileRequest.toEntity(userId, work, university, location, religion, smoking, drinking);
         UserDetail userDetail = userDetailService.getUserDetail(userId);
-        return UserProfileResponse.from(userProfileRepository.save(userProfile), userDetail);
+        userDetail.updateProfileUrl(userProfileRequest.profileImageUrl());
+
+        // todo response 수정
+        //  밑에 getUserInfo를 호출하지 않고 여기서 조합해야함.
+        return userService.getUserInfoBy(userId);
     }
 
-    public UserProfileResponse getUserProfileById(Long userId) {
-        UserResponse userResponse = userService.getUserById(userId);
-        UserDetail userDetail = userDetailService.getUserDetail(userId);
-        return UserProfileResponse.from(userProfileRepository.findByUserId(userResponse.id())
-                .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found")), userDetail);
+    public UserProfileWithDetailResponse getUserProfileById(Long userId) {
+        return userProfileRepository.findUserInfoBy(userId)
+                .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found"));
     }
 
     public UserProfile getUserProfileEntityById(Long userId) {
@@ -61,18 +62,18 @@ public class UserProfileService {
                 .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found"));
     }
 
-    public List<UserProfileResponse> getAllUserProfile() {
+    public List<UserProfileWithDetailResponse> getAllUserProfile() {
         List<UserProfile> userProfiles = userProfileRepository.findAll();
         return userProfiles.stream()
                 .map(userProfile -> {
                     UserDetail userDetail = userDetailService.getUserDetail(userProfile.getUserId());
-                    return UserProfileResponse.from(userProfile, userDetail);
+                    return UserProfileWithDetailResponse.from(userProfile, userDetail);
                 })
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public UserProfileResponse updateUserProfile(Long userId, UserProfileRequest userProfileRequest) {
+    public UserInfoResponse updateUserProfile(Long userId, UserProfileRequest userProfileRequest) {
         UserResponse userResponse = userService.getUserById(userId);
 
         Work work = workService.createNewWork(userProfileRequest.workName());
@@ -95,9 +96,11 @@ public class UserProfileService {
                 userProfileRequest.selfIntroduction(),
                 userProfileRequest.hashtags()
         );
+        userProfileRepository.save(userProfile);
+        userDetailService.updateUserProfileImage(userId, userProfileRequest.profileImageUrl());
 
-        UserDetail userDetail = userDetailService.getUserDetail(userId);
-
-        return UserProfileResponse.from(userProfileRepository.save(userProfile), userDetail);
+        // todo response 수정
+        //  밑에 getUserInfo를 호출하지 않고 여기서 조합해야함.
+        return userService.getUserInfoBy(userId);
     }
 }

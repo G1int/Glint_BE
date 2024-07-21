@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long>, UserCustom {
 
     @Query(
         """
@@ -32,4 +32,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             WHERE u.id in :userIds
         """)
     List<UserSimpleProfile> findByUserIds(List<Long> userIds);
+
+
+
 }
