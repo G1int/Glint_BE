@@ -1,7 +1,9 @@
 package com.swyp.glint.meeting.application.dto.response;
 
-import com.swyp.glint.meeting.domain.JoinConditionElement;
-import io.swagger.v3.oas.annotations.Parameter;
+import com.swyp.glint.meeting.domain.JoinConditionAggregation;
+import com.swyp.glint.user.application.dto.DrinkingResponse;
+import com.swyp.glint.user.application.dto.ReligionResponse;
+import com.swyp.glint.user.application.dto.SmokingResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -23,14 +25,14 @@ public record JoinConditionResponse(
         @Schema(description = "최대 키", example = "200")
         Integer minHeight,
         @Schema(description = "종교", example = "기독교")
-        List<String> religion,
+        List<ReligionResponse> religion,
         @Schema(description = "흡연", example = "비흡연")
-        List<String> smoking,
+        List<SmokingResponse> smoking,
         @Schema(description = "음주", example = "마시지 않음")
-        List<String> drinking
+        List<DrinkingResponse> drinking
 ) {
 
-    public static JoinConditionResponse from(JoinConditionElement joinCondition) {
+    public static JoinConditionResponse from(JoinConditionAggregation joinCondition) {
         return JoinConditionResponse.builder()
                 .selectConditions(joinCondition.getSelectConditions())
                 .affiliation(joinCondition.getAffiliation())
@@ -38,9 +40,9 @@ public record JoinConditionResponse(
                 .maxAge(joinCondition.getAgeRange().getMaxAge())
                 .maxHeight(joinCondition.getHeightRange().getMaxHeight())
                 .minHeight(joinCondition.getHeightRange().getMinHeight())
-                .religion(joinCondition.getReligion())
-                .smoking(joinCondition.getSmoking())
-                .drinking(joinCondition.getDrinking())
+                .religion(joinCondition.getReligionConditions().stream().map(ReligionResponse::from).toList())
+                .smoking(joinCondition.getSmokingConditions().stream().map(SmokingResponse::from).toList())
+                .drinking(joinCondition.getDrinkingConditions().stream().map(DrinkingResponse::from).toList())
                 .build();
     }
 }

@@ -34,16 +34,13 @@ public record JoinConditionRequest(
         Integer minHeight,
 
         @Schema(description = "종교", example = "[\"기독교\"]")
-//        @Pattern(regexp = "(EMPTY|CHRISTIAN|BUDDHIST|CATHOLIC|ETC)")
-        List<String> religions,
+        List<Long> religionIds,
 
         @Schema(description = "흡연", example = "[\"비흡연\"]")
-//        @Pattern(regexp = "(NOT|SMOKING)")
-        List<String> smoking,
+        List<Long> smokingIds,
 
         @Schema(description = "음주", example = "[\"마시지않음\"]")
-//        @Pattern(regexp = "(NOT|SOMETIME|ENJOY|LIKE|ETC)")
-        List<String> drinking
+        List<Long> drinkingIds
 ) {
 
         public JoinConditionElement toEntity() {
@@ -52,9 +49,9 @@ public record JoinConditionRequest(
                         affiliation,
                         AgeRange.createNew(minAge, maxAge),
                         HeightRange.createNew(minHeight, maxHeight),
-                        religions,
-                        smoking,
-                        drinking
+                        religionIds,
+                        smokingIds,
+                        drinkingIds
                 );
         }
 //

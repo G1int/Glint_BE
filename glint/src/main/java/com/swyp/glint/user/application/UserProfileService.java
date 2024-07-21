@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,13 +39,25 @@ public class UserProfileService {
         Work work = workService.createNewWork(userProfileRequest.workName());
         University university = universityService.findByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
         Location location = locationService.findByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
-        Religion religion = religionService.findByName(userProfileRequest.religionName());
-        Smoking smoking = smokingService.findByName(userProfileRequest.smokingName());
-        Drinking drinking = drinkingService.findByName(userProfileRequest.drinkingName());
+        Religion religion = religionService.findById(userProfileRequest.religionId());
+        Smoking smoking = smokingService.findById(userProfileRequest.smokingId());
+        Drinking drinking = drinkingService.findById(userProfileRequest.drinkingId());
 
-        UserProfile userProfile = userProfileRequest.toEntity(userId, work, university, location, religion, smoking, drinking);
+        UserProfile userProfile = UserProfile.createNewUserProfile(
+                userId,
+                work,
+                university,
+                location,
+                religion,
+                smoking,
+                drinking,
+                userProfileRequest.selfIntroduction(),
+                userProfileRequest.hashtags()
+        );
+
         UserDetail userDetail = userDetailService.getUserDetail(userId);
         userDetail.updateProfileUrl(userProfileRequest.profileImageUrl());
+        userProfileRepository.save(userProfile);
 
         // todo response 수정
         //  밑에 getUserInfo를 호출하지 않고 여기서 조합해야함.
@@ -74,17 +87,30 @@ public class UserProfileService {
 
     @Transactional
     public UserInfoResponse updateUserProfile(Long userId, UserProfileRequest userProfileRequest) {
-        UserResponse userResponse = userService.getUserById(userId);
+        userService.getUserById(userId);
 
-        Work work = workService.createNewWork(userProfileRequest.workName());
-        University university = universityService.findByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
-        Location location = locationService.findByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
-        Religion religion = religionService.findByName(userProfileRequest.religionName());
-        Smoking smoking = smokingService.findByName(userProfileRequest.smokingName());
-        Drinking drinking = drinkingService.findByName(userProfileRequest.drinkingName());
+        Work work = Optional.ofNullable(userProfileRequest.workName()).map(workService::createNewWork).orElse(null);
 
-        UserProfile userProfile = userProfileRepository.findByUserId(userResponse.id())
-                .orElse(userProfileRequest.toEntity(userId, work, university, location, religion, smoking, drinking));
+        University university = getUniversityOrElseNull(userProfileRequest);
+        Location location = getLocationOrElseNull(userProfileRequest);
+        Religion religion = getReligionOrElseNull(userProfileRequest);
+        Smoking smoking = getSmokingOrElseNull(userProfileRequest);
+        Drinking drinking = getDrinkingOrElseNull(userProfileRequest);
+
+        UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseGet(() -> {
+            return UserProfile.createNewUserProfile(
+                    userId,
+                    work,
+                    university,
+                    location,
+                    religion,
+                    smoking,
+                    drinking,
+                    userProfileRequest.selfIntroduction(),
+                    userProfileRequest.hashtags()
+            );
+        });
+
 
         userProfile.updateUserProfile(
                 work,
@@ -102,5 +128,36 @@ public class UserProfileService {
         // todo response 수정
         //  밑에 getUserInfo를 호출하지 않고 여기서 조합해야함.
         return userService.getUserInfoBy(userId);
+    }
+
+    private Drinking getDrinkingOrElseNull(UserProfileRequest userProfileRequest) {
+        return Optional.ofNullable(userProfileRequest.drinkingId())
+                .map(drinkingService::findById)
+                .orElse(null);
+    }
+
+    private Smoking getSmokingOrElseNull(UserProfileRequest userProfileRequest) {
+        return Optional.ofNullable(userProfileRequest.smokingId())
+                .map(smokingService::findById)
+                .orElse(null);
+    }
+
+    private Religion getReligionOrElseNull(UserProfileRequest userProfileRequest) {
+        return Optional.ofNullable(userProfileRequest.religionId())
+                .map(religionService::findById)
+                .orElse(null);
+    }
+
+    private Location getLocationOrElseNull(UserProfileRequest userProfileRequest) {
+        return Optional.ofNullable(userProfileRequest.locationState())
+                .map(locationState -> locationService.findByName(locationState, userProfileRequest.locationCity()))
+                .orElse(null);
+    }
+
+    private University getUniversityOrElseNull(UserProfileRequest userProfileRequest) {
+        University university = Optional.ofNullable(userProfileRequest.universityName())
+                .map(universityName -> universityService.findByName(universityName, userProfileRequest.universityDepartment()))
+                .orElse(null);
+        return university;
     }
 }

@@ -29,14 +29,14 @@ public record UserProfileRequest(
         @Schema(description = "위치의 [시, 군, 구]", example = "강남구")
         String locationCity,
 
-        @Schema(description = "종교명", example = "무교")
-        String religionName,
+        @Schema(description = "종교Id", example = "1")
+        Long religionId,
 
-        @Schema(description = "흡연명", example = "비흡연")
-        String smokingName,
+        @Schema(description = "흡연Id", example = "1")
+        Long smokingId,
 
-        @Schema(description = "음주명", example = "가끔 마심")
-        String drinkingName,
+        @Schema(description = "음주Id", example = "1")
+        Long drinkingId,
 
         @Schema(description = "자기소개", example = "안녕하세요! 저는 강아지를 좋아하고 활기찹니다.")
         @Size(max = 300, message = "자기소개는 최대 300자까지 가능합니다.")
@@ -47,8 +47,15 @@ public record UserProfileRequest(
         List<@Size(min = 1, max = 15, message = "각 키워드는 1글자에서 15글자 사이여야 합니다.") String> hashtags
 
 ) {
-    public UserProfile toEntity(Long userId, Work work, University university, Location location,
-                                Religion religion, Smoking smoking, Drinking drinking ) {
+    public UserProfile toEntity(
+            Long userId,
+            Work work,
+            University university,
+            Location location,
+            Religion religion,
+            Smoking smoking,
+            Drinking drinking
+    ) {
 
         return UserProfile.createNewUserProfile(
                 userId,
@@ -61,22 +68,6 @@ public record UserProfileRequest(
                 selfIntroduction,
                 hashtags
         );
-    }
-
-    public static UserProfileRequest of(Work work, University university, Location location, Religion religion, Smoking smoking,
-                                        Drinking drinking, String selfIntroduction, List<String> hashtags) {
-        return UserProfileRequest.builder()
-                .workName(work.getWorkName())
-                .universityName(university.getUniversityName())
-                .universityDepartment(university.getUniversityDepartment())
-                .locationState(location.getState())
-                .locationCity(location.getCity())
-                .religionName(religion.getReligionName())
-                .smokingName(smoking.getSmokingName())
-                .drinkingName(drinking.getDrinkingName())
-                .selfIntroduction(selfIntroduction)
-                .hashtags(hashtags)
-                .build();
     }
 
 }

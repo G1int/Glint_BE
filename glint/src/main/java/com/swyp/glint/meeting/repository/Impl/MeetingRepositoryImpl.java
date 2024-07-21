@@ -1,4 +1,4 @@
-package com.swyp.glint.meeting.repository.Impl;
+package com.swyp.glint.meeting.repository.impl;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -74,6 +74,7 @@ public class MeetingRepositoryImpl extends QuerydslRepositorySupport implements 
                 .limit(getSize(size))
                 .fetch();
     }
+
 
     private static Integer getSize(Integer size) {
         return Optional.ofNullable(size).orElse(10);
