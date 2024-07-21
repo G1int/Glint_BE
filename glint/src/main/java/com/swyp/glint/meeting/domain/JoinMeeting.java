@@ -19,26 +19,40 @@ public class JoinMeeting extends BaseTimeEntity {
     @Column(name = "join_meeting_id")
     private Long id;
 
-    @Column
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column
+    @Column(name = "meeting_id")
     private Long meetingId;
 
-    @Column
+    @Column(name = "status")
     private String status;
 
-    @Column
+    @Column(name = "create_at")
     private LocalDateTime createAt;
 
+    @Column(name = "join_date_time")
+    private LocalDateTime joinDateTime;
+
     @Builder(access = AccessLevel.PRIVATE)
-    private JoinMeeting(Long id, Long userId, Long meetingId, String status, LocalDateTime createAt) {
+    private JoinMeeting(Long id, Long userId, Long meetingId, String status, LocalDateTime createAt, LocalDateTime joinDateTime) {
         this.id = id;
         this.userId = userId;
         this.meetingId = meetingId;
         this.status = status;
         this.createAt = createAt;
+        this.joinDateTime = joinDateTime;
     }
+    public static JoinMeeting createByMeetingInit(Long userId, Long meetingId) {
+        return JoinMeeting.builder()
+                .userId(userId)
+                .meetingId(meetingId)
+                .status(JoinStatus.ACCEPTED.getName())
+                .createAt(LocalDateTime.now())
+                .joinDateTime(LocalDateTime.now())
+                .build();
+    }
+
 
     public static JoinMeeting createByRequest(Long userId, Long meetingId) {
         return JoinMeeting.builder()
@@ -51,6 +65,7 @@ public class JoinMeeting extends BaseTimeEntity {
 
     public void accept() {
         status = JoinStatus.ACCEPTED.getName();
+        joinDateTime = LocalDateTime.now();
     }
 
     public void reject() {
