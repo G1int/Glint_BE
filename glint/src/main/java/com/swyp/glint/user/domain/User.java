@@ -24,7 +24,6 @@ public class User extends BaseTimeEntity {
     private String role;
 
     @Column(name = "provider")
-    // GOOGLE
     private String provider;
 
     @Column(name = "archived")

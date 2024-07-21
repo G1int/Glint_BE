@@ -1,5 +1,7 @@
 package com.swyp.glint.meeting.api;
 
+import com.swyp.glint.meeting.application.MeetingFacade;
+import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponse;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
 import com.swyp.glint.meeting.application.MeetingService;
@@ -19,11 +21,13 @@ public class MeetingController {
 
     private final MeetingService meetingService;
 
+    private final MeetingFacade meetingFacade;
+
     @Operation(summary = "미팅 생성", description = "미팅 생성")
     @PostMapping(path = "/meeting", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MeetingResponse> createMeeting(@RequestBody @Valid MeetingRequest meetingRequest) {
 
-        return new ResponseEntity<>(meetingService.createMeeting(meetingRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(meetingFacade.createMeeting(meetingRequest), HttpStatus.CREATED);
     }
 
     @Operation(summary = "미팅 조회", description = "미팅 id를 통한 조회")
@@ -44,14 +48,23 @@ public class MeetingController {
     }
 
 
-    @Operation(summary = "내가 속한 미팅 조회", description = "메인화면 New 미팅 조회, status : WAITING(대기중미팅), PROGRESS (참가미팅)")
+    @Operation(summary = "내가 속한 미팅 조회", description = "메인화면 New 미팅 조회, status : WAITING(대기중미팅), ACCEPTED (참가미팅)")
     @GetMapping(path = "/meetings/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MeetingInfoResponses> getNewMeeting(
-            @RequestParam @Pattern(regexp = "WAITING|PROGRESS") @Valid String status,
+            @RequestParam @Pattern(regexp = "ACCEPTED|WAITING") @Valid String status,
             @PathVariable Long userId
     ) {
 
         return ResponseEntity.ok(meetingService.getMyMeeting(userId, status));
+    }
+
+    @Operation(summary = "미팅 나가기", description = "미팅 나가기")
+    @PutMapping(path = "/meetings/{meetingId}/users/{userId}/out", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MeetingResponse> userOutMeeting(
+            @PathVariable Long meetingId,
+            @PathVariable Long userId) {
+
+        return ResponseEntity.ok(meetingFacade.userMeetingOut(meetingId, userId));
     }
 
 

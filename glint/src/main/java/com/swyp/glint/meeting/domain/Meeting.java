@@ -150,13 +150,22 @@ public class Meeting extends BaseTimeEntity {
     }
 
     public void outUser(Long userId) {
-        if(isLeader(userId)) {
-            // todo
-            //  제일 처음 들어온 동성이 leader 자리를 받게됨.
-        }
+        joinUserIds.remove(userId);
     }
 
-    private boolean isLeader(Long userId) {
+    public boolean isLeader(Long userId) {
         return leaderUserId.equals(userId);
+    }
+
+    public void changeLeader(Long nextLeaderUserId) {
+        this.leaderUserId = nextLeaderUserId;
+    }
+
+    public boolean isEmpty() {
+        return joinUserIds.isEmpty();
+    }
+
+    public void archive() {
+        this.status = MeetingStatus.ARCHIVED.getName();
     }
 }

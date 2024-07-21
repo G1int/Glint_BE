@@ -24,11 +24,11 @@ public record JoinConditionResponse(
         Integer maxHeight,
         @Schema(description = "최대 키", example = "200")
         Integer minHeight,
-        @Schema(description = "종교", example = "기독교")
+        @Schema(description = "종교 Id", example = "[1]")
         List<ReligionResponse> religion,
-        @Schema(description = "흡연", example = "비흡연")
+        @Schema(description = "흡연 Id", example = "[1]")
         List<SmokingResponse> smoking,
-        @Schema(description = "음주", example = "마시지 않음")
+        @Schema(description = "음주 Id", example = "[1]")
         List<DrinkingResponse> drinking
 ) {
 
