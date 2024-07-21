@@ -31,6 +31,9 @@ public class WorkService {
                 .orElseThrow(() -> new NotFoundEntityException("Work not found with name: " + workName));
     }
 
+
+    // todo workCategory만 id매핑한 이유가 뭔지?
+    //  work와 항상 함께 조회될것 같은데 oneToOne매핑이 더 나은 선택인것 같음
     @Transactional
     public Work createNewWork(String workName) { // 이미 해당하는 workName을 가진 work가 있다면, 해당 객체를 반환하고, 없다면 work객체를 새로 생성하고 저장한 후 반환.
         Work work = workRepository.findByWorkName(workName)

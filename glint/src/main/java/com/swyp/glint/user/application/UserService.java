@@ -1,10 +1,7 @@
 package com.swyp.glint.user.application;
 
 import com.swyp.glint.common.exception.NotFoundEntityException;
-import com.swyp.glint.user.application.dto.UserLoginResponse;
-import com.swyp.glint.user.application.dto.UserMeetingResponse;
-import com.swyp.glint.user.application.dto.UserRequest;
-import com.swyp.glint.user.application.dto.UserResponse;
+import com.swyp.glint.user.application.dto.*;
 import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -27,6 +24,11 @@ public class UserService {
 
     public UserResponse getUserById(Long id) {
         return UserResponse.from(userRepository.findById(id).orElseThrow(() -> new NotFoundEntityException("id : " + id + " not found")));
+
+    }
+
+    public UserInfoResponse getUserInfoBy(Long id) {
+        return userRepository.findUserInfoBy(id).orElseThrow(() -> new NotFoundEntityException("id : " + id + " not found"));
 
     }
 

@@ -31,6 +31,8 @@ public class UniversityService {
                 .orElseThrow(() -> new NotFoundEntityException("University not found with id: " + universityId));
     }
 
+    // todo work 와 마찬가지
+    //  work와 항상 함께 조회될것같은데 id를 통한 간접매핑보다는 oneToOne매핑이 더 나은 선택인것 같음
     public University findByName(String universityName, String universityDepartment) { // 대학명과 학과를 통한 university 반환
         return universityRepository.findByUniversityNameAndUniversityDepartment(universityName, universityDepartment)
                 .orElseThrow(() -> new NotFoundEntityException("University not found with name: " + universityName));
