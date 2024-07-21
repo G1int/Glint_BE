@@ -20,6 +20,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,6 +81,15 @@ public class JoinMeetingService {
 
         return UserJoinMeetingResponses.from(userJoinMeetingResponseList);
     }
+
+    public UserJoinMeetingResponse getJoinMeetingNextLeader(Long meetingId) {
+        List<JoinMeeting> joinMeetings = joinMeetingRepository.findByMeetingId(meetingId);
+        joinMeetings.stream().sorted(Comparator.comparing(JoinMeeting::getModifiedDate).reversed()).findFirst();
+
+        return null;
+    }
+
+
 
     public UserJoinMeetingResponses getAllJoinMeetingPaging(Long meetingId, Long lastJoinMeetingId) {
         List<JoinMeeting> joinMeetings = Optional.ofNullable(lastJoinMeetingId)

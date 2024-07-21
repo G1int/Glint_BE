@@ -2,6 +2,7 @@ package com.swyp.glint.meeting.application.dto.response;
 
 import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.meeting.domain.Meeting;
+import com.swyp.glint.meeting.domain.MeetingAggregation;
 import com.swyp.glint.user.application.dto.UserMeetingResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -34,19 +35,18 @@ public record MeetingResponse(
 
 
 
-
-    public static MeetingResponse from(Meeting meeting, List<UserMeetingResponse> userMeetingResponses, List<String> locations) {
+    public static MeetingResponse from(MeetingAggregation meetingAggregation) {
         return MeetingResponse.builder()
-                .id(meeting.getId())
-                .leaderUserId(meeting.getLeaderUserId())
-                .title(meeting.getTitle())
-                .description(meeting.getDescription())
-                .users(userMeetingResponses)
-                .locations(locations)
-                .maleCondition(JoinConditionResponse.from(meeting.getMaleCondition()))
-                .femaleCondition(JoinConditionResponse.from(meeting.getFemaleCondition()))
-                .peopleCapacity(meeting.getPeopleCapacity())
-                .status(meeting.getStatus())
+                .id(meetingAggregation.getId())
+                .leaderUserId(meetingAggregation.getLeaderUserId())
+                .title(meetingAggregation.getTitle())
+                .description(meetingAggregation.getDescription())
+                .users(meetingAggregation.getUsers().stream().map(UserMeetingResponse::from).toList())
+                .locations(meetingAggregation.getLocations())
+                .maleCondition(JoinConditionResponse.from(meetingAggregation.getMaleCondition()))
+                .femaleCondition(JoinConditionResponse.from(meetingAggregation.getFemaleCondition()))
+                .peopleCapacity(meetingAggregation.getPeopleCapacity())
+                .status(meetingAggregation.getStatus())
                 .build();
     }
 }

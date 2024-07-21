@@ -34,4 +34,14 @@ public interface JoinMeetingRepository extends JpaRepository<JoinMeeting, Long>,
             """
     )
     List<JoinMeeting> findByMeetingId(Long meetingId, Long lastJoinMeetingId);
+
+
+    @Query(
+            """
+            SELECT j
+            FROM JoinMeeting j
+            WHERE j.meetingId = :meetingId
+            """
+    )
+    List<JoinMeeting> findByMeetingId(Long meetingId);
 }

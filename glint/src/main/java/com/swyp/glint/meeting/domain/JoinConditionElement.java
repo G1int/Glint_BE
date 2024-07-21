@@ -33,39 +33,42 @@ public class JoinConditionElement {
     private HeightRange heightRange;
 
     //종교
+    @Column(name = "religion_id")
     @ElementCollection
-    private List<String> religion;
+    private List<Long> religionIds;
 
     // 흡연
+    @Column(name = "smoking_id")
     @ElementCollection
-    private List<String> smoking;
+    private List<Long> smokingIds;
 
     // 음주
+    @Column(name = "drinking_id")
     @ElementCollection
-    private List<String> drinking;
+    private List<Long> drinkingIds;
 
 
 
     @Builder(access = AccessLevel.PRIVATE)
-    private JoinConditionElement(List<String> selectConditionKeywords, List<String> affiliation, AgeRange ageRange, HeightRange heightRange, List<String> religion, List<String> smoking, List<String> drinking) {
+    private JoinConditionElement(List<String> selectConditionKeywords, List<String> affiliation, AgeRange ageRange, HeightRange heightRange, List<Long> religionIds, List<Long> smokingIds, List<Long> drinkingIds) {
         this.selectConditions = selectConditionKeywords;
         this.affiliation = affiliation;
         this.ageRange = ageRange;
         this.heightRange = heightRange;
-        this.religion = religion;
-        this.smoking = smoking;
-        this.drinking = drinking;
+        this.religionIds = religionIds;
+        this.smokingIds = smokingIds;
+        this.drinkingIds = drinkingIds;
     }
 
-    public static JoinConditionElement createNew(List<String> selectConditionKeywords, List<String> affiliation, AgeRange ageRange, HeightRange heightRange, List<String> religion, List<String> smoking, List<String> drinking){
+    public static JoinConditionElement createNew(List<String> selectConditionKeywords, List<String> affiliation, AgeRange ageRange, HeightRange heightRange, List<Long> religionIds, List<Long> smokingIds, List<Long> drinkingIds){
         return JoinConditionElement.builder()
                 .selectConditionKeywords(selectConditionKeywords)
                 .affiliation(affiliation)
                 .ageRange(ageRange)
                 .heightRange(heightRange)
-                .religion(religion)
-                .smoking(smoking)
-                .drinking(drinking)
+                .religionIds(religionIds)
+                .smokingIds(smokingIds)
+                .drinkingIds(drinkingIds)
                 .build();
     }
 
