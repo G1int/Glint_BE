@@ -3,6 +3,7 @@ package com.swyp.glint.user.application;
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.user.application.dto.*;
 import com.swyp.glint.user.domain.User;
+import com.swyp.glint.user.domain.UserSimpleProfile;
 import com.swyp.glint.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,10 @@ public class UserService {
 
     public List<UserMeetingResponse> getUserMeetingResponseList(List<Long> userIds) {
         return userRepository.findByUserIds(userIds).stream().map(UserMeetingResponse::from).toList();
+    }
+
+    public List<UserSimpleProfile> getUserSimpleProfileList(List<Long> userIds) {
+        return userRepository.findByUserIds(userIds);
     }
 
 

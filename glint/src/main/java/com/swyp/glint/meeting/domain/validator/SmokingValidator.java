@@ -1,9 +1,13 @@
 package com.swyp.glint.meeting.domain.validator;
 
+import com.swyp.glint.keyword.domain.Smoking;
 import com.swyp.glint.meeting.domain.ConditionValidator;
 import com.swyp.glint.meeting.domain.JoinConditionElement;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class SmokingValidator implements ConditionValidator {
     private final JoinConditionElement joinConditionElement;
@@ -18,15 +22,19 @@ public class SmokingValidator implements ConditionValidator {
 
     @Override
     public boolean validateCondition() {
-        if((!(joinConditionElement.getSmoking() == null) && !joinConditionElement.getSmoking().isEmpty()) && userProfile.getSmoking() == null) {
+        if((Objects.nonNull(joinConditionElement.getSmokingIds()) && !joinConditionElement.getSmokingIds().isEmpty()) && userProfile.getSmoking() == null) {
             return false;
 
         }
 
-        if(joinConditionElement.getSmoking() == null) {
+        if(joinConditionElement.getSmokingIds() == null) {
+            return false;
+        }
+        Smoking userSmoking = userProfile.getSmoking();
+        if(Objects.isNull(userSmoking)) {
             return false;
         }
 
-        return joinConditionElement.getSmoking().contains(userProfile.getSmoking().getSmokingName());
+        return joinConditionElement.getSmokingIds().contains(userSmoking.getId());
     }
 }

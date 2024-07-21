@@ -1,9 +1,13 @@
 package com.swyp.glint.meeting.domain.validator;
 
+import com.swyp.glint.keyword.domain.Drinking;
 import com.swyp.glint.meeting.domain.ConditionValidator;
 import com.swyp.glint.meeting.domain.JoinConditionElement;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class DrinkingValidator implements ConditionValidator {
     private final JoinConditionElement joinConditionElement;
@@ -18,14 +22,15 @@ public class DrinkingValidator implements ConditionValidator {
 
     @Override
     public boolean validateCondition() {
-        if((!(joinConditionElement.getDrinking() == null) && !joinConditionElement.getDrinking().isEmpty()) && userProfile.getDrinking() == null) {
+        Optional<Drinking> drinkingOptional = Optional.ofNullable(userProfile.getDrinking());
+        if((Objects.nonNull(joinConditionElement.getDrinkingIds()) && !joinConditionElement.getDrinkingIds().isEmpty()) && drinkingOptional.isEmpty()) {
             return false;
 
         }
-        if(joinConditionElement.getDrinking() == null || joinConditionElement.getDrinking().isEmpty()) {
-            return true;
+        if(drinkingOptional.isEmpty()) {
+            return false;
         }
-
-        return joinConditionElement.getDrinking().contains(userProfile.getDrinking().getDrinkingName());
+        Drinking drinking = drinkingOptional.get();
+        return joinConditionElement.getDrinkingIds().contains(drinking.getId());
     }
 }

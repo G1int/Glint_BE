@@ -51,9 +51,9 @@ public class Meeting extends BaseTimeEntity {
             @AttributeOverride(name = "ageRange.minAge", column = @Column(name = "man_age_min_age")),
             @AttributeOverride(name = "heightRange.maxHeight", column = @Column(name = "man_height_max_height")),
             @AttributeOverride(name = "heightRange.minHeight", column = @Column(name = "man_height_min_height")),
-            @AttributeOverride(name = "religion", column = @Column(name = "man_religion")),
-            @AttributeOverride(name = "smoking", column = @Column(name = "man_smoking")),
-            @AttributeOverride(name = "drinking", column = @Column(name = "man_drinking")),
+            @AttributeOverride(name = "religionIds", column = @Column(name = "man_religion_id")),
+            @AttributeOverride(name = "smokingIds", column = @Column(name = "man_smoking_id")),
+            @AttributeOverride(name = "drinkingIds", column = @Column(name = "man_drinking_id")),
     })
     private JoinConditionElement maleCondition;
 
@@ -66,9 +66,9 @@ public class Meeting extends BaseTimeEntity {
             @AttributeOverride(name = "ageRange.minAge", column = @Column(name = "woman_age_min_age")),
             @AttributeOverride(name = "heightRange.maxHeight", column = @Column(name = "woman_height_max_height")),
             @AttributeOverride(name = "heightRange.minHeight", column = @Column(name = "woman_height_min_height")),
-            @AttributeOverride(name = "religion", column = @Column(name = "woman_religion")),
-            @AttributeOverride(name = "smoking", column = @Column(name = "woman_smoking")),
-            @AttributeOverride(name = "drinking", column = @Column(name = "woman_drinking")),
+            @AttributeOverride(name = "religionIds", column = @Column(name = "woman_religion_id")),
+            @AttributeOverride(name = "smokingIds", column = @Column(name = "woman_smoking_id")),
+            @AttributeOverride(name = "drinkingIds", column = @Column(name = "woman_drinking_id")),
     })
     private JoinConditionElement femaleCondition;
 
@@ -147,5 +147,16 @@ public class Meeting extends BaseTimeEntity {
             return true;
         }
         return false;
+    }
+
+    public void outUser(Long userId) {
+        if(isLeader(userId)) {
+            // todo
+            //  제일 처음 들어온 동성이 leader 자리를 받게됨.
+        }
+    }
+
+    private boolean isLeader(Long userId) {
+        return leaderUserId.equals(userId);
     }
 }
