@@ -41,7 +41,8 @@ public interface JoinMeetingRepository extends JpaRepository<JoinMeeting, Long>,
             SELECT j
             FROM JoinMeeting j
             WHERE j.meetingId = :meetingId
+            AND j.status = :status
             """
     )
-    List<JoinMeeting> findByMeetingId(Long meetingId);
+    List<JoinMeeting> findByMeetingIdAndStatus(Long meetingId, String status);
 }

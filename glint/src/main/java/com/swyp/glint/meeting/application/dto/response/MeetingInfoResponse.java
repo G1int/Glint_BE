@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 public record MeetingInfoResponse(
+        @Schema(description = "미팅 ID", example = "1")
+        Long meetingId,
         @Schema(description = "남성 참가자 수", example = "10")
         Integer maleCount,
         @Schema(description = "여성 참가자 수", example = "10")
@@ -28,6 +30,7 @@ public record MeetingInfoResponse(
 
     public static MeetingInfoResponse from(MeetingInfo meetingInfo) {
         return new MeetingInfoResponse(
+                meetingInfo.getMeetingId(),
                 meetingInfo.getMaleCount(),
                 meetingInfo.getFemaleCount(),
                 AgeRangeResponse.from(meetingInfo.getManAgeRange()),

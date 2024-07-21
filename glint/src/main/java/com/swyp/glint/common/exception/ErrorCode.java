@@ -29,6 +29,7 @@ public enum ErrorCode {
     //meeting
     NUMBER_OF_PEOPLE(400, "M001", "Over Number of people"),
     NOT_MATCH_CONDITION(400, "M002", "Not Match Meeting Condition"),
+    NOT_FOUND_NEXT_MEETING_LEADER(400, "M003", "Not Found Next Meeting Leader"),
 
     ;
 

@@ -155,9 +155,8 @@ public class UserProfileService {
     }
 
     private University getUniversityOrElseNull(UserProfileRequest userProfileRequest) {
-        University university = Optional.ofNullable(userProfileRequest.universityName())
+        return Optional.ofNullable(userProfileRequest.universityName())
                 .map(universityName -> universityService.findByName(universityName, userProfileRequest.universityDepartment()))
                 .orElse(null);
-        return university;
     }
 }

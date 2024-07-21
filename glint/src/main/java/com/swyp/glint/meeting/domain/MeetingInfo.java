@@ -13,6 +13,7 @@ import java.util.Optional;
 @Getter
 @NoArgsConstructor
 public class MeetingInfo {
+    private Long meetingId;
     private Integer peopleCapacity;
     private List<String> locationKeywords;
     private AgeRange manAgeRange;
@@ -29,6 +30,7 @@ public class MeetingInfo {
             List<UserDetail> userDetails,
             List<Location> locations
     ) {
+        this.meetingId = meeting.getId();
         this.peopleCapacity = meeting.getPeopleCapacity();
         this.locationKeywords = locations.stream().filter(Objects::nonNull).map(location -> location.getState() + " " + location.getCity()).toList();
         this.manAgeRange = Optional.ofNullable(meeting.getMaleCondition()).map(JoinConditionElement::getAgeRange).orElse(null);

@@ -5,7 +5,7 @@ import com.swyp.glint.meeting.domain.MeetingInfo;
 import java.util.List;
 
 public record MeetingInfoResponses(
-        List<MeetingInfoResponse> meetingResponses
+        List<MeetingInfoResponse> meetings
 ) {
 
     public static MeetingInfoResponses from(List<MeetingInfo> meetingInfos) {
