@@ -23,9 +23,9 @@ public record MeetingResponse(
         @Schema(description = "미팅 장소", example = "[서울 전체]")
         List<String> locations,
         @Schema(description = "남성 참가 조건")
-        JoinConditionResponse manCondition,
+        JoinConditionResponse maleCondition,
         @Schema(description = "여성 참가 조건")
-        JoinConditionResponse womanCondition,
+        JoinConditionResponse femaleCondition,
         @Schema(description = "성별당 참가 인원", example = "4")
         Integer peopleCapacity,
         @Schema(description = "미팅 상태", example = "WAITING")
@@ -43,8 +43,8 @@ public record MeetingResponse(
                 .description(meeting.getDescription())
                 .users(userMeetingResponses)
                 .locations(locations)
-                .manCondition(JoinConditionResponse.from(meeting.getMaleCondition()))
-                .womanCondition(JoinConditionResponse.from(meeting.getFemaleCondition()))
+                .maleCondition(JoinConditionResponse.from(meeting.getMaleCondition()))
+                .femaleCondition(JoinConditionResponse.from(meeting.getFemaleCondition()))
                 .peopleCapacity(meeting.getPeopleCapacity())
                 .status(meeting.getStatus())
                 .build();
