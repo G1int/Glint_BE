@@ -21,6 +21,8 @@ public record UserDetailResponse(
         String gender,
         @Schema(description = "User Birthdate", example = "2000-01-01", required = false)
         String birthdate,
+        @Schema(description = "User Age", example = "20", required = false)
+        Integer age,
         @Schema(description = "User Height", example = "180", required = false)
         Integer height,
         @Schema(description = "User Profile Image", example = "https://glint-image.s3.ap-northeast-2.amazonaws.com/profile/profile_1720106931.png", required = false)
@@ -33,6 +35,7 @@ public record UserDetailResponse(
                 .userId(userDetail.getUserId())
                 .nickname(userDetail.getNickname())
                 .gender(userDetail.getGender())
+                .age(userDetail.calculateAgeByBirthdate())
                 .birthdate(Optional.ofNullable(userDetail.getBirthdate()).map(date -> date.format(DateTimeFormatter.ISO_DATE)).orElse(null))
                 .height(userDetail.getHeight())
                 .profileImage(userDetail.getProfileImage())
