@@ -24,6 +24,8 @@ public class UniversityResponse {
     UniversityCategoryResponse universityCategory;
 
     public static UniversityResponse from(University university, UniversityCategory universityCategory) {
+        if(university == null) return null;
+
         return UniversityResponse.builder()
                 .universityId(university.getId())
                 .universityName(university.getUniversityName())

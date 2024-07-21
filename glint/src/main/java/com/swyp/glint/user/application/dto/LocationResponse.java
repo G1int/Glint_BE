@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,6 +23,7 @@ public class LocationResponse {
     String locationCity;
 
     public static LocationResponse from(Location location) {
+        if(Objects.isNull(location)) return null;
         return LocationResponse.builder()
                 .locationId(location.getId())
                 .locationState(location.getState())
