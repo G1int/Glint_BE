@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,6 +21,7 @@ public class DrinkingResponse {
 
 
     public static DrinkingResponse from(Drinking drinking) {
+        if(Objects.isNull(drinking)) return null;
         return DrinkingResponse.builder()
                 .drinkingId(drinking.getId())
                 .drinkingName(drinking.getDrinkingName())

@@ -21,6 +21,7 @@ public class WorkResponse {
     WorkCategoryResponse workCategory;
 
     public static WorkResponse from(Work work, WorkCategory workCategory) {
+        if(work == null) return null;
         return WorkResponse.builder()
                 .workId(work.getId())
                 .workName(work.getWorkName())

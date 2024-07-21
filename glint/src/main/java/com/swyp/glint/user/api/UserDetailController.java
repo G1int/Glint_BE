@@ -43,7 +43,7 @@ public class UserDetailController {
     }
 
     @Operation(summary = "Get User Detail", description = "User Id를 통한 User 추가 정보 조회")
-    @GetMapping(path = "/{id}/detail", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{userId}/detail", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDetailResponse> getUserDetail(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userDetailService.getUserDetailById(id));
     }

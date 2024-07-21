@@ -27,6 +27,7 @@ public record UserDetailResponse(
         String profileImage
 ) {
     public static UserDetailResponse from(UserDetail userDetail) {
+        if(userDetail == null) return null;
         return UserDetailResponse.builder()
                 .id(userDetail.getId())
                 .userId(userDetail.getUserId())
