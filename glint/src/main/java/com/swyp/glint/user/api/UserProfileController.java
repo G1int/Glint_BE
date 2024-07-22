@@ -1,6 +1,7 @@
 package com.swyp.glint.user.api;
 
 import com.swyp.glint.user.application.UserProfileService;
+import com.swyp.glint.user.application.dto.UserDetailResponse;
 import com.swyp.glint.user.application.dto.UserInfoResponse;
 import com.swyp.glint.user.application.dto.UserProfileRequest;
 import com.swyp.glint.user.application.dto.UserProfileWithDetailResponse;
@@ -33,6 +34,11 @@ public class UserProfileController {
         return ResponseEntity.ok(userProfileService.updateUserProfile(userId, userProfileRequest));
     }
 
+    @Operation(summary = "Get User Profile with Detail by ID", description = "User Id를 통한 User 프로필 및 추가 정보 조회")
+    @GetMapping(path = "/{userId}/profile", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserProfileWithDetailResponse> getUserProfile(@PathVariable Long userId) {
+        return ResponseEntity.ok(userProfileService.getUserProfileById(userId));
+    }
 
 //    // todo 어디서 사용하는지?
 //    //  여기도 Response 변경 부탁드립니다.
