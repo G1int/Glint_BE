@@ -1,7 +1,7 @@
 package com.swyp.glint.meeting.api;
 
 import com.swyp.glint.meeting.application.MeetingFacade;
-import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponse;
+import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
 import com.swyp.glint.meeting.application.MeetingService;
@@ -50,7 +50,7 @@ public class MeetingController {
 
     @Operation(summary = "내가 속한 미팅 조회", description = "메인화면 New 미팅 조회, status : WAITING(대기중미팅), ACCEPTED (참가미팅)")
     @GetMapping(path = "/meetings/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MeetingInfoResponses> getNewMeeting(
+    public ResponseEntity<MeetingInfoResponses> getMyMeeting(
             @RequestParam @Pattern(regexp = "ACCEPTED|WAITING") @Valid String status,
             @PathVariable Long userId
     ) {
@@ -67,6 +67,13 @@ public class MeetingController {
         return ResponseEntity.ok(meetingFacade.userMeetingOut(meetingId, userId));
     }
 
+
+    @Operation(summary = "미팅 검색", description = "keyword 본문, 제목 매칭 조회")
+    @GetMapping(path = "/meetings/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MeetingInfoResponses> searchMeeting(MeetingSearchCondition searchCondition) {
+
+        return ResponseEntity.ok(meetingService.searchMeeting(searchCondition));
+    }
 
 
 

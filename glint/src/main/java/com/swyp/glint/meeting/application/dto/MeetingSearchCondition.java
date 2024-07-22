@@ -1,14 +1,17 @@
 package com.swyp.glint.meeting.application.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MeetingSearchCondition {
 
-    private String title;
+    private String keyword;
+    private Long lastMeetingId;
+    private Integer limit;
 
 
-    public MeetingSearchCondition(String title) {
-        this.title = title;
-    }
 }
