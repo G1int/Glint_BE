@@ -33,7 +33,7 @@ public class UniversityService {
 
     public University findByName(String universityName, String universityDepartment) { // University 데이터 입력 안할 시 에러 발생하는 문제 해결을 위해 수정한 함수
         return universityRepository.findByUniversityNameAndUniversityDepartment(universityName, universityDepartment)
-                .orElse(null);
+                .orElseThrow(() -> new NotFoundEntityException("University not found with name: " + universityName));
     }
 
 //    // todo work 와 마찬가지
