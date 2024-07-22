@@ -23,7 +23,7 @@ public class UserProfileResponse {
     private WorkResponse work;
     private UniversityResponse university;
     private LocationResponse location;
-    private ReligionResponse region;
+    private ReligionResponse religion;
     private SmokingResponse smoking;
     private DrinkingResponse drinking;
     @Schema(description = "자기소개", example = "안녕하세요 저는 서울 강북구에 사는 유재석이라고 합니다.")
@@ -40,7 +40,7 @@ public class UserProfileResponse {
                 .work(WorkResponse.from(userProfile.getWork(), workCategory))
                 .university(UniversityResponse.from(userProfile.getUniversity(), universityCategory))
                 .location(LocationResponse.from(userProfile.getLocation()))
-                .region(ReligionResponse.from(userProfile.getReligion()))
+                .religion(ReligionResponse.from(userProfile.getReligion()))
                 .smoking(SmokingResponse.from(userProfile.getSmoking()))
                 .drinking(DrinkingResponse.from(userProfile.getDrinking()))
                 .selfIntroduction(userProfile.getSelfIntroduction())
