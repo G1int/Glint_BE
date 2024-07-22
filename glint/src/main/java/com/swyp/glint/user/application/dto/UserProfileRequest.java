@@ -11,9 +11,6 @@ import java.util.List;
 @Builder
 public record UserProfileRequest(
 
-        @Schema(description = "이미지 프로필 주소", example = "https://swyp.s3.ap-northeast-2.amazonaws.com/profile.jpg")
-        String profileImageUrl,
-
         @Schema(description = "직장명", example = "삼성전자")
         String workName,
 
