@@ -6,6 +6,7 @@ import com.swyp.glint.user.application.dto.UserProfileWithDetailResponse;
 import com.swyp.glint.user.domain.UserProfile;
 import com.swyp.glint.user.repository.UserProfileCustom;
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
@@ -24,14 +25,10 @@ import static com.swyp.glint.user.domain.QUserDetail.userDetail;
 import static com.swyp.glint.user.domain.QUserProfile.userProfile;
 
 @Repository
-public class UserProfileRepositoryImpl extends QuerydslRepositorySupport implements UserProfileCustom {
+@RequiredArgsConstructor
+public class UserProfileRepositoryImpl implements UserProfileCustom {
 
     private final JPAQueryFactory queryFactory;
-
-    public UserProfileRepositoryImpl(EntityManager em) {
-        super(UserProfile.class);
-        this.queryFactory = new JPAQueryFactory(em);
-    }
 
 
     @Override
