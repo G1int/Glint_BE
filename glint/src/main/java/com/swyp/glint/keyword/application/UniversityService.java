@@ -31,12 +31,17 @@ public class UniversityService {
                 .orElseThrow(() -> new NotFoundEntityException("University not found with id: " + universityId));
     }
 
-    // todo work 와 마찬가지
-    //  work와 항상 함께 조회될것같은데 id를 통한 간접매핑보다는 oneToOne매핑이 더 나은 선택인것 같음
-    public University findByName(String universityName, String universityDepartment) { // 대학명과 학과를 통한 university 반환
+    public University findByName(String universityName, String universityDepartment) { // University 데이터 입력 안할 시 에러 발생하는 문제 해결을 위해 수정한 함수
         return universityRepository.findByUniversityNameAndUniversityDepartment(universityName, universityDepartment)
-                .orElseThrow(() -> new NotFoundEntityException("University not found with name: " + universityName));
+                .orElse(null);
     }
+
+//    // todo work 와 마찬가지
+//    //  work와 항상 함께 조회될것같은데 id를 통한 간접매핑보다는 oneToOne매핑이 더 나은 선택인것 같음
+//    public University findByName(String universityName, String universityDepartment) { // 대학명과 학과를 통한 university 반환
+//        return universityRepository.findByUniversityNameAndUniversityDepartment(universityName, universityDepartment)
+//                .orElseThrow(() -> new NotFoundEntityException("University not found with name: " + universityName));
+//    }
 
     public List<University> getUniversitiesByName(String universityName) { // 대학명을 통한 University 엔티티들 반환
         List<University> universities = universityRepository.findByUniversityName(universityName);
