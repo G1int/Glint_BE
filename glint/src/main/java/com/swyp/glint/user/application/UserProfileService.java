@@ -55,8 +55,6 @@ public class UserProfileService {
                 userProfileRequest.hashtags()
         );
 
-        UserDetail userDetail = userDetailService.getUserDetail(userId);
-        userDetail.updateProfileUrl(userProfileRequest.profileImageUrl());
         userProfileRepository.save(userProfile);
 
         // todo response 수정
@@ -123,7 +121,6 @@ public class UserProfileService {
                 userProfileRequest.hashtags()
         );
         userProfileRepository.save(userProfile);
-        userDetailService.updateUserProfileImage(userId, userProfileRequest.profileImageUrl());
 
         // todo response 수정
         //  밑에 getUserInfo를 호출하지 않고 여기서 조합해야함.
@@ -150,12 +147,14 @@ public class UserProfileService {
 
     private Location getLocationOrElseNull(UserProfileRequest userProfileRequest) {
         return Optional.ofNullable(userProfileRequest.locationState())
+                .filter(locationState -> !locationState.isEmpty())
                 .map(locationState -> locationService.findByName(locationState, userProfileRequest.locationCity()))
                 .orElse(null);
     }
 
     private University getUniversityOrElseNull(UserProfileRequest userProfileRequest) {
         return Optional.ofNullable(userProfileRequest.universityName())
+                .filter(universityName -> !universityName.isEmpty())
                 .map(universityName -> universityService.findByName(universityName, userProfileRequest.universityDepartment()))
                 .orElse(null);
     }

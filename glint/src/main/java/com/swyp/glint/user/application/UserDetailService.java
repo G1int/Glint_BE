@@ -3,6 +3,8 @@ package com.swyp.glint.user.application;
 import com.swyp.glint.common.exception.ErrorCode;
 import com.swyp.glint.common.exception.InvalidValueException;
 import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.image.application.ImageService;
+import com.swyp.glint.image.application.dto.ImageResponse;
 import com.swyp.glint.user.application.dto.UserDetailRequest;
 import com.swyp.glint.user.application.dto.UserDetailResponse;
 import com.swyp.glint.user.application.dto.UserNickNameValidationResponse;
@@ -13,6 +15,7 @@ import com.swyp.glint.user.repository.UserDetailRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,6 +28,8 @@ public class UserDetailService {
     private final UserDetailRepository userDetailRepository;
 
     private final UserService userService;
+    
+    private final ImageService imageService;
 
     public UserDetailResponse createUserDetail(Long userId, UserDetailRequest userDetailRequest) {
         UserDetail userDetail = userDetailRequest.toEntity(userId);
@@ -106,9 +111,10 @@ public class UserDetailService {
     }
 
 
-    public UserDetailResponse updateUserProfileImage(Long userId, String userProfileImageUrl) {
+    public UserDetailResponse updateUserProfileImage(Long userId, MultipartFile userProfileImageFile) {
         UserDetail userDetail = userDetailRepository.findByUserId(userId).orElseThrow(() -> new NotFoundEntityException("UserDetail with userId: " + userId + " not found"));
-        userDetail.updateProfileUrl(userProfileImageUrl);
+        ImageResponse imageResponse = imageService.uploadProfileImageFile(userProfileImageFile);
+        userDetail.updateProfileUrl(imageResponse.url());
         return UserDetailResponse.from(userDetailRepository.save(userDetail));
     }
 }

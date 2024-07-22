@@ -1,14 +1,17 @@
 package com.swyp.glint.user.api;
 
+import com.swyp.glint.image.application.dto.ImageResponse;
 import com.swyp.glint.keyword.application.DrinkingService;
 import com.swyp.glint.user.application.UserDetailService;
 import com.swyp.glint.user.application.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -21,7 +24,7 @@ public class UserDetailController {
     @PostMapping(path = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDetailResponse> createUserDetail(@PathVariable("id") Long userId, @Valid @RequestBody UserDetailRequest userDetailRequest) {
 
-        return ResponseEntity.ok(userDetailService.createUserDetail(userId, userDetailRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDetailService.createUserDetail(userId, userDetailRequest));
     }
 
     @Operation(summary = "User NickName Validate Check", description = "닉네임 유효성 검사")
@@ -52,12 +55,11 @@ public class UserDetailController {
     }
 
     @Operation(summary =  "userProfileImage 변경", description = "유저 프로필 이미지 변경")
-    @PutMapping(path = "/{userId}/profile-image", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{userId}/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDetailResponse> updateUserProfileImage(
             @PathVariable Long userId,
-            @RequestBody UserProfileImageRequest userProfileImageRequest
+            @RequestPart MultipartFile imageFile
     ) {
-        return ResponseEntity.ok(userDetailService.updateUserProfileImage(userId, userProfileImageRequest.profileImageUrl()));
+        return ResponseEntity.ok(userDetailService.updateUserProfileImage(userId, imageFile));
     }
-
 }
