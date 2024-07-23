@@ -32,7 +32,7 @@ public class MeetingInfo {
     ) {
         this.meetingId = meeting.getId();
         this.peopleCapacity = meeting.getPeopleCapacity();
-        this.locationKeywords = locations.stream().filter(Objects::nonNull).map(location -> location.getState() + " " + location.getCity()).toList();
+        this.locationKeywords = locations.stream().filter(Objects::nonNull).map(Location::getState).toList();
         this.manAgeRange = Optional.ofNullable(meeting.getMaleCondition()).map(JoinConditionElement::getAgeRange).orElse(null);
         this.womanAgeRange =  Optional.ofNullable(meeting.getFemaleCondition()).map(JoinConditionElement::getAgeRange).orElse(null);
         this.title = meeting.getTitle();
