@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.querydsl.core.types.Projections.list;
+
 import static com.swyp.glint.keyword.domain.QLocation.location;
 import static com.swyp.glint.meeting.domain.QJoinMeeting.joinMeeting;
 import static com.swyp.glint.meeting.domain.QMeeting.meeting;
@@ -53,6 +54,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                 .orderBy(meeting.id.desc())
                 .fetch();
     }
+
 
     @Override
     public List<MeetingInfo> findAllNotFinishMeeting(Long lastId, Integer size) {
