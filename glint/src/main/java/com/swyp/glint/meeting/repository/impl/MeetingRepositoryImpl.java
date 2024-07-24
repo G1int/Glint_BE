@@ -47,11 +47,13 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                 .leftJoin(location).on(meeting.locationIds.contains(location.id))
                 .where(
                         joinMeeting.status.eq(status),
+                        joinMeeting.userId.eq(userId),
                         statusEqProgressJoinUserContain(status, userId),
                         getLt(lastMeetingId)
                 )
                 .limit(getLimit(limit))
                 .orderBy(meeting.id.desc())
+                .groupBy(meeting.id)
                 .fetch();
     }
 
@@ -136,10 +138,16 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
 
 
     private BooleanExpression statusEqProgressJoinUserContain(String status, Long userId) {
-        return status.equals(JoinStatus.ACCEPTED.getName()) ? meeting.joinUserIds.contains(userId) : joinMeeting.userId.eq(userId);
+        if(status.equals(JoinStatus.ACCEPTED.getName())) {
+            return meeting.joinUserIds.contains(userId);
+        }
+
+        return null;
     }
 
-
+    private static BooleanExpression joinMeetingIdEqAndStatusEq(Long userId, JoinStatus joinStatus) {
+        return joinMeeting.userId.eq(userId).and(joinMeeting.status.eq(joinStatus.getName()));
+    }
 
 
 }
