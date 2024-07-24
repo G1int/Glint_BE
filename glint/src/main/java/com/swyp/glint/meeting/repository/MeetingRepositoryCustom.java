@@ -8,7 +8,7 @@ import java.util.List;
 public interface MeetingRepositoryCustom {
 
 
-    List<MeetingInfo> findAllMeetingInfoByStatus(Long userId, String status);
+    List<MeetingInfo> findAllMeetingInfoByStatus(Long userId, String status, Long lastMeetingId, Integer limit);
 
     List<MeetingInfo> findAllNotFinishMeeting(Long lastId, Integer size);
 

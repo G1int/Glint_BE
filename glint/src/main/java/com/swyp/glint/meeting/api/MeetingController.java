@@ -52,10 +52,13 @@ public class MeetingController {
     @GetMapping(path = "/meetings/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MeetingInfoResponses> getMyMeeting(
             @RequestParam @Pattern(regexp = "ACCEPTED|WAITING") @Valid String status,
-            @PathVariable Long userId
+            @PathVariable Long userId,
+            @RequestParam(required = false) Long lastMeetingId,
+            @RequestParam(required = false) Integer limit
+
     ) {
 
-        return ResponseEntity.ok(meetingService.getMyMeeting(userId, status));
+        return ResponseEntity.ok(meetingService.getMyMeeting(userId, status, lastMeetingId, limit));
     }
 
     @Operation(summary = "미팅 나가기", description = "미팅 나가기")

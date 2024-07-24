@@ -80,8 +80,8 @@ public class MeetingService {
     }
 
 
-    public MeetingInfoResponses getMyMeeting(Long userId, String meetingStatus) {
-        return MeetingInfoResponses.from(meetingRepository.findAllMeetingInfoByStatus(userId, meetingStatus));
+    public MeetingInfoResponses getMyMeeting(Long userId, String meetingStatus, Long lastMeetingId, Integer limit) {
+        return MeetingInfoResponses.from(meetingRepository.findAllMeetingInfoByStatus(userId, meetingStatus, lastMeetingId, limit));
     }
 
     public LocationList getMeetingLocationList(Meeting meeting) {
