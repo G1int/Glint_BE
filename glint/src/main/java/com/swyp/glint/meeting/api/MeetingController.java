@@ -40,11 +40,11 @@ public class MeetingController {
     @Operation(summary = "New 미팅 조회", description = "메인화면 New 미팅 조회 ")
     @GetMapping(path = "/meetings/new", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MeetingInfoResponses> getNewMeeting(
-            @RequestParam(required = false) Long lastId,
-            @RequestParam(required = false) Integer size
+            @RequestParam(required = false) Long lastMeetingId,
+            @RequestParam(required = false) Integer limit
     ) {
 
-        return ResponseEntity.ok(meetingService.getNewMeeting(lastId, size));
+        return ResponseEntity.ok(meetingService.getNewMeeting(lastMeetingId, limit));
     }
 
 
