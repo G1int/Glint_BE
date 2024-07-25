@@ -43,8 +43,7 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
         try{
             if(accessToken != null){
-//                email = authorityHelper.getEmail(accessToken.getValue());
-                email = authorityHelper.getEmail(accessToken.replace("bearer ", ""));
+                email = authorityHelper.getEmail(accessToken.replace("Bearer ", ""));
             }
             if(email != null) {
                 UserDetails userDetails = userPrincipalDetailsService.loadUserByUsername(email);
@@ -70,7 +69,7 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
         try{
             if(refreshToken != null) {
-                email = authorityHelper.getEmail(refreshToken.replace("bearer ", ""));
+                email = authorityHelper.getEmail(refreshToken.replace("Bearer ", ""));
 
                 UserDetails userDetails = userPrincipalDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =  new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
@@ -97,8 +96,8 @@ public class JwtLoginFilter extends OncePerRequestFilter {
         String generateAccessToken = authorityHelper.generateToken(email);
         String generateRefreshToken = authorityHelper.generateToken(email);
 
-        response.setHeader("Authorization", "bearer "  + generateAccessToken);
-        response.setHeader("RefreshToken", "bearer "  + generateRefreshToken);
+        response.setHeader("Authorization", "Bearer "  + generateAccessToken);
+        response.setHeader("RefreshToken", "Bearer "  + generateRefreshToken);
 
         redisUtil.setDataExpire(email, generateAccessToken, AuthorityHelper.ACCESS_TOKEN_VALIDATION_SECOND);
         redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
