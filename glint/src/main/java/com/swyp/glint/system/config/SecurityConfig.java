@@ -34,13 +34,7 @@ import java.util.List;
 //@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig  {
 
-//    private final JwtLoginFilter jwtLoginFilter;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
+    private final JwtLoginFilter jwtLoginFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,20 +42,20 @@ public class SecurityConfig  {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable) //csrf 사용하지 않겠다.
-//                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .httpBasic(AbstractHttpConfigurer::disable) //httpBasic 방식을 사용하지 않겠다.
                 .formLogin(AbstractHttpConfigurer::disable) //formLogin 방식을 사용하지 않겠다.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
                                 authorize
-//                                .requestMatchers("/manager/**").hasRole("ADMIN or MANAGER")
-//                                .requestMatchers("/user/**").hasRole("ADMIN")
-                                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                                        .anyRequest().permitAll()
+//                                .requestMatchers("/users/**").hasRole("OAUTH_USER")
+//                                .requestMatchers("/auth/**").permitAll()
+//                                .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
+//                                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                                .anyRequest().permitAll()
                 )
                 //UsernamePasswordAuthenticationFilter 필터 전에 jwtLoginFilter를 추가한다.
-//                .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
-//                .addFilter(corsConfig.corsFilter())
+                .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
