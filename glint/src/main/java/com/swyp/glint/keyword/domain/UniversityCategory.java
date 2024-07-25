@@ -26,5 +26,4 @@ public class UniversityCategory extends BaseTimeEntity {
         this.id = id;
         this.universityCategoryName = universityCategoryName;
     }
-
 }
