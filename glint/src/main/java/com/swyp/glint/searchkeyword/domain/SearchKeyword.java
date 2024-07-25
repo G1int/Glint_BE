@@ -1,10 +1,7 @@
 package com.swyp.glint.searchkeyword.domain;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,17 +16,21 @@ public class SearchKeyword {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long id;
+    @Column(name = "search_keyword_id")
+    private Long searchKeywordId;
 
+    @Column(name = "keyword")
     private String keyword;
 
+    @Column(name = "user_id", nullable = true)
     private Long userId;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private SearchKeyword(Long id, String keyword, Long userId, LocalDateTime createdAt) {
-        this.id = id;
+    private SearchKeyword(Long searchKeywordId, String keyword, Long userId, LocalDateTime createdAt) {
+        this.searchKeywordId = searchKeywordId;
         this.keyword = keyword;
         this.userId = userId;
         this.createdAt = createdAt;

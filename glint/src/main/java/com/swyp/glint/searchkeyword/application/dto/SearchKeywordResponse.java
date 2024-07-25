@@ -3,6 +3,7 @@ package com.swyp.glint.searchkeyword.application.dto;
 import com.swyp.glint.searchkeyword.domain.SearchKeyword;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 public record SearchKeywordResponse(
         Long id,
@@ -13,10 +14,12 @@ public record SearchKeywordResponse(
 
     public static SearchKeywordResponse from(SearchKeyword searchKeyword) {
         return new SearchKeywordResponse(
-                searchKeyword.getId(),
+                searchKeyword.getSearchKeywordId(),
                 searchKeyword.getKeyword(),
                 searchKeyword.getUserId(),
-                searchKeyword.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                Optional.ofNullable(searchKeyword.getCreatedAt())
+                        .map(localDateTime -> localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                        .orElse(null)
         );
     }
 }

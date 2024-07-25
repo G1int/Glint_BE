@@ -19,11 +19,12 @@ import com.swyp.glint.meeting.domain.LocationList;
 import com.swyp.glint.meeting.domain.Meeting;
 import com.swyp.glint.meeting.domain.MeetingAggregation;
 import com.swyp.glint.meeting.repository.MeetingRepository;
+import com.swyp.glint.searchkeyword.application.SearchKeywordService;
 import com.swyp.glint.user.application.UserService;
 import com.swyp.glint.user.domain.UserSimpleProfile;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -39,13 +40,10 @@ public class MeetingService {
 
     private final ChatRoomService chatRoomService;
     private final LocationService locationService;
-
     private final DrinkingService drinkingService;
-
     private final SmokingService smokingService;
-
     private final ReligionService religionService;
-
+    private final SearchKeywordService searchKeywordService;
 
 
     public MeetingResponse getMeeting(Long id) {
@@ -94,7 +92,9 @@ public class MeetingService {
         return MeetingInfoResponses.from(meetingRepository.findAllNotFinishMeeting(lastId, size));
     }
 
-    public MeetingInfoCountResponses searchMeeting(MeetingSearchCondition searchCondition) {
+    @Transactional(readOnly = true)
+    public MeetingInfoCountResponses searchMeeting(MeetingSearchCondition searchCondition, Long userId) {
+        searchKeywordService.saveSearchKeyword(searchCondition.getKeyword(), userId);
         return meetingRepository.searchMeetingWithTotalCount(searchCondition);
     }
 

@@ -32,7 +32,6 @@ public class AuthController {
 
     private final RedisUtil redisUtil;
 
-    @Operation(hidden = true)
     @GetMapping(value = "/auth/{socialType}")
     @ResponseStatus(HttpStatus.OK)
     public void socialAuth(@PathVariable SocialType socialType, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
@@ -55,7 +54,7 @@ public class AuthController {
         KakaoUserInfoResponse kakaoUserInfoResponse = socialOauth.getUserInfo(oauthTokenResponse.getAccess_token());
 
         UserLoginResponse userLoginResponse = userService.oauthLoginUser(
-                UserRequest.of(kakaoUserInfoResponse.getKakao_account().getEmail(),"OAUTH_USER", SocialType.KAKAO.name())
+                UserRequest.of(kakaoUserInfoResponse.getKakao_account().getEmail(),"ROLE_OAUTH_USER", SocialType.KAKAO.name())
         );
 
         refreshTokenHeader(response, userLoginResponse.email());
