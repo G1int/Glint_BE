@@ -5,6 +5,9 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
+import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
+import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponse;
+import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.domain.JoinStatus;
 import com.swyp.glint.meeting.domain.MeetingInfo;
 import com.swyp.glint.meeting.domain.MeetingStatus;
@@ -104,6 +107,44 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                 .orderBy(meeting.createdDate.desc())
                 .limit(getLimit(searchCondition.getLimit()))
                 .fetch();
+    }
+
+
+    @Override
+    public MeetingInfoCountResponses searchMeetingWithTotalCount(MeetingSearchCondition searchCondition) {
+        int total = queryFactory
+                .selectFrom(meeting)
+                .where(
+                        meeting.status.ne(MeetingStatus.END.getName()),
+                        getLt(searchCondition.getLastMeetingId()),
+                        searchBooleanBuilder(searchCondition.getKeyword()))
+                .fetch().size();
+
+
+        List<MeetingInfo> meetingInfos = queryFactory
+                .select(
+                        Projections.constructor(
+                                MeetingInfo.class,
+                                meeting,
+                                list(userDetail),
+                                list(location)
+                        )
+                )
+                .from(meeting)
+                .join(userDetail).on(meeting.joinUserIds.contains(userDetail.userId))
+                .leftJoin(location).on(meeting.locationIds.contains(location.id))
+                .where(
+                        meeting.status.ne(MeetingStatus.END.getName()),
+                        getLt(searchCondition.getLastMeetingId()),
+                        searchBooleanBuilder(searchCondition.getKeyword())
+                )
+                .orderBy(meeting.createdDate.desc())
+                .groupBy(meeting.id)
+                .limit(getLimit(searchCondition.getLimit()))
+                .fetch();
+
+        return MeetingInfoCountResponses.from(meetingInfos, total);
+
     }
 
 

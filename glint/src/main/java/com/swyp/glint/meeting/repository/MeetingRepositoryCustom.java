@@ -1,6 +1,8 @@
 package com.swyp.glint.meeting.repository;
 
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
+import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
+import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.domain.MeetingInfo;
 
 import java.util.List;
@@ -13,4 +15,6 @@ public interface MeetingRepositoryCustom {
     List<MeetingInfo> findAllNotFinishMeeting(Long lastId, Integer size);
 
     List<MeetingInfo> searchMeeting(MeetingSearchCondition searchCondition);
+
+    MeetingInfoCountResponses searchMeetingWithTotalCount(MeetingSearchCondition searchCondition);
 }

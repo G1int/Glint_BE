@@ -9,12 +9,10 @@ public record UserMeetingResponse(
         String profileImage,
         String nickname,
         String gender,
+        Integer age,
         String affiliation
 ) {
 
-    public UserMeetingResponse(Long id, String profileImage, String nickname, String gender) {
-        this(id, profileImage, nickname, gender, "");
-    }
 
     public static UserMeetingResponse from(UserSimpleProfile userSimpleProfile) {
         return UserMeetingResponse.builder()
@@ -22,6 +20,7 @@ public record UserMeetingResponse(
                 .profileImage(userSimpleProfile.getProfileImage())
                 .nickname(userSimpleProfile.getNickname())
                 .gender(userSimpleProfile.getGender())
+                .age(userSimpleProfile.getAge())
                 .affiliation(userSimpleProfile.getAffiliation())
                 .build();
     }
