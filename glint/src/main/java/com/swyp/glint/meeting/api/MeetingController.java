@@ -2,6 +2,7 @@ package com.swyp.glint.meeting.api;
 
 import com.swyp.glint.meeting.application.MeetingFacade;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
+import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
 import com.swyp.glint.meeting.application.MeetingService;
@@ -73,7 +74,7 @@ public class MeetingController {
 
     @Operation(summary = "미팅 검색", description = "keyword 본문, 제목 매칭 조회")
     @GetMapping(path = "/meetings/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MeetingInfoResponses> searchMeeting(MeetingSearchCondition searchCondition) {
+    public ResponseEntity<MeetingInfoCountResponses> searchMeeting(MeetingSearchCondition searchCondition) {
 
         return ResponseEntity.ok(meetingService.searchMeeting(searchCondition));
     }
