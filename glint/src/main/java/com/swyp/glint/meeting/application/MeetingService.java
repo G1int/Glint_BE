@@ -12,6 +12,7 @@ import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.keyword.domain.Religion;
 import com.swyp.glint.keyword.domain.Smoking;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
+import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
 import com.swyp.glint.meeting.domain.LocationList;
@@ -80,8 +81,8 @@ public class MeetingService {
     }
 
 
-    public MeetingInfoResponses getMyMeeting(Long userId, String meetingStatus) {
-        return MeetingInfoResponses.from(meetingRepository.findAllMeetingInfoByStatus(userId, meetingStatus));
+    public MeetingInfoResponses getMyMeeting(Long userId, String meetingStatus, Long lastMeetingId, Integer limit) {
+        return MeetingInfoResponses.from(meetingRepository.findAllMeetingInfoByStatus(userId, meetingStatus, lastMeetingId, limit));
     }
 
     public LocationList getMeetingLocationList(Meeting meeting) {
@@ -93,8 +94,8 @@ public class MeetingService {
         return MeetingInfoResponses.from(meetingRepository.findAllNotFinishMeeting(lastId, size));
     }
 
-    public MeetingInfoResponses searchMeeting(MeetingSearchCondition searchCondition) {
-        return MeetingInfoResponses.from(meetingRepository.searchMeeting(searchCondition));
+    public MeetingInfoCountResponses searchMeeting(MeetingSearchCondition searchCondition) {
+        return meetingRepository.searchMeetingWithTotalCount(searchCondition);
     }
 
 

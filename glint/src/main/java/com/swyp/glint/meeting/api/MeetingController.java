@@ -2,6 +2,7 @@ package com.swyp.glint.meeting.api;
 
 import com.swyp.glint.meeting.application.MeetingFacade;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
+import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
 import com.swyp.glint.meeting.application.MeetingService;
@@ -40,11 +41,11 @@ public class MeetingController {
     @Operation(summary = "New 미팅 조회", description = "메인화면 New 미팅 조회 ")
     @GetMapping(path = "/meetings/new", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MeetingInfoResponses> getNewMeeting(
-            @RequestParam(required = false) Long lastId,
-            @RequestParam(required = false) Integer size
+            @RequestParam(required = false) Long lastMeetingId,
+            @RequestParam(required = false) Integer limit
     ) {
 
-        return ResponseEntity.ok(meetingService.getNewMeeting(lastId, size));
+        return ResponseEntity.ok(meetingService.getNewMeeting(lastMeetingId, limit));
     }
 
 
@@ -52,10 +53,13 @@ public class MeetingController {
     @GetMapping(path = "/meetings/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MeetingInfoResponses> getMyMeeting(
             @RequestParam @Pattern(regexp = "ACCEPTED|WAITING") @Valid String status,
-            @PathVariable Long userId
+            @PathVariable Long userId,
+            @RequestParam(required = false) Long lastMeetingId,
+            @RequestParam(required = false) Integer limit
+
     ) {
 
-        return ResponseEntity.ok(meetingService.getMyMeeting(userId, status));
+        return ResponseEntity.ok(meetingService.getMyMeeting(userId, status, lastMeetingId, limit));
     }
 
     @Operation(summary = "미팅 나가기", description = "미팅 나가기")
@@ -70,7 +74,7 @@ public class MeetingController {
 
     @Operation(summary = "미팅 검색", description = "keyword 본문, 제목 매칭 조회")
     @GetMapping(path = "/meetings/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MeetingInfoResponses> searchMeeting(MeetingSearchCondition searchCondition) {
+    public ResponseEntity<MeetingInfoCountResponses> searchMeeting(MeetingSearchCondition searchCondition) {
 
         return ResponseEntity.ok(meetingService.searchMeeting(searchCondition));
     }
