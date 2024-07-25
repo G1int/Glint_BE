@@ -37,7 +37,7 @@ public class UserProfileWithDetailResponse {
     String universityCategoryName;
     @Schema(description = "대학명", example = "중앙대학교")
     String universityName;
-    @Schema(description = "대학 학;명", example = "의예과")
+    @Schema(description = "대학 학명", example = "의예과")
     String universityDepartment;
     @Schema(description = "Location ID", example = "1")
     Long locationId;
@@ -78,7 +78,7 @@ public class UserProfileWithDetailResponse {
                 this.universityName=userProfile.getUniversity().getUniversityName();
                 this.universityDepartment=userProfile.getUniversity().getUniversityDepartment();
 
-                this.universityCategoryId=userProfile.getUniversity().getUniversityCategoryId();
+                this.universityCategoryId=userProfile.getUniversity().getUniversityCategory().getId();
 
                 this.locationId=userProfile.getLocation().getId();
                 this.locationState=userProfile.getLocation().getState();
@@ -100,7 +100,7 @@ public class UserProfileWithDetailResponse {
 
 
         public static UserProfileWithDetailResponse from(UserProfile userProfile, UserDetail userDetail) {
-        return UserProfileWithDetailResponse.builder()
+        return  UserProfileWithDetailResponse.builder()
                 .id(userProfile.getId())
                 .userId(userDetail.getUserId())
                 .userDetail(UserDetailResponse.from(userDetail))
@@ -108,7 +108,7 @@ public class UserProfileWithDetailResponse {
                 .workCategoryId(userProfile.getWork().getWorkCategoryId())
                 .workName(userProfile.getWork().getWorkName())
                 .universityId(userProfile.getUniversity().getId())
-                .universityCategoryId(userProfile.getUniversity().getUniversityCategoryId())
+                .universityCategoryId(userProfile.getUniversity().getUniversityCategory().getId())
                 .universityName(userProfile.getUniversity().getUniversityName())
                 .universityDepartment(userProfile.getUniversity().getUniversityDepartment())
                 .locationId(userProfile.getLocation().getId())
