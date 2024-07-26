@@ -116,7 +116,6 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                 .selectFrom(meeting)
                 .where(
                         meeting.status.ne(MeetingStatus.END.getName()),
-                        getLt(searchCondition.getLastMeetingId()),
                         searchBooleanBuilder(searchCondition.getKeyword()))
                 .fetch().size();
 
