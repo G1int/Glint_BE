@@ -28,12 +28,16 @@ public class SearchKeyword {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "archived")
+    private Boolean archived;
+
     @Builder(access = AccessLevel.PRIVATE)
     private SearchKeyword(Long searchKeywordId, String keyword, Long userId, LocalDateTime createdAt) {
         this.searchKeywordId = searchKeywordId;
         this.keyword = keyword;
         this.userId = userId;
         this.createdAt = createdAt;
+        this.archived = false;
     }
 
     public static SearchKeyword createNew(Long userId,String keyword) {
@@ -42,6 +46,10 @@ public class SearchKeyword {
                 .userId(userId)
                 .createdAt(LocalDateTime.now())
                 .build();
+    }
+
+    public void archive() {
+        this.archived = true;
     }
 
 
