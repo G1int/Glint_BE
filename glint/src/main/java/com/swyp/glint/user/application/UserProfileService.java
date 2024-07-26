@@ -1,5 +1,6 @@
 package com.swyp.glint.user.application;
 
+import com.swyp.glint.common.exception.InvalidValueException;
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.application.*;
 import com.swyp.glint.keyword.domain.*;
@@ -31,6 +32,10 @@ public class UserProfileService {
 
     @Transactional
     public UserInfoResponse createUserProfile(Long userId, UserProfileRequest userProfileRequest) {
+        Optional<UserProfile> existingUserProfile = userProfileRepository.findByUserId(userId);
+        if (existingUserProfile.isPresent()) {
+            throw new InvalidValueException("User Profile with userId: " + userId + " already exists");
+        }
 
         Work work = workService.createNewWork(userProfileRequest.workName());
         University university = universityService.getEntityByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
