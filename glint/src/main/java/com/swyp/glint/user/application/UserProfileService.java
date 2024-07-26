@@ -22,7 +22,6 @@ public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
 
     private final UserService userService;
-    private final UserDetailService userDetailService;
     private final DrinkingService drinkingService;
     private final LocationService locationService;
     private final ReligionService religionService;
