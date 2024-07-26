@@ -1,8 +1,7 @@
 package com.swyp.glint.keyword.repository;
 
 import com.swyp.glint.keyword.domain.Religion;
-import com.swyp.glint.user.domain.UserDetail;
-import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

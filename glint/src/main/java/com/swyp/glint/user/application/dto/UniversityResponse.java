@@ -16,7 +16,7 @@ public class UniversityResponse {
 
     @Schema(description = "University ID", example = "1")
     Long universityId;
-    @Schema(description = "대학명", example = "중앙대학교")
+    @Schema(description = "대학명", example = "서울대학교")
     String universityName;
     @Schema(description = "대학 학명", example = "의예과")
     String universityDepartment;

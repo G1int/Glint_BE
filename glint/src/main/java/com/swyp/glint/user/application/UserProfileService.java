@@ -1,22 +1,19 @@
 package com.swyp.glint.user.application;
 
+import com.swyp.glint.common.exception.InvalidValueException;
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.application.*;
 import com.swyp.glint.keyword.domain.*;
 import com.swyp.glint.user.application.dto.UserInfoResponse;
 import com.swyp.glint.user.application.dto.UserProfileRequest;
-import com.swyp.glint.user.application.dto.UserProfileWithDetailResponse;
 import com.swyp.glint.user.application.dto.UserResponse;
-import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
 import com.swyp.glint.user.repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +22,6 @@ public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
 
     private final UserService userService;
-    private final UserDetailService userDetailService;
     private final DrinkingService drinkingService;
     private final LocationService locationService;
     private final ReligionService religionService;
@@ -35,9 +31,13 @@ public class UserProfileService {
 
     @Transactional
     public UserInfoResponse createUserProfile(Long userId, UserProfileRequest userProfileRequest) {
+        Optional<UserProfile> existingUserProfile = userProfileRepository.findByUserId(userId);
+        if (existingUserProfile.isPresent()) {
+            throw new InvalidValueException("User Profile with userId: " + userId + " already exists");
+        }
 
         Work work = workService.createNewWork(userProfileRequest.workName());
-        University university = universityService.findByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
+        University university = universityService.getEntityByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
         Location location = locationService.findByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
         Religion religion = religionService.findById(userProfileRequest.religionId());
         Smoking smoking = smokingService.findById(userProfileRequest.smokingId());
@@ -62,25 +62,10 @@ public class UserProfileService {
         return userService.getUserInfoBy(userId);
     }
 
-    public UserProfileWithDetailResponse getUserProfileById(Long userId) {
-        return userProfileRepository.findUserInfoBy(userId)
-                .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found"));
-    }
-
     public UserProfile getUserProfileEntityById(Long userId) {
         UserResponse userResponse = userService.getUserById(userId);
         return userProfileRepository.findByUserId(userResponse.id())
                 .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found"));
-    }
-
-    public List<UserProfileWithDetailResponse> getAllUserProfile() {
-        List<UserProfile> userProfiles = userProfileRepository.findAll();
-        return userProfiles.stream()
-                .map(userProfile -> {
-                    UserDetail userDetail = userDetailService.getUserDetail(userProfile.getUserId());
-                    return UserProfileWithDetailResponse.from(userProfile, userDetail);
-                })
-                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -155,7 +140,7 @@ public class UserProfileService {
     private University getUniversityOrElseNull(UserProfileRequest userProfileRequest) {
         return Optional.ofNullable(userProfileRequest.universityName())
                 .filter(universityName -> !universityName.isEmpty())
-                .map(universityName -> universityService.findByName(universityName, userProfileRequest.universityDepartment()))
+                .map(universityName -> universityService.getEntityByName(universityName, userProfileRequest.universityDepartment()))
                 .orElse(null);
     }
 }
