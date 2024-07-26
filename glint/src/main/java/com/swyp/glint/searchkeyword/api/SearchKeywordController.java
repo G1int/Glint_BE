@@ -34,7 +34,7 @@ public class SearchKeywordController {
     }
 
     @Operation(summary = "최근 검색 키워드 삭제", description = "검색 키워드 삭제")
-    @DeleteMapping(path = "/search-keywords/{searchKeywordId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "/search-keywords/{searchKeywordId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> removeRecentSearchKeywords(@PathVariable Long searchKeywordId) {
             searchKeywordService.removeRecentSearchKeywords(searchKeywordId);
         return ResponseEntity.noContent().build();
