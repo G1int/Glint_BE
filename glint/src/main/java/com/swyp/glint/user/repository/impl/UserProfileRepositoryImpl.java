@@ -51,7 +51,7 @@ public class UserProfileRepositoryImpl implements UserProfileCustom {
                 .join(userProfile.hashtags)
                 .leftJoin(userDetail).on(userDetail.userId.eq(userProfile.userId))
                 .leftJoin(workCategory).on(workCategory.id.eq(userProfile.work.workCategoryId))
-                .leftJoin(universityCategory).on(universityCategory.id.eq(userProfile.university.universityCategoryId))
+                .leftJoin(universityCategory).on(universityCategory.id.eq(userProfile.university.universityCategory.id))
                 .where(userProfile.userId.eq(userId))
                 .fetchOne()
         );

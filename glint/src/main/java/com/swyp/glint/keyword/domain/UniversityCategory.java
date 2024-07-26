@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.PersistenceCreator;
 
 @Table(name = "university_category")
 @Entity
@@ -22,7 +23,8 @@ public class UniversityCategory extends BaseTimeEntity {
     private  String universityCategoryName;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private UniversityCategory(Long id, String universityCategoryName) {
+    @PersistenceCreator
+    public UniversityCategory(Long id, String universityCategoryName) {
         this.id = id;
         this.universityCategoryName = universityCategoryName;
     }
