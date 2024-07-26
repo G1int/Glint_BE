@@ -1,10 +1,10 @@
 package com.swyp.glint.searchkeyword.api;
 
+import com.amazonaws.Response;
 import com.swyp.glint.searchkeyword.application.SearchKeywordService;
 import com.swyp.glint.searchkeyword.application.dto.SearchKeywordRequest;
 import com.swyp.glint.searchkeyword.application.dto.SearchKeywordResponse;
 import com.swyp.glint.searchkeyword.application.dto.SearchKeywordResponses;
-import com.swyp.glint.searchkeyword.domain.SearchKeyword;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,5 +33,11 @@ public class SearchKeywordController {
         return ResponseEntity.ok(searchKeywordService.getRecentSearchKeywords(userId, limit));
     }
 
+    @Operation(summary = "최근 검색 키워드 삭제", description = "검색 키워드 삭제")
+    @DeleteMapping(path = "/search-keywords/{searchKeywordId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> removeRecentSearchKeywords(@PathVariable Long searchKeywordId) {
+            searchKeywordService.removeRecentSearchKeywords(searchKeywordId);
+        return ResponseEntity.noContent().build();
+    }
 
 }
