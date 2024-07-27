@@ -17,6 +17,7 @@ import com.swyp.glint.meeting.application.dto.response.JoinMeetingResponse;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
 import com.swyp.glint.meeting.domain.*;
+import com.swyp.glint.meeting.exception.NumberOfPeopleException;
 import com.swyp.glint.searchkeyword.application.SearchKeywordService;
 import com.swyp.glint.user.application.UserDetailService;
 import com.swyp.glint.user.application.UserProfileService;
@@ -30,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -129,8 +131,16 @@ public class MeetingFacade {
     @Transactional
     public MeetingResponse joinUser(Long meetingId, Long userId) {
         Meeting meeting = meetingService.getMeetingEntity(meetingId);
-        userService.getUserById(userId);
+        Map<String, List<UserDetail>> userGenderMap = userDetailService.getUserDetails(meeting.getJoinUserIds()).stream().collect(Collectors.groupingBy(UserDetail::getGender));
+        UserDetail userDetail = userDetailService.getUserDetail(userId);
+        //todo 리팩토링
+        List<UserDetail> userGenderDetails = Optional.ofNullable(userGenderMap.get(userDetail.getGender())).orElse(List.of());
+        if(userGenderDetails.size() >= meeting.getPeopleCapacity()) {
+            throw new NumberOfPeopleException("인원수 초과");
+        }
         meeting.addUser(userId);
+
+        userService.getUserById(userId);
 
         if(meeting.isFull()) {
             chatRoomService.activeChatRoom(meetingId, meeting.getJoinUserIds());

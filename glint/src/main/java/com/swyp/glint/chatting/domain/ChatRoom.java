@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -73,7 +74,7 @@ public class ChatRoom extends BaseTimeEntity {
         return false;
     }
     public void updateJoinUsers(List<Long> joinUserIds) {
-        this.userIds = joinUserIds;
+        this.userIds = new ArrayList<>(joinUserIds);
     }
 }
 
