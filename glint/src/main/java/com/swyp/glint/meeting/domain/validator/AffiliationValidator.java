@@ -27,12 +27,13 @@ public class AffiliationValidator implements ConditionValidator {
         University university = userProfile.getUniversity();
         Work work = userProfile.getWork();
 
-        String universityName = university.getUniversityName();
-        String workName = work.getWorkName();
 
-        if(Objects.isNull(universityName) && Objects.isNull(workName)) {
+        if(Objects.isNull(university) && Objects.isNull(work)) {
             return false;
         }
+
+        String universityName = Objects.isNull(university) ? null : university.getUniversityName();
+        String workName = Objects.isNull(work) ? null : work.getWorkName();
 
         if(Objects.nonNull(universityName) && joinConditionElement.getAffiliation().contains(universityName) ) {
             return true;

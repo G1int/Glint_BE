@@ -67,15 +67,16 @@ public class AuthController {
     }
 
     @PutMapping("/auth/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         String accessToken = request.getHeader("Authorization");
         String refreshToken = request.getHeader("RefreshToken");
-        String email = authorityHelper.getEmail(accessToken.replace("Bearer ", ""));
 
         response.setHeader("Authorization", "");
         response.setHeader("RefreshToken", "");
 
+        String email = authorityHelper.getEmail(refreshToken.replace("Bearer ", ""));
         redisUtil.deleteData(email);
+        return ResponseEntity.ok().build();
     }
 
 
