@@ -29,11 +29,11 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     //'시도(state)'로 모든 '시군구(city)' 찾기
     @Query("""
-                SELECT l.city
+                SELECT l
                 FROM Location l
                 WHERE l.state = :state
             """)
-    List<String> findAllCityByState(@Param("state") String state);
+    List<Location> findAllCityByState(@Param("state") String state);
 
     //'시군구(city)'로 해당하는 '시도(state)' 찾기
     @Query("""
