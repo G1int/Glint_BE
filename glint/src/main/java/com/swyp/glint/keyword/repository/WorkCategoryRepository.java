@@ -19,7 +19,14 @@ public interface WorkCategoryRepository extends JpaRepository<WorkCategory, Long
                 JOIN wc.workCategoryKeywords kw
                 WHERE :workName LIKE CONCAT('%', kw, '%')
             """)
-    List<WorkCategory> findByWorkNameContainingKeyword(@Param("workName") String workName);
+    Optional<WorkCategory> findByWorkNameContainingKeyword(@Param("workName") String workName);
+
+    @Query("""
+                SELECT wc
+                FROM WorkCategory wc
+                WHERE wc.workCategoryName = :workCategoryName
+            """)
+    Optional<WorkCategory> findByWorkCategoryName(@Param("workCategoryName") String workCategoryName);
 
     // 인수로 받은 workName과 일치하는 키워드가 존재한다면 true 반환
     @Query("""

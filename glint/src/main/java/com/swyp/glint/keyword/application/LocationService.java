@@ -1,8 +1,10 @@
 package com.swyp.glint.keyword.application;
 
 import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.keyword.application.dto.LocationListResponse;
 import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.keyword.repository.LocationRepository;
+import com.swyp.glint.user.application.dto.LocationResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,14 +17,21 @@ public class LocationService {
 
     private final LocationRepository locationRepository;
 
-    public Location findById(Long locationId) { // location id를 통한 Location 엔티티 반환
-        return locationRepository.findById(locationId)
+    public LocationResponse findById(Long locationId) {
+        Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new NotFoundEntityException("Location not found with id: " + locationId));
+        return  LocationResponse.from(location);
     }
 
-    public Location findByName(String state, String city) {
-        return locationRepository.findByStateAndCity(state, city)
+    public LocationResponse findByName(String state, String city) {
+        Location location = locationRepository.findByStateAndCity(state, city)
                 .orElseThrow(() -> new NotFoundEntityException("Location not foun with state: " + state + " and city: " + city));
+        return LocationResponse.from(location);
+    }
+
+    public Location getEntityByName(String state, String city) {
+        return locationRepository.findByStateAndCity(state, city)
+                .orElse(null);
     }
 
     public List<Location> getAllLocation() { // 전체 조회
@@ -37,12 +46,12 @@ public class LocationService {
         return states;
     }
 
-    public List<String> getAllCityByState(String state) { // 특정 state에 해당하는 모든 city 조회
-        List<String> cities = locationRepository.findAllCityByState(state);
-        if(cities.isEmpty()) {
-            throw new NotFoundEntityException("cities not found with state: " + state);
+    public LocationListResponse getAllCityByState(String state) { // 특정 state에 해당하는 모든 city 조회
+        List<Location> locationList = locationRepository.findAllCityByState(state);
+        if(locationList.isEmpty()) {
+            throw new NotFoundEntityException("Cities not found with state: " + state);
         }
-        return cities;
+        return LocationListResponse.from(locationList);
     }
 
     public String getStateByCity(String city) { // 특정 city에 해당하는 state 조회

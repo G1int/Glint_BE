@@ -17,7 +17,7 @@ public class LocationResponse {
 
     @Schema(description = "Location ID", example = "1")
     Long locationId;
-    @Schema(description = "위치의 [시,도]", example = "서울특별시")
+    @Schema(description = "위치의 [시,도]", example = "서울")
     String locationState;
     @Schema(description = "위치의 [시,군,구]", example = "강남구")
     String locationCity;

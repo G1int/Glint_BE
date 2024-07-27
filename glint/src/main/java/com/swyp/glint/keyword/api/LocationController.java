@@ -1,7 +1,9 @@
 package com.swyp.glint.keyword.api;
 
 import com.swyp.glint.keyword.application.LocationService;
+import com.swyp.glint.keyword.application.dto.LocationListResponse;
 import com.swyp.glint.keyword.domain.Location;
+import com.swyp.glint.user.application.dto.LocationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -31,18 +33,16 @@ public class LocationController {
 
     @GetMapping("")
     @Operation(summary = "Get a location by state and city", description = "[시,도]와 [시,군,구]를 통한 위치 조회")
-    public ResponseEntity<Location> getLocationByStateAndCity(
-            @RequestParam(required = false) String state,
-            @RequestParam(required = false) String city) {
-        Location location = locationService.findByName(state, city);
-        return ResponseEntity.ok(location);
+    public ResponseEntity<LocationResponse> getLocationByStateAndCity(
+            @RequestParam String state,
+            @RequestParam String city) {
+        return ResponseEntity.ok(locationService.findByName(state, city));
     }
 
     @GetMapping("/{locationId}/location")
     @Operation(summary = "Get a location by its ID", description = "Location Id를 통한 위치 조회")
-    public ResponseEntity<Location> getLocationById(@PathVariable Long locationId) {
-        Location location = locationService.findById(locationId);
-        return ResponseEntity.ok(location);
+    public ResponseEntity<LocationResponse> getLocationById(@PathVariable Long locationId) {
+        return ResponseEntity.ok(locationService.findById(locationId));
     }
 
     @GetMapping("/states")
@@ -54,9 +54,8 @@ public class LocationController {
 
     @GetMapping("/cities")
     @Operation(summary = "List all cities by state", description = "[시,도]를 통한 모든 [시,군,구] 조회")
-    public ResponseEntity<List<String>> getCitiesByState(@RequestParam String state) {
-        List<String> cities = locationService.getAllCityByState(state);
-        return ResponseEntity.ok(cities);
+    public ResponseEntity<LocationListResponse> getCitiesByState(@RequestParam String state) {
+        return ResponseEntity.ok(locationService.getAllCityByState(state));
     }
 
     /* // 생성, 수정, 조회 주석 처리

@@ -24,14 +24,15 @@ public class Work extends BaseTimeEntity {
     @Column(name = "work_name")
     private String workName;
 
-    @Column(name = "work_category_id")
-    private Long workCategoryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "work_category_id")
+    private WorkCategory workCategory;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Work(Long id, String workName, Long workCategoryId) {
+    private Work(Long id, String workName, WorkCategory workCategory) {
         this.id = id;
         this.workName = workName;
-        this.workCategoryId = workCategoryId;
+        this.workCategory = workCategory;
     }
 
     public static Work createNewWork(String workName) {
@@ -40,9 +41,9 @@ public class Work extends BaseTimeEntity {
                 .build();
     }
 
-    public void updateWork(String workName, Long workCategoryId) {
+    public void updateWork(String workName, WorkCategory workCategory) {
         this.workName = workName;
-        this.workCategoryId = workCategoryId;
+        this.workCategory = workCategory;
     }
 
 }

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,10 +49,13 @@ public class UserService {
     public UserLoginResponse oauthLoginUser(UserRequest userRequest) {
         User user = userRequest.toEntity();
 
-        User foundUser = userRepository.findByEmail(user.getEmail())
-                .orElseGet(() -> userRepository.save(userRequest.toEntity()));
+        Optional<User> userOptional = userRepository.findByEmail(user.getEmail());
 
-        return UserLoginResponse.from(foundUser);
+        if(userOptional.isPresent()) {
+            return UserLoginResponse.from(userOptional.get(), false);
+        }
+
+        return UserLoginResponse.from(userRepository.save(userRequest.toEntity()), true);
     }
 
 

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.PersistenceCreator;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class WorkCategory extends BaseTimeEntity {
     private String workCategoryName;
 
     @Builder(access = AccessLevel.PRIVATE)
+    @PersistenceCreator
     private WorkCategory(Long id, List<String> workCategoryKeywords, String workCategoryName) {
         this.id = id;
         this.workCategoryKeywords = workCategoryKeywords;

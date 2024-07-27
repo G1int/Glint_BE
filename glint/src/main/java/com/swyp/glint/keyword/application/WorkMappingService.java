@@ -20,10 +20,8 @@ public class WorkMappingService {
     public void mapAllWorksToCategories() {
         List<Work> works = workRepository.findAll();
         for (Work work : works) {
-            Long workCategoryId = workCategoryService.findCategoryByWorkName(work.getWorkName())
-                    .map(WorkCategory::getId)
-                    .orElse(null);
-            work.updateWork(work.getWorkName(), workCategoryId);
+            WorkCategory workCategory = workCategoryService.findCategoryByWorkName(work.getWorkName());
+            work.updateWork(work.getWorkName(), workCategory);
             workRepository.save(work);
         }
     }
