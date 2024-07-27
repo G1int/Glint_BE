@@ -43,10 +43,12 @@ public class ChatRoomService {
         chatRoomRepository.save(chatRoom);
     }
 
-    public void activeChatRoom(Long meetingId) {
+    @Transactional
+    public void activeChatRoom(Long meetingId, List<Long> joinUserIds) {
         ChatRoom chatRoom = chatRoomRepository.findByMeetingId(meetingId)
-                .orElseThrow(() -> new NotFoundEntityException("Not Found ChatRoom MeetingId" + meetingId));
+                .orElseGet(() -> chatRoomRepository.save(ChatRoom.createByMeeting(meetingId, joinUserIds)));
 
+        chatRoom.updateJoinUsers(joinUserIds);
         chatRoom.active();
 
         chatRoomRepository.save(chatRoom);

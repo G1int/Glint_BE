@@ -133,7 +133,7 @@ public class MeetingFacade {
         meeting.addUser(userId);
 
         if(meeting.isFull()) {
-            chatRoomService.activeChatRoom(meetingId);
+            chatRoomService.activeChatRoom(meetingId, meeting.getJoinUserIds());
         }
 
         MeetingAggregation meetingAggregation = getMeetingAggregation(meeting);
