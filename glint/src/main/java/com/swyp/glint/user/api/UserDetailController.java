@@ -22,7 +22,7 @@ public class UserDetailController {
 
     @Operation(summary = "Create User Detail", description = "새로운 User 추가 정보 생성", hidden = true)
     @PostMapping(path = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDetailResponse> createUserDetail(@PathVariable("id") Long userId, @Valid @RequestBody UserDetailRequest userDetailRequest) {
+    public ResponseEntity<UserDetailResponse> createUserDetail(@PathVariable("userId") Long userId, @Valid @RequestBody UserDetailRequest userDetailRequest) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userDetailService.createUserDetail(userId, userDetailRequest));
     }
@@ -37,20 +37,20 @@ public class UserDetailController {
 
     @Operation(summary = "User NickName Validate Check", description = "유저 닉네임 중복 체크, 닉네임 유효성 체크, 유효성 통과시 임시 UserDetail 생성 후 반환 (닉네임 선점)")
     @PostMapping(path = "/{userId}/nickname", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDetailResponse> userNickNameValidate(@PathVariable("id") Long userId, @RequestBody UserNickNameRequest userNickNameRequest) {
+    public ResponseEntity<UserDetailResponse> userNickNameValidate(@PathVariable("userId") Long userId, @RequestBody UserNickNameRequest userNickNameRequest) {
 
         return ResponseEntity.ok(userDetailService.createTempUserDetail(userId, userNickNameRequest.nickname()));
     }
 
     @Operation(summary = "Get User Detail", description = "User Id를 통한 User 추가 정보 조회")
     @GetMapping(path = "/{userId}/detail", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDetailResponse> getUserDetail(@PathVariable("id") Long userId) {
+    public ResponseEntity<UserDetailResponse> getUserDetail(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(userDetailService.getUserDetailById(userId));
     }
 
     @Operation(summary =  "Update user detail", description = "유저 추가 정보 생성 및 수정")
     @PutMapping(path = "/{userId}/detail", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDetailResponse> updateUserDetail(@PathVariable("id") Long userId, @Valid @RequestBody UserDetailRequest userDetailRequest) {
+    public ResponseEntity<UserDetailResponse> updateUserDetail(@PathVariable("userId") Long userId, @Valid @RequestBody UserDetailRequest userDetailRequest) {
         return ResponseEntity.ok(userDetailService.updateUserDetail(userId, userDetailRequest));
     }
 
