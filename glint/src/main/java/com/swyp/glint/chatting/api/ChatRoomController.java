@@ -9,13 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping()
+@RestController
 @RequiredArgsConstructor
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
-    @Operation(summary = "채팅방 생성", description = "User Id를 통한 User 정보 조회")
+    @Operation(summary = "채팅방 생성", description = "미팅 채팅방 생성")
     @PostMapping(path = "/meetings/{meetingId}/chatrooms", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ChatRoomResponse> createChatRoom(@PathVariable Long meetingId, @RequestBody ChatRoomRequest chatRoomRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(chatRoomService.createChatRoom(meetingId, chatRoomRequest));

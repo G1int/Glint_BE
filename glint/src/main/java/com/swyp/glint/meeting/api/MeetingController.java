@@ -1,6 +1,5 @@
 package com.swyp.glint.meeting.api;
 
-import com.amazonaws.Request;
 import com.swyp.glint.meeting.application.MeetingFacade;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
@@ -36,7 +35,7 @@ public class MeetingController {
     @GetMapping(path = "/meetings/{meetingId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MeetingResponse> getMeeting(@PathVariable Long meetingId) {
 
-        return ResponseEntity.ok(meetingService.getMeeting(meetingId));
+        return ResponseEntity.ok(meetingFacade.getMeeting(meetingId));
     }
 
     @Operation(summary = "New 미팅 조회", description = "메인화면 New 미팅 조회 ")
@@ -80,7 +79,7 @@ public class MeetingController {
             @RequestParam(required = false) Long userId
     ) {
 
-        return ResponseEntity.ok(meetingService.searchMeeting(searchCondition, userId));
+        return ResponseEntity.ok(meetingFacade.searchMeeting(searchCondition, userId));
     }
 
 

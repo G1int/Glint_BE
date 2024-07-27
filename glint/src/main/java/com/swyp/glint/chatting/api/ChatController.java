@@ -4,6 +4,7 @@ import com.swyp.glint.chatting.application.ChatService;
 import com.swyp.glint.chatting.application.dto.request.CreateChatMessageRequest;
 import com.swyp.glint.chatting.application.dto.response.ChatResponse;
 import com.swyp.glint.chatting.application.dto.response.ChatResponses;
+import com.swyp.glint.chatting.exception.NotFoundChatRoomException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -23,7 +24,7 @@ public class ChatController {
     public void chatting(@DestinationVariable Long roomId, @RequestBody CreateChatMessageRequest request) {
         // todo room 정보 없을때 처리
         if(roomId == null) {
-//            throw new NotFoundChatRoomException("roomId is null");
+            throw new NotFoundChatRoomException("roomId is null");
         }
         ChatResponse chatMessage = chatService.createChatMessage(request);
         simpMessagingTemplate.convertAndSend("/sub/chatrooms/" + roomId, chatMessage);

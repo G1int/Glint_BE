@@ -34,10 +34,9 @@ public class UserDetailController {
         return ResponseEntity.ok(userDetailService.isNicknameTaken(nickname));
     }
 
-
     @Operation(summary = "User NickName Validate Check", description = "유저 닉네임 중복 체크, 닉네임 유효성 체크, 유효성 통과시 임시 UserDetail 생성 후 반환 (닉네임 선점)")
     @PostMapping(path = "/{userId}/nickname", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDetailResponse> userNickNameValidate(@PathVariable("id") Long userId, @RequestBody UserNickNameRequest userNickNameRequest) {
+    public ResponseEntity<UserDetailResponse> userNickNameValidate(@PathVariable Long userId, @RequestBody UserNickNameRequest userNickNameRequest) {
 
         return ResponseEntity.ok(userDetailService.createTempUserDetail(userId, userNickNameRequest.nickname()));
     }
