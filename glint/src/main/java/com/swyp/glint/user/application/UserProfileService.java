@@ -6,7 +6,9 @@ import com.swyp.glint.keyword.application.*;
 import com.swyp.glint.keyword.domain.*;
 import com.swyp.glint.user.application.dto.UserInfoResponse;
 import com.swyp.glint.user.application.dto.UserProfileRequest;
+import com.swyp.glint.user.application.dto.UserProfileResponse;
 import com.swyp.glint.user.application.dto.UserResponse;
+import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
 import com.swyp.glint.user.repository.UserProfileRepository;
 import jakarta.transaction.Transactional;
@@ -22,12 +24,14 @@ public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
 
     private final UserService userService;
+    private final UserDetailService userDetailService;
     private final DrinkingService drinkingService;
     private final LocationService locationService;
     private final ReligionService religionService;
     private final SmokingService smokingService;
     private final UniversityService universityService;
     private final WorkService workService;
+    private final WorkCategoryService workCategoryService;
 
     @Transactional
     public UserInfoResponse createUserProfile(Long userId, UserProfileRequest userProfileRequest) {
@@ -38,7 +42,7 @@ public class UserProfileService {
 
         Work work = workService.createNewWork(userProfileRequest.workName());
         University university = universityService.getEntityByName(userProfileRequest.universityName(), userProfileRequest.universityDepartment());
-        Location location = locationService.findByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
+        Location location = locationService.getEntityByName(userProfileRequest.locationState(), userProfileRequest.locationCity());
         Religion religion = religionService.findById(userProfileRequest.religionId());
         Smoking smoking = smokingService.findById(userProfileRequest.smokingId());
         Drinking drinking = drinkingService.findById(userProfileRequest.drinkingId());
@@ -68,9 +72,19 @@ public class UserProfileService {
                 .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found"));
     }
 
+    public UserProfileResponse getUserProfileById(Long userId) {
+        UserProfile userProfile = getUserProfileEntityById(userId);
+        UniversityCategory universityCategory = universityService.getUniversityCategoryByUniversity(userProfile.getUniversity())
+                .orElse(null);
+        WorkCategory workCategory = workCategoryService.getUWorkCategoryByWork(userProfile.getWork())
+                .orElse(null);
+        return UserProfileResponse.from(userProfile, workCategory, universityCategory);
+    }
+
     @Transactional
     public UserInfoResponse updateUserProfile(Long userId, UserProfileRequest userProfileRequest) {
         userService.getUserById(userId);
+        userDetailService.getUserEntityOrElseThrow(userId); // 만약 해당 userId의 UserDetail이 null일 시 에러나므로 예외 처리
 
         Work work = Optional.ofNullable(userProfileRequest.workName()).map(workService::createNewWork).orElse(null);
 
@@ -133,7 +147,7 @@ public class UserProfileService {
     private Location getLocationOrElseNull(UserProfileRequest userProfileRequest) {
         return Optional.ofNullable(userProfileRequest.locationState())
                 .filter(locationState -> !locationState.isEmpty())
-                .map(locationState -> locationService.findByName(locationState, userProfileRequest.locationCity()))
+                .map(locationState -> locationService.getEntityByName(locationState, userProfileRequest.locationCity()))
                 .orElse(null);
     }
 
