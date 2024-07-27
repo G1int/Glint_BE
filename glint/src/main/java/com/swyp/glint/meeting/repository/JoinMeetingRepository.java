@@ -33,7 +33,7 @@ public interface JoinMeetingRepository extends JpaRepository<JoinMeeting, Long>,
             order by j.id limit 10
             """
     )
-    List<JoinMeeting> findByMeetingId(Long meetingId, Long lastJoinMeetingId);
+    List<JoinMeeting> findAllByMeetingId(Long meetingId, Long lastJoinMeetingId);
 
 
     @Query(
@@ -45,4 +45,15 @@ public interface JoinMeetingRepository extends JpaRepository<JoinMeeting, Long>,
             """
     )
     List<JoinMeeting> findByMeetingIdAndStatus(Long meetingId, String status);
+
+
+    @Query(
+            """
+            SELECT j
+            FROM JoinMeeting j
+            WHERE j.status = 'WAITING'
+            AND j.userId = :userId
+            """
+    )
+    List<JoinMeeting> findAllByUserId(Long userId);
 }

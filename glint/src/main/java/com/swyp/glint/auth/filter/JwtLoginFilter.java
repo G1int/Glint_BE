@@ -1,5 +1,6 @@
 package com.swyp.glint.auth.filter;
 
+import com.swyp.glint.auth.exception.NotMathRefreshTokenException;
 import com.swyp.glint.common.authority.AuthorityHelper;
 import com.swyp.glint.common.cache.RemoteCache;
 import com.swyp.glint.common.util.CookieUtil;
@@ -43,7 +44,9 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
         try{
             if(accessToken != null){
-                email = authorityHelper.getEmail(accessToken.replace("Bearer ", ""));
+
+                accessToken = accessToken.replace("Bearer ", "");
+                email = authorityHelper.getEmail(accessToken);
             }
             if(email != null) {
                 UserDetails userDetails = userPrincipalDetailsService.loadUserByUsername(email);
@@ -52,24 +55,22 @@ public class JwtLoginFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-//                refreshTokenCookie(response, email);
                 refreshTokenHeader(response, email);
-
             }
 
         } catch (ExpiredJwtException e){
-//            Cookie refreshTokenCookie = cookieUtil.getCookie(request,AuthorityHelper.REFRESH_TOKEN_NAME);
-            refreshToken = request.getHeader("RefreshToken");
-//            if(refreshTokenCookie != null){
-//                refreshToken = refreshTokenCookie.getValue();
-//            }
+            refreshToken = redisUtil.getData(email);
+
+
         } catch (Exception e){
             logger.error("error" + e.getMessage());
         }
 
         try{
             if(refreshToken != null) {
-                email = authorityHelper.getEmail(refreshToken.replace("Bearer ", ""));
+                validateRefreshToken(request, refreshToken);
+
+                email = redisUtil.getData(refreshToken);
 
                 UserDetails userDetails = userPrincipalDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =  new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
@@ -77,7 +78,6 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-//                refreshTokenCookie(response, email);
                 refreshTokenHeader(response, email);
             }
         } catch (ExpiredJwtException ignored){
@@ -91,10 +91,18 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
     }
 
+    private static void validateRefreshToken(HttpServletRequest request, String refreshToken) {
+        String requestRefreshToken = request.getHeader("RefreshToken");
+
+        if(refreshToken.equals(requestRefreshToken)){
+            throw new NotMathRefreshTokenException("refresh token is not match");
+        }
+    }
+
 
     private void refreshTokenHeader(HttpServletResponse response, String email) {
         String generateAccessToken = authorityHelper.generateToken(email);
-        String generateRefreshToken = authorityHelper.generateToken(email);
+        String generateRefreshToken = authorityHelper.generateRefreshToken(email);
 
         response.setHeader("Authorization", "Bearer "  + generateAccessToken);
         response.setHeader("RefreshToken", "Bearer "  + generateRefreshToken);
@@ -105,7 +113,7 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
     private void refreshTokenCookie(HttpServletResponse response, String email) {
         String generateAccessToken = authorityHelper.generateToken(email);
-        String generateRefreshToken = authorityHelper.generateToken(email);
+        String generateRefreshToken = authorityHelper.generateRefreshToken(email);
 
         Cookie tokenCookie = cookieUtil.createAccessTokenCookie(generateAccessToken);
         Cookie refreshTokenCookie = cookieUtil.createRefreshTokenCookie(generateRefreshToken);

@@ -168,4 +168,16 @@ public class Meeting extends BaseTimeEntity {
     public void archive() {
         this.status = MeetingStatus.ARCHIVED.getName();
     }
+
+    public void out(Long userId) {
+        joinUserIds.removeIf(id -> id.equals(userId));
+    }
+
+    public boolean isLeaderAndAlone(Long userId) {
+        return isLeader(userId) && isAlone();
+    }
+
+    public boolean isAlone() {
+        return joinUserIds.size() == 1;
+    }
 }

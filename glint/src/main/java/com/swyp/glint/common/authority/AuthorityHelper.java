@@ -15,14 +15,13 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class AuthorityHelper {
 
-    // 12시간
-    public final static long ACCESS_TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 * 12;
+    // 30분
+    public final static long ACCESS_TOKEN_VALIDATION_SECOND = 1000L * 60 * 30 ;
     // 14일
     public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 * 24 * 14;
 
-    final static public String ACCESS_TOKEN_NAME = "access-token";
-    final static public String REFRESH_TOKEN_NAME = "refresh-token";
-
+    final static public String ACCESS_TOKEN_NAME = "Authorization";
+    final static public String REFRESH_TOKEN_NAME = "RefreshToken";
 
     @Value("glintlingtlingtglintlingtlingtglintlingtlingtglintlingtlingtglintlingtlingtglintlingtlingtglintlingtlingt")
     private String SECRET_KEY;

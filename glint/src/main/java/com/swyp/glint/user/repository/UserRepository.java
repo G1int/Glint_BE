@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long>, UserCustom {
             SELECT u
             FROM User u
             WHERE u.email = :email
+            AND u.archived = false
         """)
     Optional<User> findByEmail(@Param("email") String email);
 
