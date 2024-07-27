@@ -135,14 +135,14 @@ public class Meeting extends BaseTimeEntity {
     }
 
     public void addUser(Long userId) {
-        if(joinUserIds.size() >= this.peopleCapacity ) {
+        if(joinUserIds.size() >= this.peopleCapacity * 2) {
             throw new NumberOfPeopleException("인원수 초과");
         }
         joinUserIds.add(userId);
     }
 
     public boolean isFull() {
-        if(joinUserIds.size() == this.peopleCapacity) {
+        if(joinUserIds.size() == this.peopleCapacity * 2) {
             this.status = MeetingStatus.PROGRESS.getName();
             return true;
         }
