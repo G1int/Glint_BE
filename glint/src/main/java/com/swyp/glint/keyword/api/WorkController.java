@@ -2,17 +2,15 @@ package com.swyp.glint.keyword.api;
 
 import com.swyp.glint.keyword.application.WorkCategoryService;
 import com.swyp.glint.keyword.application.WorkService;
-import com.swyp.glint.keyword.domain.Work;
-import com.swyp.glint.keyword.domain.WorkCategory;
+import com.swyp.glint.keyword.application.dto.WorkCategoryListResponse;
+import com.swyp.glint.keyword.application.dto.WorkListResponse;
+import com.swyp.glint.user.application.dto.WorkResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/works")
@@ -29,38 +27,27 @@ public class WorkController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "List all works", description = "모든 직업 조회")
-    public ResponseEntity<List<Work>> getAllWorks() {
-        List<Work> works = workService.getAllWork();
-        return ResponseEntity.ok(works);
+    public ResponseEntity<WorkListResponse> getAllWorks() {
+        return ResponseEntity.ok(workService.getAllWork());
     }
 
     @GetMapping(path = "/work", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get a Work by workName", description = "직업명을 통한 직업 조회")
-    public ResponseEntity<Work> getWorkByName(
+    public ResponseEntity<WorkResponse> getWorkByName(
             @RequestParam String workName) {
-        Work work = workService.findByName(workName);
-        return ResponseEntity.ok(work);
+        return ResponseEntity.ok(workService.findByName(workName));
     }
 
     @GetMapping(path = "/{workId}/work", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get a work by its ID", description = "work id를 통한 통한 직업 조회")
-    public ResponseEntity<Work> getWorkById(@PathVariable Long workId) {
-        Work work = workService.findById(workId);
-        return ResponseEntity.ok(work);
+    public ResponseEntity<WorkResponse> getWorkById(@PathVariable Long workId) {
+        return ResponseEntity.ok(workService.findById(workId));
     }
 
     @GetMapping(path = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "List all work categories", description = "모든 직업 카테고리 조회")
-    public ResponseEntity<List<WorkCategory>> getAllWorkCategories() {
+    public ResponseEntity<WorkCategoryListResponse> getAllWorkCategories() {
         return ResponseEntity.ok(workCategoryService.getAllWorkCategory());
-    }
-
-    @GetMapping("/category")
-    @Operation(summary = "Get a Work Category by workName", description = "직업명을 통한 직업 카테고리 조회")
-    public ResponseEntity<WorkCategory> getWorkCategoryByWorkName(@RequestParam String workName) {
-        Optional<WorkCategory> workCategory = workCategoryService.findCategoryByWorkName(workName);
-        return workCategory.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PostMapping("/map-categories")
@@ -73,9 +60,8 @@ public class WorkController {
 
     @PostMapping(path = "/{workId}/work", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new work", description = "새로운 직업 생성")
-    public ResponseEntity<Work> createWork(@RequestParam String workName) {
-        Work work = workService.createNewWork(workName);
-        return new ResponseEntity<>(work, HttpStatus.CREATED);
+    public ResponseEntity<WorkResponse> createWork(@RequestParam String workName) {
+        return new ResponseEntity<>(workService.createNewWorkReturnDTO(workName), HttpStatus.CREATED);
     }
 
   /* // 생성, 수정, 조회 주석 처리

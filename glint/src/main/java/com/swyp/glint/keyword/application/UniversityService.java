@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +49,13 @@ public class UniversityService {
 
     public List<UniversityCategory> getAllUniversityCategory() { // 대학 카테고리 전체 조회
         return universityCategoryRepository.findAll();
+    }
+
+    public Optional<UniversityCategory> getUniversityCategoryByUniversity(University university) {
+        if (university == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(university.getUniversityCategory());
     }
 
     @Transactional

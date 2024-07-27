@@ -1,5 +1,6 @@
 package com.swyp.glint.user.application.dto;
 
+import com.swyp.glint.common.exception.InvalidValueException;
 import com.swyp.glint.keyword.domain.UniversityCategory;
 import com.swyp.glint.keyword.domain.WorkCategory;
 import com.swyp.glint.user.domain.UserDetail;
@@ -23,6 +24,9 @@ public class UserInfoResponse {
     UserProfileResponse userProfile;
 
     public UserInfoResponse(UserProfile userProfile, UserDetail userDetail, WorkCategory workCategory, UniversityCategory universityCategory) {
+                if (userDetail == null) {
+                    throw new InvalidValueException("UserDetail cannot be null");
+                }
                 this.userId = userDetail.getUserId();
                 this.userDetail = UserDetailResponse.from(userDetail);
                 this.userProfile = UserProfileResponse.from(userProfile, workCategory, universityCategory);
