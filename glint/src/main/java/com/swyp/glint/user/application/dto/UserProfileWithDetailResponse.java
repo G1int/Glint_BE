@@ -72,7 +72,8 @@ public class UserProfileWithDetailResponse {
                 this.workId=userProfile.getWork().getId();
                 this.workName=userProfile.getWork().getWorkName();
 
-                this.workCategoryId=userProfile.getWork().getWorkCategoryId();
+                this.workCategoryId=userProfile.getWork().getWorkCategory().getId();
+                 this.workCategoryName=userProfile.getWork().getWorkCategory().getWorkCategoryName();
 
                 this.universityId=userProfile.getUniversity().getId();
                 this.universityName=userProfile.getUniversity().getUniversityName();
@@ -105,7 +106,8 @@ public class UserProfileWithDetailResponse {
                 .userId(userDetail.getUserId())
                 .userDetail(UserDetailResponse.from(userDetail))
                 .workId(userProfile.getWork().getId())
-                .workCategoryId(userProfile.getWork().getWorkCategoryId())
+                .workCategoryId(userProfile.getWork().getWorkCategory().getId())
+                .workCategoryName(userProfile.getWork().getWorkCategory().getWorkCategoryName())
                 .workName(userProfile.getWork().getWorkName())
                 .universityId(userProfile.getUniversity().getId())
                 .universityCategoryId(userProfile.getUniversity().getUniversityCategory().getId())
