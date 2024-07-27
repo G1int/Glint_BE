@@ -49,6 +49,7 @@ public class UserProfileRepositoryImpl implements UserProfileCustom {
                         .leftJoin(userDetail).on(userDetail.userId.eq(user.id))
                         .leftJoin(userProfile).on(userProfile.userId.eq(user.id))
                         .leftJoin(userProfile.work, work).fetchJoin()
+                        .leftJoin(userProfile.work.workCategory, workCategory).fetchJoin()
                         .leftJoin(userProfile.university, university).fetchJoin()
                         .leftJoin(userProfile.university.universityCategory, universityCategory).fetchJoin()
                         .leftJoin(userProfile.location, location).fetchJoin()
@@ -57,7 +58,6 @@ public class UserProfileRepositoryImpl implements UserProfileCustom {
                         .leftJoin(userProfile.drinking, drinking).fetchJoin()
                         .leftJoin(userProfile.hashtags)
                         .leftJoin(userDetail).on(userDetail.userId.eq(userProfile.userId))
-                        .leftJoin(workCategory).on(workCategory.id.eq(userProfile.work.workCategoryId))
                         .where(user.id.eq(userId))
                         .fetchOne()
         );
