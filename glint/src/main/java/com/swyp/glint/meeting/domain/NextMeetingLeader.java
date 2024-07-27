@@ -29,7 +29,8 @@ public class NextMeetingLeader {
 
     public Long getNextLeaderUserId() {
         Gender nextLeaderGender = getNextLeaderGender();
-        List<UserDetail> userDetails = userDetailGenderMap.get(nextLeaderGender.name());
+        // 여기서 500 에러
+        List<UserDetail> userDetails = Optional.ofNullable(userDetailGenderMap.get(nextLeaderGender.name())).orElse(List.of());
 
         Optional<UserDetail> latestJoinUserDetailOptional = userDetails.stream().min((o1, o2) -> {
             LocalDateTime o1JoinTime = userJoinTimeMap.get(o1.getUserId());

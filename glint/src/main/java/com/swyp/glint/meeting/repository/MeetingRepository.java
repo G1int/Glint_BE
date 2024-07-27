@@ -29,6 +29,18 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long>, Meeting
 
     @Query("""
         SELECT m
+        FROM Meeting m join m.joinUserIds jui
+        WHERE jui in :userId
+        AND m.status != 'END'
+       """)
+    List<Meeting> findAllNotEndMeetingByUserId(Long userId);
+
+
+
+
+
+    @Query("""
+        SELECT m
         FROM Meeting m 
         WHERE m.status = :meetingStatus
     """)

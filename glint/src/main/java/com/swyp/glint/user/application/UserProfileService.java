@@ -20,8 +20,6 @@ import java.util.Optional;
 public class UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
-
-    private final UserService userService;
     private final DrinkingService drinkingService;
     private final LocationService locationService;
     private final ReligionService religionService;
@@ -59,19 +57,17 @@ public class UserProfileService {
 
         // todo response 수정
         //  밑에 getUserInfo를 호출하지 않고 여기서 조합해야함.
-        return userService.getUserInfoBy(userId);
+        return userProfileRepository.findUserInfoBy(userId).orElseThrow(() -> new NotFoundEntityException("id : " + userId + " not found"));
     }
 
+
     public UserProfile getUserProfileEntityById(Long userId) {
-        UserResponse userResponse = userService.getUserById(userId);
-        return userProfileRepository.findByUserId(userResponse.id())
+        return userProfileRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundEntityException("User Profile with userId: " + userId + " not found"));
     }
 
     @Transactional
     public UserInfoResponse updateUserProfile(Long userId, UserProfileRequest userProfileRequest) {
-        userService.getUserById(userId);
-
         Work work = Optional.ofNullable(userProfileRequest.workName()).map(workService::createNewWork).orElse(null);
 
         University university = getUniversityOrElseNull(userProfileRequest);
@@ -109,7 +105,7 @@ public class UserProfileService {
 
         // todo response 수정
         //  밑에 getUserInfo를 호출하지 않고 여기서 조합해야함.
-        return userService.getUserInfoBy(userId);
+        return userProfileRepository.findUserInfoBy(userId).orElseThrow(() -> new NotFoundEntityException("id : " + userId + " not found"));
     }
 
     private Drinking getDrinkingOrElseNull(UserProfileRequest userProfileRequest) {
@@ -143,4 +139,5 @@ public class UserProfileService {
                 .map(universityName -> universityService.getEntityByName(universityName, userProfileRequest.universityDepartment()))
                 .orElse(null);
     }
+
 }

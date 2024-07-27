@@ -49,7 +49,7 @@ public class SecurityConfig  {
                 .authorizeHttpRequests(authorize ->
                                 authorize
 //                                .requestMatchers("/users/**").hasRole("OAUTH_USER")
-//                                .requestMatchers("/auth/**").permitAll()
+//                                .requestMatchers("/meetings/**").hasRole("OAUTH_USER")
 //                                .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
 //                                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                 .anyRequest().permitAll()

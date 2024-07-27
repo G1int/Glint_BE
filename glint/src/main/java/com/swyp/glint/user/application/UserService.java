@@ -1,6 +1,8 @@
 package com.swyp.glint.user.application;
 
 import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.meeting.application.MeetingFacade;
+import com.swyp.glint.meeting.application.MeetingService;
 import com.swyp.glint.user.application.dto.*;
 import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.domain.UserSimpleProfile;
@@ -67,4 +69,7 @@ public class UserService {
     }
 
 
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
 }

@@ -50,4 +50,7 @@ public class User extends BaseTimeEntity {
                 .build();
     }
 
+    public void archive() {
+        this.archived = true;
+    }
 }

@@ -1,9 +1,13 @@
 package com.swyp.glint.meeting.domain.validator;
 
+import com.swyp.glint.keyword.domain.University;
+import com.swyp.glint.keyword.domain.Work;
 import com.swyp.glint.meeting.domain.ConditionValidator;
 import com.swyp.glint.meeting.domain.JoinConditionElement;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
+
+import java.util.Objects;
 
 
 public class AffiliationValidator implements ConditionValidator {
@@ -20,14 +24,24 @@ public class AffiliationValidator implements ConditionValidator {
 
     @Override
     public boolean validateCondition() {
-        String universityName = userProfile.getUniversity().getUniversityName();
-        String workName = userProfile.getWork().getWorkName();
+        University university = userProfile.getUniversity();
+        Work work = userProfile.getWork();
 
-        if(!joinConditionElement.getAffiliation().contains(universityName) && !joinConditionElement.getAffiliation().contains(workName)) {
-//            throw new InvalidValueException("Invalid affiliation");
+        String universityName = university.getUniversityName();
+        String workName = work.getWorkName();
+
+        if(Objects.isNull(universityName) && Objects.isNull(workName)) {
             return false;
         }
 
-        return true;
+        if(Objects.nonNull(universityName) && joinConditionElement.getAffiliation().contains(universityName) ) {
+            return true;
+        }
+
+        if(Objects.nonNull(workName) && !joinConditionElement.getAffiliation().contains(workName)) {
+            return true;
+        }
+
+        return false;
     }
 }

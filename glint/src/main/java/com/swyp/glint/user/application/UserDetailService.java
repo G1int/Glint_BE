@@ -27,8 +27,6 @@ public class UserDetailService {
 
     private final UserDetailRepository userDetailRepository;
 
-    private final UserService userService;
-    
     private final ImageService imageService;
 
     public UserDetailResponse createUserDetail(Long userId, UserDetailRequest userDetailRequest) {
@@ -87,9 +85,8 @@ public class UserDetailService {
 
     @Transactional
     public UserDetailResponse updateUserDetail(Long userId, UserDetailRequest userDetailRequest) {
-        UserResponse user = userService.getUserById(userId);
 
-        UserDetail userDetail = userDetailRepository.findByUserId(user.id()).orElse(userDetailRequest.toEntity(userId));
+        UserDetail userDetail = userDetailRepository.findByUserId(userId).orElse(userDetailRequest.toEntity(userId));
 
         userDetail.updateUserDetail(
                 userDetailRequest.nickname(),

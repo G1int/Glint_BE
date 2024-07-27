@@ -6,11 +6,13 @@ import com.swyp.glint.auth.application.social.KakaoOauth;
 import com.swyp.glint.auth.application.social.SocialOauthProvider;
 import com.swyp.glint.auth.application.social.SocialType;
 import com.swyp.glint.common.authority.AuthorityHelper;
+import com.swyp.glint.common.util.CookieUtil;
 import com.swyp.glint.common.util.RedisUtil;
 import com.swyp.glint.user.application.UserService;
 import com.swyp.glint.user.application.dto.UserLoginResponse;
 import com.swyp.glint.user.application.dto.UserRequest;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ public class AuthController {
     private final AuthorityHelper authorityHelper;
 
     private final RedisUtil redisUtil;
+
+    private final CookieUtil cookieUtil;
 
     @GetMapping(value = "/auth/{socialType}")
     @ResponseStatus(HttpStatus.OK)
@@ -58,19 +62,44 @@ public class AuthController {
         );
 
         refreshTokenHeader(response, userLoginResponse.email());
-
         return ResponseEntity.ok(userLoginResponse);
 
     }
+
+    @PutMapping("/auth/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String accessToken = request.getHeader("Authorization");
+        String refreshToken = request.getHeader("RefreshToken");
+        String email = authorityHelper.getEmail(accessToken.replace("Bearer ", ""));
+
+        response.setHeader("Authorization", "");
+        response.setHeader("RefreshToken", "");
+
+        redisUtil.deleteData(email);
+    }
+
+
 
     private void refreshTokenHeader(HttpServletResponse response, String email) {
         String generateAccessToken = authorityHelper.generateToken(email);
         String generateRefreshToken = authorityHelper.generateToken(email);
 
-        response.setHeader("Authorization", "bearer "  + generateAccessToken);
-        response.setHeader("RefreshToken", "bearer "  + generateRefreshToken);
+        response.setHeader("Authorization", "Bearer "  + generateAccessToken);
+        response.setHeader("RefreshToken", "Bearer "  + generateRefreshToken);
 
-        redisUtil.setDataExpire(email, generateAccessToken, AuthorityHelper.ACCESS_TOKEN_VALIDATION_SECOND);
+        redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
+    }
+
+    private void refreshTokenCookie(HttpServletResponse response, String email) {
+        String generateAccessToken = authorityHelper.generateToken(email);
+        String generateRefreshToken = authorityHelper.generateToken(email);
+
+        Cookie tokenCookie = cookieUtil.createAccessTokenCookie(generateAccessToken);
+        Cookie refreshTokenCookie = cookieUtil.createRefreshTokenCookie(generateRefreshToken);
+
+        response.addCookie(tokenCookie);
+        response.addCookie(refreshTokenCookie);
+
         redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
     }
 

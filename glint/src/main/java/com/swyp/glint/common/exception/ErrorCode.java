@@ -31,7 +31,10 @@ public enum ErrorCode {
     NOT_MATCH_CONDITION(400, "M002", "Not Match Meeting Condition"),
     NOT_FOUND_NEXT_MEETING_LEADER(400, "M003", "Not Found Next Meeting Leader"),
 
+    //chatting
+    NOT_FOUND_CHAT_ROOM(400, "CH001", "Not Found Chat Room"),
     ;
+
 
     private final String code;
     private final String message;
