@@ -33,13 +33,13 @@ public record JoinConditionRequest(
         @Pattern(regexp = "^[0-9]{3}$")
         Integer minHeight,
 
-        @Schema(description = "종교", example = "[\"기독교\"]")
+        @Schema(description = "종교 Id", example = "[1]")
         List<Long> religionIds,
 
-        @Schema(description = "흡연", example = "[\"비흡연\"]")
+        @Schema(description = "흡연 Id", example = "[1]")
         List<Long> smokingIds,
 
-        @Schema(description = "음주", example = "[\"마시지않음\"]")
+        @Schema(description = "음주 Id", example = "[1]")
         List<Long> drinkingIds
 ) {
 

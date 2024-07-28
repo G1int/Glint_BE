@@ -7,6 +7,7 @@ import com.swyp.glint.user.domain.UserProfile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class UserMeetingValidator {
 
@@ -37,8 +38,8 @@ public class UserMeetingValidator {
 
     public HashMap<String, ConditionValidator> getSelectedConditionValueMap() {
         HashMap<String, ConditionValidator> conditionValueMap = new HashMap<>();
-        // 허용조건 세팅
-        assert matchCondition != null;
+
+
         for(String condition : matchCondition.getSelectConditions()) {
             if (condition.equals("AFFILIATION")) {
                 conditionValueMap.put(condition, new AffiliationValidator(matchCondition, userDetail, userProfile));
@@ -68,6 +69,10 @@ public class UserMeetingValidator {
     }
 
     public boolean validate() {
+        if(Objects.isNull(userProfile)) {
+            return false;
+        }
+
         List<String> selectConditions = matchCondition.getSelectConditions();
         for(String condition : selectConditions) {
             if(!selectedConditionValueMap.get(condition).validateCondition()) {
