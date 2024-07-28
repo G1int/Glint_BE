@@ -53,12 +53,13 @@ public class UserService {
         User user = userRequest.toEntity();
 
         Optional<User> userOptional = userRepository.findByEmail(user.getEmail());
-        Optional<UserDetail> userDetailOptional = userDetailService.getUserDetailOptional(user.getId());
 
         // 회원가입한경우
         if(userOptional.isEmpty()) {
             return UserLoginResponse.from(userRepository.save(userRequest.toEntity()), false);
         }
+
+        Optional<UserDetail> userDetailOptional = userDetailService.getUserDetailOptional(userOptional.get().getId());
 
         // 이미 회원가입은 했지만 detail 없는경우
         if(userDetailOptional.isEmpty()) {
