@@ -221,7 +221,7 @@ public class MeetingFacade {
 
         // 참가인원 조건 validation
         List<Long> joinUserIds = foundMeeting.getJoinUserIds();
-        Map<Long, UserProfile> userProfileByIdMap = userProfileService.getUserProfileByIds(joinUserIds).stream().collect(Collectors.toMap(UserProfile::getId, userProfile -> userProfile));
+        Map<Long, UserProfile> userProfileByIdMap = userProfileService.getUserProfileByIds(joinUserIds).stream().collect(Collectors.toMap(UserProfile::getUserId, userProfile -> userProfile));
         Map<Long, UserDetail> userDetails = userDetailService.getUserDetails(joinUserIds).stream().collect(Collectors.toMap(UserDetail::getUserId, userDetail -> userDetail));
 
         for(Long userId : joinUserIds) {
@@ -229,7 +229,7 @@ public class MeetingFacade {
             UserDetail userDetail = userDetails.get(userId);
             UserDetail leaderUserDetail = userDetailService.getUserDetail(foundMeeting.getLeaderUserId());
 
-            UserMeetingValidator userMeetingValidator = new UserMeetingValidator(userProfile, userDetail ,leaderUserDetail, foundMeeting);
+            UserMeetingValidator userMeetingValidator = new UserMeetingValidator(userProfile, userDetail ,leaderUserDetail, updateRequestMeeting);
 
             if(!userMeetingValidator.validate()) {
                 throw new InvalidValueException(ErrorCode.NOT_MATCH_CONDITION);

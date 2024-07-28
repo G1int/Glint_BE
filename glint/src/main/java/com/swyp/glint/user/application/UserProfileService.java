@@ -23,9 +23,6 @@ import java.util.Optional;
 public class UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
-
-    private final UserService userService;
-    private final UserDetailService userDetailService;
     private final DrinkingService drinkingService;
     private final LocationService locationService;
     private final ReligionService religionService;
@@ -155,6 +152,16 @@ public class UserProfileService {
     }
 
     public List<UserProfile> getUserProfileByIds(List<Long> userIds) {
-        return userProfileRepository.findAllById(userIds);
+        return userProfileRepository.findAllByUserId(userIds);
+    }
+
+    public UserProfileResponse createEmptyUserProfile(Long userId) {
+        Optional<UserProfile> userProfile = userProfileRepository.findByUserId(userId);
+
+        if(userProfile.isEmpty()) {
+            return UserProfileResponse.from(userProfileRepository.save(UserProfile.createEmptyProfile(userId)), null, null);
+        }
+
+        return UserProfileResponse.from(userProfile.get(), null, null);
     }
 }

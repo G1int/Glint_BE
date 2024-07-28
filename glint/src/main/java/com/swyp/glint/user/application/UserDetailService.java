@@ -26,11 +26,13 @@ import java.util.Optional;
 public class UserDetailService {
 
     private final UserDetailRepository userDetailRepository;
+    private final UserProfileService userProfileService;
 
     private final ImageService imageService;
 
     public UserDetailResponse createUserDetail(Long userId, UserDetailRequest userDetailRequest) {
         UserDetail userDetail = userDetailRequest.toEntity(userId);
+        userProfileService.createEmptyUserProfile(userId);
         return UserDetailResponse.from(userDetailRepository.save(userDetail));
     }
 
@@ -93,6 +95,7 @@ public class UserDetailService {
     public UserDetailResponse updateUserDetail(Long userId, UserDetailRequest userDetailRequest) {
 
         UserDetail userDetail = userDetailRepository.findByUserId(userId).orElse(userDetailRequest.toEntity(userId));
+        userProfileService.createEmptyUserProfile(userId);
 
         userDetail.updateUserDetail(
                 userDetailRequest.nickname(),
