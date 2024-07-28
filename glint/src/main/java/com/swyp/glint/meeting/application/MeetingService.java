@@ -28,8 +28,6 @@ public class MeetingService {
         return meetingRepository.save(meeting);
     }
 
-
-
     public MeetingInfoResponses getMyMeeting(Long userId, String meetingStatus, Long lastMeetingId, Integer limit) {
         return MeetingInfoResponses.from(meetingRepository.findAllMeetingInfoByStatus(userId, meetingStatus, lastMeetingId, limit));
     }

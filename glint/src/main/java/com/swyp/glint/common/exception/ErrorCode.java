@@ -30,6 +30,7 @@ public enum ErrorCode {
     NUMBER_OF_PEOPLE(400, "M001", "Over Number of people"),
     NOT_MATCH_CONDITION(400, "M002", "Not Match Meeting Condition"),
     NOT_FOUND_NEXT_MEETING_LEADER(400, "M003", "Not Found Next Meeting Leader"),
+    ALREADY_JOIN_MEETING(400, "M004", "Already Join Meeting"),
 
     //chatting
     NOT_FOUND_CHAT_ROOM(400, "CH001", "Not Found Chat Room"),

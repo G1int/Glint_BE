@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,10 +75,8 @@ public class UserProfileService {
 
     public UserProfileResponse getUserProfileById(Long userId) {
         UserProfile userProfile = getUserProfileEntityById(userId);
-        UniversityCategory universityCategory = universityService.getUniversityCategoryByUniversity(userProfile.getUniversity())
-                .orElse(null);
-        WorkCategory workCategory = workCategoryService.getUWorkCategoryByWork(userProfile.getWork())
-                .orElse(null);
+        UniversityCategory universityCategory = universityService.getUniversityCategoryByUniversity(userProfile.getUniversity()).orElse(null);
+        WorkCategory workCategory = workCategoryService.getUWorkCategoryByWork(userProfile.getWork()).orElse(null);
         return UserProfileResponse.from(userProfile, workCategory, universityCategory);
     }
 
@@ -155,4 +154,7 @@ public class UserProfileService {
                 .orElse(null);
     }
 
+    public List<UserProfile> getUserProfileByIds(List<Long> userIds) {
+        return userProfileRepository.findAllById(userIds);
+    }
 }

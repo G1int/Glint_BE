@@ -31,6 +31,16 @@ public class MeetingController {
         return new ResponseEntity<>(meetingFacade.createMeeting(meetingRequest), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "미팅 수정", description = "미팅 수정")
+    @PutMapping(path = "/meetings/{meetingId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MeetingResponse> updateMeeting(
+            @PathVariable Long meetingId,
+            @RequestBody @Valid MeetingRequest meetingRequest
+    ) {
+        return ResponseEntity.ok(meetingFacade.updateMeeting(meetingId, meetingRequest));
+    }
+
+
     @Operation(summary = "미팅 조회", description = "미팅 id를 통한 조회")
     @GetMapping(path = "/meetings/{meetingId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MeetingResponse> getMeeting(@PathVariable Long meetingId) {
