@@ -1,6 +1,7 @@
 package com.swyp.glint.meeting.domain;
 
 import com.swyp.glint.common.baseentity.BaseTimeEntity;
+import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
 import com.swyp.glint.meeting.exception.NumberOfPeopleException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -110,8 +111,8 @@ public class Meeting extends BaseTimeEntity {
     }
 
 
-    public boolean isJoinUser(Long sendUserId) {
-        return joinUserIds.contains(sendUserId);
+    public boolean isJoinUser(Long userId) {
+        return joinUserIds.contains(userId);
     }
 
     public boolean isJoinUser(List<Long> sendUserIds) {
@@ -135,14 +136,14 @@ public class Meeting extends BaseTimeEntity {
     }
 
     public void addUser(Long userId) {
-        if(joinUserIds.size() >= this.peopleCapacity * 2) {
+        if(joinUserIds.size() >= getTotalPeoPleCapacity(this.peopleCapacity)) {
             throw new NumberOfPeopleException("인원수 초과");
         }
         joinUserIds.add(userId);
     }
 
     public boolean isFull() {
-        if(joinUserIds.size() == this.peopleCapacity * 2) {
+        if(joinUserIds.size() == getTotalPeoPleCapacity(this.peopleCapacity)) {
             this.status = MeetingStatus.PROGRESS.getName();
             return true;
         }
@@ -179,5 +180,29 @@ public class Meeting extends BaseTimeEntity {
 
     public boolean isAlone() {
         return joinUserIds.size() == 1;
+    }
+
+    public boolean isUpdatable() {
+        return this.status.equals(MeetingStatus.WAITING.getName());
+    }
+
+    public void update(Meeting meeting) {
+        updatePeopleCapacity(meeting.peopleCapacity);
+        this.title = meeting.title;
+        this.description = meeting.description;
+        this.locationIds = meeting.locationIds;
+        this.maleCondition = meeting.maleCondition;
+        this.femaleCondition = meeting.femaleCondition;
+    }
+
+    private void updatePeopleCapacity(Integer peopleCapacity) {
+        if(joinUserIds.size() > getTotalPeoPleCapacity(peopleCapacity)) {
+            throw new NumberOfPeopleException("인원수 초과");
+        }
+        this.peopleCapacity = peopleCapacity;
+    }
+
+    private int getTotalPeoPleCapacity(Integer peopleCapacity) {
+        return peopleCapacity * 2;
     }
 }
