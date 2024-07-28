@@ -114,10 +114,14 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
     public MeetingInfoCountResponses searchMeetingWithTotalCount(MeetingSearchCondition searchCondition) {
         int total = queryFactory
                 .selectFrom(meeting)
+                .join(userDetail).on(meeting.joinUserIds.contains(userDetail.userId))
+                .leftJoin(location).on(meeting.locationIds.contains(location.id))
                 .where(
                         meeting.status.ne(MeetingStatus.END.getName()),
-                        searchBooleanBuilder(searchCondition.getKeyword()))
-                .fetch().size();
+                        searchBooleanBuilder(searchCondition.getKeyword())
+                        )
+                .fetch()
+                .size();
 
 
         List<MeetingInfo> meetingInfos = queryFactory
@@ -153,12 +157,24 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
         if (hasText(keyword)) {
             booleanBuilder
                     .or(titleLike(keyword))
-                    .or(descriptionLike(keyword));
+                    .or(descriptionLike(keyword))
+                    .or(locationCityLike(keyword))
+                    .or(locationStateLike(keyword));
+
         }
 
 
         return booleanBuilder;
     }
+
+    private static BooleanExpression locationStateLike(String keyword) {
+        return hasText(keyword) ? location.state.like("%" + keyword + "%") : null;
+    }
+
+    private static BooleanExpression locationCityLike(String keyword) {
+        return hasText(keyword) ? location.city.like("%" + keyword + "%") : null;
+    }
+
     private  BooleanExpression descriptionLike(String keyword) {
         return hasText(keyword) ? meeting.description.like("%" + keyword + "%" ) : null;
     }

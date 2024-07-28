@@ -152,6 +152,18 @@ public class Meeting extends BaseTimeEntity {
 
     public void outUser(Long userId) {
         joinUserIds.remove(userId);
+
+        if(isEmpty()) {
+           archive();
+        }
+
+        if(isProgress()) {
+            this.status = MeetingStatus.WAITING.getName();
+        }
+    }
+
+    private boolean isProgress() {
+        return status.equals(MeetingStatus.PROGRESS.getName());
     }
 
     public boolean isLeader(Long userId) {
