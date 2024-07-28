@@ -3,6 +3,7 @@ package com.swyp.glint.auth.filter;
 import com.swyp.glint.auth.exception.NotMathRefreshTokenException;
 import com.swyp.glint.common.authority.AuthorityHelper;
 import com.swyp.glint.common.cache.RemoteCache;
+import com.swyp.glint.common.exception.InvalidValueException;
 import com.swyp.glint.common.util.CookieUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -59,8 +60,11 @@ public class JwtLoginFilter extends OncePerRequestFilter {
             }
 
         } catch (ExpiredJwtException e){
-            refreshToken = redisUtil.getData(email);
-
+            try {
+                refreshToken = redisUtil.getData(email);
+            }catch (NullPointerException ne){
+                logger.error("invalid token, not contain email " + e.getMessage());
+            }
 
         } catch (Exception e){
             logger.error("error" + e.getMessage());

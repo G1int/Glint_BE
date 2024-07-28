@@ -85,6 +85,13 @@ public class UserProfile extends BaseTimeEntity { // 회사 or 학교, 위치, �
                 .build();
     }
 
+    public static UserProfile createEmptyProfile(Long userId) {
+        return UserProfile.builder()
+                .userId(userId)
+                .build();
+    }
+
+
     public void updateUserProfile(Work work, University university, Location location, Religion religion,
                                   Smoking smoking, Drinking drinking, String selfIntroduction, List<String> hashtags) {
         this.work = work;
