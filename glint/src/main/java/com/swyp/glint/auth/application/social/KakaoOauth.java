@@ -2,6 +2,7 @@ package com.swyp.glint.auth.application.social;
 
 import com.swyp.glint.auth.api.response.KakaoUserInfoResponse;
 import com.swyp.glint.auth.api.response.OauthTokenResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -20,11 +21,11 @@ public class KakaoOauth implements SocialOauth {
     private String USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
     private final String TOKEN_BASE_URL = "https://kauth.kakao.com/oauth/token";
 
-//    @Value("${spring.oauth.kakao.client-id}")
-    private String CLIENT_ID = "e140ca00a76302ffbad9f4bf67e3bb79";
+    @Value("${spring.oauth.kakao.client-id}")
+    private String CLIENT_ID;
 
-//    @Value("${spring.oauth.kakao.callback-url}")
-    private String CALLBACK_URL = "http://localhost:3000/glint/auth/kakao/callback";
+    @Value("${spring.oauth.kakao.callback-url}")
+    private String CALLBACK_URL;
 
 
     @Override
