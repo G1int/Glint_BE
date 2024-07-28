@@ -12,14 +12,14 @@ public record UserLoginResponse(
         @Schema(description = "User Email", example = "glint@gmail.com", required = true)
         String email,
         @Schema(description = "기존회원, 회원가입 여부", example = "true", required = true)
-        Boolean isSignUp
+        Boolean isCompleteDetail
 ) {
 
-        public static UserLoginResponse from(User user, Boolean isSignUp) {
+        public static UserLoginResponse from(User user, Boolean isCompleteDetail) {
             return UserLoginResponse.builder()
                     .id(user.getId())
                     .email(user.getEmail())
-                    .isSignUp(isSignUp)
+                    .isCompleteDetail(isCompleteDetail)
                     .build();
         }
 }

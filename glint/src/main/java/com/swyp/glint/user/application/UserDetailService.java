@@ -42,6 +42,11 @@ public class UserDetailService {
         return getUserEntityOrElseThrow(userId);
     }
 
+    public Optional<UserDetail> getUserDetailOptional(Long userId) {
+        return userDetailRepository.findByUserId(userId);
+    }
+
+
     public UserDetail getUserEntityOrElseThrow(Long userId) {
         return userDetailRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundEntityException("UserDetail with userId: " + userId + " not found"));
@@ -73,9 +78,10 @@ public class UserDetailService {
             throw new InvalidValueException(ErrorCode.NICKNAME_DUPLICATED);
         }
 
-        UserDetail userDetail = userDetailRepository.findByUserId(userId).orElseGet(() -> {
-            return userDetailRepository.save(UserDetail.createTempUserDetailByNickName(userId));
-        });
+        UserDetail userDetail = userDetailRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    return userDetailRepository.save(UserDetail.createTempUserDetailByNickName(userId));
+                });
 
         userDetail.updateNickname(nickname);
 
