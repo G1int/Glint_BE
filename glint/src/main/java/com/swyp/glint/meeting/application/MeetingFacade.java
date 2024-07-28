@@ -3,6 +3,7 @@ package com.swyp.glint.meeting.application;
 import com.swyp.glint.chatting.application.ChatRoomService;
 import com.swyp.glint.common.exception.ErrorCode;
 import com.swyp.glint.common.exception.InvalidValueException;
+import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.application.DrinkingService;
 import com.swyp.glint.keyword.application.LocationService;
 import com.swyp.glint.keyword.application.ReligionService;
@@ -17,7 +18,9 @@ import com.swyp.glint.meeting.application.dto.response.JoinMeetingResponse;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
 import com.swyp.glint.meeting.domain.*;
+import com.swyp.glint.meeting.exception.AlreadyJoinMeetingException;
 import com.swyp.glint.meeting.exception.NumberOfPeopleException;
+import com.swyp.glint.meeting.repository.MeetingRepository;
 import com.swyp.glint.searchkeyword.application.SearchKeywordService;
 import com.swyp.glint.user.application.UserDetailService;
 import com.swyp.glint.user.application.UserProfileService;
@@ -50,7 +53,7 @@ public class MeetingFacade {
     private final ReligionService religionService;
     private final LocationService locationService;
     private final SearchKeywordService searchKeywordService;
-
+    private final MeetingRepository meetingRepository;
 
 
     @Transactional
@@ -85,6 +88,11 @@ public class MeetingFacade {
     @Transactional
     public JoinMeetingResponse joinMeetingRequest(Long userId, Long meetingId) {
         Meeting meeting = meetingService.getMeetingEntity(meetingId);
+
+        if(meeting.isJoinUser(userId)) {
+            throw new AlreadyJoinMeetingException("이미 참가한 미팅입니다.");
+        }
+
         UserProfile userProfile = userProfileService.getUserProfileEntityById(userId);
         UserDetail userDetail = userDetailService.getUserDetail(userId);
         UserDetail leaderUserDetail = userDetailService.getUserDetail(meeting.getLeaderUserId());
@@ -96,6 +104,7 @@ public class MeetingFacade {
         }
 
         JoinMeeting joinMeeting = joinMeetingService.save(JoinMeeting.createByRequest(userId, meetingId));
+
         return JoinMeetingResponse.from(joinMeeting);
     }
 
@@ -133,14 +142,14 @@ public class MeetingFacade {
         Meeting meeting = meetingService.getMeetingEntity(meetingId);
         Map<String, List<UserDetail>> userGenderMap = userDetailService.getUserDetails(meeting.getJoinUserIds()).stream().collect(Collectors.groupingBy(UserDetail::getGender));
         UserDetail userDetail = userDetailService.getUserDetail(userId);
+
         //todo 리팩토링
         List<UserDetail> userGenderDetails = Optional.ofNullable(userGenderMap.get(userDetail.getGender())).orElse(List.of());
         if(userGenderDetails.size() >= meeting.getPeopleCapacity()) {
             throw new NumberOfPeopleException("인원수 초과");
         }
-        meeting.addUser(userId);
-
         userService.getUserById(userId);
+        meeting.addUser(userId);
 
         if(meeting.isFull()) {
             chatRoomService.activeChatRoom(meetingId, meeting.getJoinUserIds());
@@ -199,4 +208,37 @@ public class MeetingFacade {
         return MeetingResponse.from(meetingAggregation);
     }
 
+    @Transactional
+    public MeetingResponse updateMeeting(Long meetingId, MeetingRequest meetingRequest) {
+        Meeting updateRequestMeeting = meetingRequest.toEntity();
+        Meeting foundMeeting = meetingRepository.findById(meetingId).orElseThrow(() -> new NotFoundEntityException("Meeting with meetingId: " + meetingId + " not found"));
+
+        // waiting 상태일때만 변경이 가능
+        if(! foundMeeting.isUpdatable()) {
+            throw new InvalidValueException(ErrorCode.NOT_MATCH_CONDITION);
+        }
+        // 현재 참기인원, 변경 참가인원 체크
+
+        // 참가인원 조건 validation
+        List<Long> joinUserIds = foundMeeting.getJoinUserIds();
+        Map<Long, UserProfile> userProfileByIdMap = userProfileService.getUserProfileByIds(joinUserIds).stream().collect(Collectors.toMap(UserProfile::getId, userProfile -> userProfile));
+        Map<Long, UserDetail> userDetails = userDetailService.getUserDetails(joinUserIds).stream().collect(Collectors.toMap(UserDetail::getUserId, userDetail -> userDetail));
+
+        for(Long userId : joinUserIds) {
+            UserProfile userProfile = userProfileByIdMap.get(userId);
+            UserDetail userDetail = userDetails.get(userId);
+            UserDetail leaderUserDetail = userDetailService.getUserDetail(foundMeeting.getLeaderUserId());
+
+            UserMeetingValidator userMeetingValidator = new UserMeetingValidator(userProfile, userDetail ,leaderUserDetail, foundMeeting);
+
+            if(!userMeetingValidator.validate()) {
+                throw new InvalidValueException(ErrorCode.NOT_MATCH_CONDITION);
+            }
+        }
+
+        foundMeeting.update(updateRequestMeeting);
+        meetingRepository.save(foundMeeting);
+
+        return MeetingResponse.from(getMeetingAggregation(foundMeeting));
+    }
 }
