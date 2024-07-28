@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_detail")
@@ -116,5 +117,13 @@ public class UserDetail extends BaseTimeEntity {
 
     public void updateProfileUrl(String userProfileImageUrl) {
         this.profileImage = userProfileImageUrl;
+    }
+
+    public boolean isComplete() {
+        return Objects.nonNull(nickname) &&
+                Objects.nonNull(gender) &&
+                Objects.nonNull(birthdate) &&
+                Objects.nonNull(height) &&
+                Objects.nonNull(profileImage);
     }
 }

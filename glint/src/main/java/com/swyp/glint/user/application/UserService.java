@@ -5,6 +5,7 @@ import com.swyp.glint.meeting.application.MeetingFacade;
 import com.swyp.glint.meeting.application.MeetingService;
 import com.swyp.glint.user.application.dto.*;
 import com.swyp.glint.user.domain.User;
+import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserSimpleProfile;
 import com.swyp.glint.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final UserDetailService userDetailService;
 
     public UserResponse createUser(UserRequest userRequest) {
         User user = userRequest.toEntity();
@@ -50,12 +53,24 @@ public class UserService {
         User user = userRequest.toEntity();
 
         Optional<User> userOptional = userRepository.findByEmail(user.getEmail());
+        Optional<UserDetail> userDetailOptional = userDetailService.getUserDetailOptional(user.getId());
 
-        if(userOptional.isPresent()) {
+        // 회원가입한경우
+        if(userOptional.isEmpty()) {
+            return UserLoginResponse.from(userRepository.save(userRequest.toEntity()), false);
+        }
+
+        // 이미 회원가입은 했지만 detail 없는경우
+        if(userDetailOptional.isEmpty()) {
+            return UserLoginResponse.from(userOptional.get(), false);
+        }
+        // 이미 회원가입은 했지만 detail 있지만 완료하지 않은경우
+        if(! userDetailOptional.get().isComplete()) {
             return UserLoginResponse.from(userOptional.get(), false);
         }
 
-        return UserLoginResponse.from(userRepository.save(userRequest.toEntity()), true);
+        // 이미 회원가입 했고 detail까지 완료한경우
+        return UserLoginResponse.from(userOptional.get(), true);
     }
 
 
