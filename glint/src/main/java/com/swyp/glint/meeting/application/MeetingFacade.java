@@ -200,9 +200,6 @@ public class MeetingFacade {
         }
 
         meeting.outUser(userId);
-        if(meeting.isEmpty()) {
-            meeting.archive();
-        }
         Meeting saveMeeting = meetingService.save(meeting);
         MeetingAggregation meetingAggregation = getMeetingAggregation(saveMeeting);
         return MeetingResponse.from(meetingAggregation);
