@@ -88,6 +88,57 @@ spring:
     kakao:
       client-id:
       callback-url: http://localhost:8080/glint/auth/kakao/callback
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: aws-parameterstore:/config/glint/
+  application:
+    name: glint
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${jdbc.url}
+    username: ${jdbc.username}
+    password: ${jdbc.password}
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        #        hbm2ddl.auto: create
+        ddl-auto: none
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: false
+  data:
+    redis:
+      host: ${cache.url}
+      port: 6379
+  oauth:
+    kakao:
+      client-id: ${oauth.kakao.client-id}
+      callback-url: http://localhost:3000/glint/auth/kakao/callback
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${s3.accessKey}
+      secretKey: ${s3.secretKey}
+    s3:
+      bucket: glint-image
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+    root.level: debug
+
+
 ---
 spring:
   config:
