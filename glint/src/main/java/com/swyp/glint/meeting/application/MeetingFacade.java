@@ -20,6 +20,7 @@ import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
 import com.swyp.glint.meeting.domain.*;
 import com.swyp.glint.meeting.exception.AlreadyJoinMeetingException;
 import com.swyp.glint.meeting.exception.NumberOfPeopleException;
+import com.swyp.glint.meeting.repository.JoinMeetingRepository;
 import com.swyp.glint.meeting.repository.MeetingRepository;
 import com.swyp.glint.searchkeyword.application.SearchKeywordService;
 import com.swyp.glint.user.application.UserDetailService;
@@ -54,6 +55,7 @@ public class MeetingFacade {
     private final LocationService locationService;
     private final SearchKeywordService searchKeywordService;
     private final MeetingRepository meetingRepository;
+    private final JoinMeetingRepository joinMeetingRepository;
 
 
     @Transactional
@@ -87,6 +89,11 @@ public class MeetingFacade {
 
     @Transactional
     public JoinMeetingResponse joinMeetingRequest(Long userId, Long meetingId) {
+
+        joinMeetingRepository.findByMeetingAndUserId(userId, meetingId).ifPresent(joinMeeting -> {
+                throw new AlreadyJoinMeetingException("이미 참가 요청한 미팅입니다.");
+        });
+
         Meeting meeting = meetingService.getMeetingEntity(meetingId);
 
         if(meeting.isJoinUser(userId)) {
