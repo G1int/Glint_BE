@@ -5,8 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
-import java.time.Period;
+import java.util.Optional;
 
 @Getter
 public class UserSimpleProfile extends BaseTimeEntity {
@@ -35,7 +34,10 @@ public class UserSimpleProfile extends BaseTimeEntity {
         this.age = userDetail.getAge();
         this.gender = userDetail.getGender();
         this.nickname = userDetail.getNickname();
-        this.affiliation = userProfile.getAffiliation();
+        //todo refactoring
+        this.affiliation = Optional.ofNullable(userProfile)
+                .map(UserProfile::getAffiliation)
+                .orElse(null);
     }
 
     public static UserSimpleProfile of(UserDetail userDetail, UserProfile userProfile) {
@@ -45,7 +47,11 @@ public class UserSimpleProfile extends BaseTimeEntity {
                 .age(userDetail.getAge())
                 .gender(userDetail.getGender())
                 .nickname(userDetail.getNickname())
-                .affiliation(userProfile.getAffiliation())
+                .affiliation(
+                        Optional.ofNullable(userProfile)
+                                .map(UserProfile::getAffiliation)
+                                .orElse(null)
+                )
                 .build();
     }
 
