@@ -62,8 +62,7 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
         } catch (ExpiredJwtException e){
             try {
-                email = authorityHelper.getEmail(refreshToken);
-                refreshToken = redisUtil.getData(email);
+                refreshToken = request.getHeader("RefreshToken");
 
             }catch (NullPointerException ne){
                 logger.error("invalid token, not contain email " + e.getMessage());
@@ -75,7 +74,9 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
         try{
             if(refreshToken != null) {
-                validateRefreshToken(request, refreshToken);
+                email = authorityHelper.getEmail(refreshToken);
+                String cachedRefreshToken = redisUtil.getData(email);
+                validateRefreshToken(request, cachedRefreshToken);
 
                 UserDetails userDetails = userPrincipalDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =  new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
