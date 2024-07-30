@@ -80,6 +80,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                         getLt(lastId)
                 )
                 .orderBy(meeting.createdDate.desc())
+                .groupBy(meeting.id)
                 .limit(getLimit(size))
                 .fetch();
     }
