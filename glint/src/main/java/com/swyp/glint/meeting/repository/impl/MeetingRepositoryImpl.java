@@ -6,8 +6,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
-import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponse;
-import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.domain.JoinStatus;
 import com.swyp.glint.meeting.domain.MeetingInfo;
 import com.swyp.glint.meeting.domain.MeetingStatus;
@@ -119,7 +117,8 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                 .leftJoin(location).on(meeting.locationIds.contains(location.id))
                 .where(
                         meeting.status.ne(MeetingStatus.END.getName()),
-                        searchBooleanBuilder(searchCondition.getKeyword())
+                        searchBooleanBuilder(searchCondition.getKeyword()),
+                        locationIdsIn(searchCondition.getLocationIds())
                         )
                 .fetch()
                 .size();
@@ -140,7 +139,8 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                 .where(
                         meeting.status.ne(MeetingStatus.END.getName()),
                         getLt(searchCondition.getLastMeetingId()),
-                        searchBooleanBuilder(searchCondition.getKeyword())
+                        searchBooleanBuilder(searchCondition.getKeyword()),
+                        locationIdsIn(searchCondition.getLocationIds())
                 )
                 .orderBy(meeting.createdDate.desc())
                 .groupBy(meeting.id)
@@ -149,6 +149,13 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
 
         return MeetingInfoCountResponses.from(meetingInfos, total);
 
+    }
+
+    private static BooleanExpression locationIdsIn(List<Long> locationIds) {
+        if(locationIds == null || locationIds.isEmpty()) {
+            return null;
+        }
+        return location.id.in(locationIds);
     }
 
 
