@@ -21,6 +21,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -61,7 +62,9 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
         } catch (ExpiredJwtException e){
             try {
+                email = authorityHelper.getEmail(refreshToken);
                 refreshToken = redisUtil.getData(email);
+
             }catch (NullPointerException ne){
                 logger.error("invalid token, not contain email " + e.getMessage());
             }
@@ -73,8 +76,6 @@ public class JwtLoginFilter extends OncePerRequestFilter {
         try{
             if(refreshToken != null) {
                 validateRefreshToken(request, refreshToken);
-
-                email = redisUtil.getData(refreshToken);
 
                 UserDetails userDetails = userPrincipalDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =  new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
