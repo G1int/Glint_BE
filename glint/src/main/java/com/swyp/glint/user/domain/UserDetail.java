@@ -24,7 +24,7 @@ public class UserDetail extends BaseTimeEntity {
     @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;
 
-    @Column(name = "nickname", nullable = false, unique = true)
+    @Column(name = "nickname", unique = true)
     private String nickname;
 
     @Column(name = "gender")

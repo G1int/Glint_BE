@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_profile")
@@ -106,10 +107,15 @@ public class UserProfile extends BaseTimeEntity { // 회사 or 학교, 위치, �
 
 
     public String getAffiliation() {
-        if(work != null) {
+        if(Objects.nonNull(work)) {
             return work.getWorkName();
 
         }
-        return university.getUniversityName();
+
+        if(Objects.nonNull(university)) {
+            return university.getUniversityName();
+        }
+
+        return null;
     }
 }
