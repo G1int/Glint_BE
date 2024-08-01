@@ -20,14 +20,14 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    @MessageMapping("/chatrooms/{roomId}")
-    public void chatting(@DestinationVariable Long roomId, @RequestBody CreateChatMessageRequest request) {
+    @MessageMapping("/chatrooms/{meetingId}")
+    public void chatting(@DestinationVariable Long meetingId, @RequestBody CreateChatMessageRequest request) {
         // todo room 정보 없을때 처리
-        if(roomId == null) {
+        if(meetingId == null) {
             throw new NotFoundChatRoomException("roomId is null");
         }
         ChatResponse chatMessage = chatService.createChatMessage(request);
-        simpMessagingTemplate.convertAndSend("/sub/chatrooms/" + roomId, chatMessage);
+        simpMessagingTemplate.convertAndSend("/sub/chatrooms/" + meetingId, chatMessage);
     }
 
     @GetMapping(path = "/chatrooms/{roomId}/chats", produces = "application/json")

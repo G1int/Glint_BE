@@ -56,7 +56,7 @@ public class ChatRoomService {
 
 
     public ChatRoom getChatRoom(Long chatRoomId) {
-        return chatRoomRepository.findById(chatRoomId).orElseThrow(() -> new NotFoundEntityException("Not Found ChatRoom Id : " + chatRoomId));
+        return chatRoomRepository.findByMeetingId(chatRoomId).orElseThrow(() -> new NotFoundEntityException("Not Found ChatRoom Id : " + chatRoomId));
     }
 
     public ChatRoomResponse getChatRoomByMeetingId(Long meetingId) {
