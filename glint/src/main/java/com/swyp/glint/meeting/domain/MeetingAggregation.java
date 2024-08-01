@@ -24,13 +24,18 @@ public class MeetingAggregation {
     JoinConditionAggregation femaleCondition;
     Integer peopleCapacity;
     String status;
+    List<Long> joinRequestUserIds;
 
 
     public MeetingAggregation(
             Meeting meeting,
             List<UserSimpleProfile> users,
             LocationList locationList,
-            Map<Long, Drinking> drinkingIdMap, Map<Long, Smoking> smokingIdMap, Map<Long, Religion> religionIdMap) {
+            Map<Long, Drinking> drinkingIdMap,
+            Map<Long, Smoking> smokingIdMap,
+            Map<Long, Religion> religionIdMap,
+            List<Long> joinRequestUserIds
+    ) {
         this.id = meeting.getId();
         this.leaderUserId = meeting.getLeaderUserId();
         this.title = meeting.getTitle();
@@ -41,6 +46,7 @@ public class MeetingAggregation {
         this.femaleCondition = JoinConditionAggregation.of(meeting.getFemaleCondition(), drinkingIdMap, smokingIdMap, religionIdMap);
         this.peopleCapacity = meeting.getPeopleCapacity();
         this.status = meeting.getStatus();
+        this.joinRequestUserIds = joinRequestUserIds;
     }
 
 

@@ -30,7 +30,9 @@ public record MeetingResponse(
         @Schema(description = "성별당 참가 인원", example = "4")
         Integer peopleCapacity,
         @Schema(description = "미팅 상태", example = "WAITING")
-        String status
+        String status,
+        @Schema(description = "참가 요청한 유저 ID 목록", example = "[1,2,3]")
+        List<Long> joinRequestUserIds
 ) {
 
 
@@ -47,6 +49,7 @@ public record MeetingResponse(
                 .femaleCondition(JoinConditionResponse.from(meetingAggregation.getFemaleCondition()))
                 .peopleCapacity(meetingAggregation.getPeopleCapacity())
                 .status(meetingAggregation.getStatus())
+                .joinRequestUserIds(meetingAggregation.getJoinRequestUserIds())
                 .build();
     }
 }

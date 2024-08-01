@@ -77,7 +77,8 @@ public class MeetingFacade {
                 locationList,
                 drinkingIdMap,
                 smokingIdMap,
-                longReligionIdMap
+                longReligionIdMap,
+                List.of()
         );
 
         return MeetingResponse.from(meetingAggregation);
@@ -131,6 +132,7 @@ public class MeetingFacade {
         Map<Long, Drinking> drinkingIdMap = drinkingService.getAllDrinking().stream().collect(Collectors.toMap(Drinking::getId, drinking -> drinking));
         Map<Long, Smoking> smokingIdMap = smokingService.getAllSmoking().stream().collect(Collectors.toMap(Smoking::getId, smoking -> smoking));
         Map<Long, Religion> longReligionIdMap = religionService.getAllReligion().stream().collect(Collectors.toMap(Religion::getId, religion -> religion));
+        List<Long> joinMeetingUserIds = joinMeetingService.getJoinMeetingUserIds(meeting.getId());
         LocationList locationList = getMeetingLocationList(meeting);
 
         List<UserSimpleProfile> userSimpleProfileList = userService.getUserSimpleProfileList(meeting.getJoinUserIds());
@@ -140,7 +142,8 @@ public class MeetingFacade {
                 locationList,
                 drinkingIdMap,
                 smokingIdMap,
-                longReligionIdMap
+                longReligionIdMap,
+                joinMeetingUserIds
         );
     }
 
@@ -167,11 +170,11 @@ public class MeetingFacade {
     }
 
 
+    //todo queryDsl 전환
     public MeetingResponse getMeeting(Long id) {
         Meeting meeting = meetingService.getMeetingEntity(id);
 
         MeetingAggregation meetingAggregation = getMeetingAggregation(meeting);
-
 
         return MeetingResponse.from(meetingAggregation);
     }

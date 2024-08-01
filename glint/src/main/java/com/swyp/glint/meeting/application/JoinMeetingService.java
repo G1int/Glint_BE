@@ -2,7 +2,6 @@ package com.swyp.glint.meeting.application;
 
 import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.meeting.application.dto.response.JoinMeetingResponse;
-import com.swyp.glint.meeting.application.dto.response.UserJoinMeetingResponse;
 import com.swyp.glint.meeting.domain.JoinMeeting;
 import com.swyp.glint.meeting.domain.JoinStatus;
 import com.swyp.glint.meeting.repository.JoinMeetingRepository;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +52,13 @@ public class JoinMeetingService {
         List<JoinMeeting> joinMeetings = joinMeetingRepository.findAllByUserId(userId);
         joinMeetings.forEach(JoinMeeting::reject);
         joinMeetingRepository.saveAll(joinMeetings);
+    }
+
+    public List<Long> getJoinMeetingUserIds(Long meetingId) {
+        return joinMeetingRepository.findByMeetingIdAndStatus(meetingId, JoinStatus.WAITING.getName())
+                .stream()
+                .map(JoinMeeting::getUserId)
+                .toList();
     }
 }
 
