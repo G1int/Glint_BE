@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
 @RequiredArgsConstructor
 public class MeetingFacade {
@@ -71,6 +72,9 @@ public class MeetingFacade {
         List<UserSimpleProfile> userSimpleProfileList = userService.getUserSimpleProfileList(meeting.getJoinUserIds());
         joinMeetingService.createMeetingJoin(meetingRequest.leaderUserId(), savedMeeting.getId());
 
+        Long leaderUserId = meetingRequest.leaderUserId();
+        validateUserMeetingCondition(leaderUserId, meeting);
+
         MeetingAggregation meetingAggregation = new MeetingAggregation(
                 meeting,
                 userSimpleProfileList,
@@ -83,6 +87,7 @@ public class MeetingFacade {
 
         return MeetingResponse.from(meetingAggregation);
     }
+
     public LocationList getMeetingLocationList(Meeting meeting) {
         List<Location> locations = locationService.getLocationsByIds(meeting.getLocationIds());
         return new LocationList(locations);
@@ -101,15 +106,7 @@ public class MeetingFacade {
             throw new AlreadyJoinMeetingException("이미 참가한 미팅입니다.");
         }
 
-        UserProfile userProfile = userProfileService.getUserProfileEntityById(userId);
-        UserDetail userDetail = userDetailService.getUserDetail(userId);
-        UserDetail leaderUserDetail = userDetailService.getUserDetail(meeting.getLeaderUserId());
-
-        UserMeetingValidator userMeetingValidator = new UserMeetingValidator(userProfile, userDetail ,leaderUserDetail, meeting);
-
-        if(!userMeetingValidator.validate()) {
-            throw new InvalidValueException(ErrorCode.NOT_MATCH_CONDITION);
-        }
+        validateUserMeetingCondition(userId, meeting);
 
         JoinMeeting joinMeeting = joinMeetingService.save(JoinMeeting.createByRequest(userId, meetingId));
 
@@ -232,6 +229,7 @@ public class MeetingFacade {
         Map<Long, UserDetail> userDetails = userDetailService.getUserDetails(joinUserIds).stream().collect(Collectors.toMap(UserDetail::getUserId, userDetail -> userDetail));
 
         for(Long userId : joinUserIds) {
+            validateUserMeetingCondition(userId, updateRequestMeeting);
             UserProfile userProfile = userProfileByIdMap.get(userId);
             UserDetail userDetail = userDetails.get(userId);
             UserDetail leaderUserDetail = userDetailService.getUserDetail(foundMeeting.getLeaderUserId());
@@ -248,4 +246,19 @@ public class MeetingFacade {
 
         return MeetingResponse.from(getMeetingAggregation(foundMeeting));
     }
+
+
+
+    public void validateUserMeetingCondition(Long leaderUserId, Meeting meeting) {
+        UserProfile userProfile = userProfileService.getUserProfileEntityById(leaderUserId);
+        UserDetail userDetail = userDetailService.getUserDetail(leaderUserId);
+        UserDetail leaderUserDetail = userDetailService.getUserDetail(leaderUserId);
+
+        UserMeetingValidator userMeetingValidator = new UserMeetingValidator(userProfile, userDetail ,leaderUserDetail, meeting);
+
+        if(!userMeetingValidator.validate()) {
+            throw new InvalidValueException(ErrorCode.NOT_MATCH_CONDITION);
+        }
+    }
+
 }
