@@ -1,6 +1,7 @@
 package com.swyp.glint.meeting.domain;
 
 import com.swyp.glint.meeting.domain.validator.*;
+import com.swyp.glint.user.domain.Gender;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
 
@@ -30,7 +31,7 @@ public class UserMeetingValidator {
 
     public JoinConditionElement getMatchCondition() {
         // todo 일치 개수 체크
-        if(userDetail.sameGender(leaderUserDetail.getGender())) {
+        if(userDetail.sameGender(Gender.MALE.name())) {
             return meeting.getMaleCondition();
         }
         return meeting.getFemaleCondition();
