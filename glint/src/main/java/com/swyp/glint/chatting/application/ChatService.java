@@ -1,13 +1,12 @@
 package com.swyp.glint.chatting.application;
 
 import com.swyp.glint.chatting.application.dto.request.CreateChatMessageRequest;
-import com.swyp.glint.chatting.application.dto.response.ChatResponse;
+import com.swyp.glint.chatting.application.dto.response.ChatDTO;
 import com.swyp.glint.chatting.application.dto.response.ChatResponses;
 import com.swyp.glint.chatting.domain.Chat;
 import com.swyp.glint.chatting.domain.ChatRoom;
 import com.swyp.glint.chatting.repository.ChatRepository;
 import com.swyp.glint.common.exception.InvalidValueException;
-import com.swyp.glint.common.exception.NotFoundEntityException;
 import com.swyp.glint.user.application.UserFacade;
 import com.swyp.glint.user.domain.UserDetailAggregation;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,7 @@ public class ChatService {
 
     private final ChatRoomService chatRoomService;
 
-    public ChatResponse createChatMessage(CreateChatMessageRequest createChatMessageRequest) {
+    public ChatDTO createChatMessage(CreateChatMessageRequest createChatMessageRequest) {
         Chat chat = createChatMessageRequest.toEntity();
 
         ChatRoom chatRoom = chatRoomService.getChatRoom(chat.getChatRoomId());
@@ -49,7 +48,7 @@ public class ChatService {
         UserDetailAggregation userDetailAggregation = userFacade.getUserDetailAggregation(chat.getSendUserId());
         chatRepository.save(chat);
 
-        return ChatResponse.of(chat, userDetailAggregation);
+        return ChatDTO.of(chat, userDetailAggregation);
     }
 
 

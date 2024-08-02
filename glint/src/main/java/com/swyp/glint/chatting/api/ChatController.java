@@ -2,7 +2,7 @@ package com.swyp.glint.chatting.api;
 
 import com.swyp.glint.chatting.application.ChatService;
 import com.swyp.glint.chatting.application.dto.request.CreateChatMessageRequest;
-import com.swyp.glint.chatting.application.dto.response.ChatResponse;
+import com.swyp.glint.chatting.application.dto.response.ChatDTO;
 import com.swyp.glint.chatting.application.dto.response.ChatResponses;
 import com.swyp.glint.chatting.exception.NotFoundChatRoomException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +26,7 @@ public class ChatController {
         if(meetingId == null) {
             throw new NotFoundChatRoomException("roomId is null");
         }
-        ChatResponse chatMessage = chatService.createChatMessage(request);
+        ChatDTO chatMessage = chatService.createChatMessage(request);
         simpMessagingTemplate.convertAndSend("/sub/chatrooms/" + meetingId, chatMessage);
     }
 

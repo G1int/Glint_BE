@@ -4,12 +4,10 @@ import com.swyp.glint.chatting.domain.Chat;
 import com.swyp.glint.user.domain.UserDetailAggregation;
 import lombok.Builder;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Builder
-public record ChatResponse(
+public record ChatDTO(
         Long id,
         String message,
         Long chatRoomId,
@@ -19,7 +17,7 @@ public record ChatResponse(
         LocalDateTime sendDate
 ) {
 
-    public ChatResponse(Long id, String message, Long chatRoomId, Long userId, String nickname, String userProfileImageUrl, LocalDateTime sendDate) {
+    public ChatDTO(Long id, String message, Long chatRoomId, Long userId, String nickname, String userProfileImageUrl, LocalDateTime sendDate) {
         this.id = id;
         this.message = message;
         this.chatRoomId = chatRoomId;
@@ -29,8 +27,8 @@ public record ChatResponse(
         this.sendDate = sendDate;
     }
 
-    public static ChatResponse of(Chat chat, UserDetailAggregation userDetailAggregation) {
-        return ChatResponse.builder()
+    public static ChatDTO of(Chat chat, UserDetailAggregation userDetailAggregation) {
+        return ChatDTO.builder()
                 .id(chat.getId())
                 .message(chat.getMessage())
                 .chatRoomId(chat.getChatRoomId())
