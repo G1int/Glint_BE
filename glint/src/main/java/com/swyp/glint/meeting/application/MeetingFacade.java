@@ -196,7 +196,6 @@ public class MeetingFacade {
     @Transactional
     public MeetingResponse userMeetingOut(Long meetingId, Long userId) {
         Meeting meeting = meetingService.getMeetingEntity(meetingId);
-        meeting.outUser(userId);
 
         if(meeting.isLeader(userId) && ! meeting.isAlone()) {
             List<JoinMeeting> acceptedJoinMeeting = joinMeetingService.getAcceptedJoinMeeting(meetingId);
@@ -208,6 +207,7 @@ public class MeetingFacade {
             meeting.changeLeader(nextMeetingLeader.getNextLeaderUserId());
         }
 
+        meeting.outUser(userId);
         Meeting saveMeeting = meetingService.save(meeting);
         MeetingAggregation meetingAggregation = getMeetingAggregation(saveMeeting);
         return MeetingResponse.from(meetingAggregation);
