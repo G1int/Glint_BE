@@ -77,9 +77,9 @@ spring:
         format_sql: true
         use_sql_comments: true
         #        hbm2ddl.auto: create
-        ddl-auto: update
+        ddl-auto: none
         dialect: org.hibernate.dialect.MySQLDialect
-    generate-ddl: true
+    generate-ddl: false
   data:
     redis:
       host: localhost
@@ -88,6 +88,8 @@ spring:
     kakao:
       client-id:
       callback-url: http://localhost:8080/glint/auth/kakao/callback
+
+
 
 ---
 spring:
