@@ -68,18 +68,18 @@ spring:
     name: glint
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/glint?useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: 1234
+    url: jdbc:mysql://glint.cjo8aqucgzfd.ap-southeast-2.rds.amazonaws.com:3306/glint?serverTimezone=Asia/Seoul
+    username: glint
+    password: '!!Glintrmfflsxm!!'
   jpa:
     properties:
       hibernate:
         format_sql: true
         use_sql_comments: true
         #        hbm2ddl.auto: create
-        ddl-auto: update
+        ddl-auto: none
         dialect: org.hibernate.dialect.MySQLDialect
-    generate-ddl: true
+    generate-ddl: false
   data:
     redis:
       host: localhost
@@ -88,6 +88,17 @@ spring:
     kakao:
       client-id:
       callback-url: http://localhost:8080/glint/auth/kakao/callback
+  activemq:
+    broker-url: tcp://localhost:61616
+    stomp:
+      host: localhost
+      port: 61616
+    user: artemis
+    password: artemis
+    queue:
+      name: glint-queue
+
+
 
 ---
 spring:
