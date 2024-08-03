@@ -7,6 +7,7 @@ import com.swyp.glint.user.domain.UserDetail;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,7 @@ public class NextMeetingLeader {
 
     private Gender getNextLeaderGender() {
         //동성이 없음. 이성에서 뽑기
-        if(userDetailGenderMap.get(leaderUserDetail.getGender()).isEmpty()) {
+        if(Objects.isNull(userDetailGenderMap.get(leaderUserDetail.getGender())) || userDetailGenderMap.get(leaderUserDetail.getGender()).isEmpty()) {
             return Gender.getOtherGender(Gender.valueOf(leaderUserDetail.getGender()));
         }
         // 동성이 존재
