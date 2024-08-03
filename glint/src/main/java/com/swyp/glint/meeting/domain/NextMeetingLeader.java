@@ -24,22 +24,32 @@ public class NextMeetingLeader {
         this.leaderUserDetail = leaderUserDetail;
         this.leaderGender = leaderUserDetail.getGender();
         this.userDetailGenderMap = joinMemberUserDetails.stream().collect(Collectors.groupingBy(UserDetail::getGender));
-        this.userJoinTimeMap = meetingMemberJoinMeetings.stream().collect(Collectors.toMap(JoinMeeting::getUserId, JoinMeeting::getJoinDateTime));
+        this.userJoinTimeMap = getJoinTimeExceptLeader(meetingMemberJoinMeetings, leaderUserDetail);
+    }
+
+    private static Map<Long, LocalDateTime> getJoinTimeExceptLeader(List<JoinMeeting> meetingMemberJoinMeetings, UserDetail leaderUserDetail) {
+        return meetingMemberJoinMeetings.stream()
+                .filter(joinMeeting -> !joinMeeting.getUserId().equals(leaderUserDetail.getUserId()))
+                .collect(Collectors.toMap(JoinMeeting::getUserId, JoinMeeting::getJoinDateTime));
     }
 
     public Long getNextLeaderUserId() {
         Gender nextLeaderGender = getNextLeaderGender();
-        // 여기서 500 에러
+
         List<UserDetail> userDetails = Optional.ofNullable(userDetailGenderMap.get(nextLeaderGender.name())).orElse(List.of());
 
+        UserDetail userDetail = getLatestJoinUser(userDetails);
+        return userDetail.getUserId();
+    }
+
+    private UserDetail getLatestJoinUser(List<UserDetail> userDetails) {
         Optional<UserDetail> latestJoinUserDetailOptional = userDetails.stream().min((o1, o2) -> {
             LocalDateTime o1JoinTime = userJoinTimeMap.get(o1.getUserId());
             LocalDateTime o2JoinTime = userJoinTimeMap.get(o2.getUserId());
             return o1JoinTime.compareTo(o2JoinTime);
         });
 
-        UserDetail userDetail = latestJoinUserDetailOptional.orElseThrow(() -> new NotFoundNextMeetingLeader("Not found next leader user "));
-        return userDetail.getUserId();
+        return latestJoinUserDetailOptional.orElseThrow(() -> new NotFoundNextMeetingLeader("Not found next leader user "));
     }
 
     private Gender getNextLeaderGender() {

@@ -72,6 +72,8 @@ public class MeetingFacade {
         List<UserSimpleProfile> userSimpleProfileList = userService.getUserSimpleProfileList(meeting.getJoinUserIds());
         joinMeetingService.createMeetingJoin(meetingRequest.leaderUserId(), savedMeeting.getId());
 
+        chatRoomService.activeChatRoom(savedMeeting.getId(), meeting.getJoinUserIds());
+
         Long leaderUserId = meetingRequest.leaderUserId();
         validateUserMeetingCondition(leaderUserId, meeting);
 
@@ -158,9 +160,6 @@ public class MeetingFacade {
         userService.getUserById(userId);
         meeting.addUser(userId);
 
-        if(meeting.isFull()) {
-            chatRoomService.activeChatRoom(meetingId, meeting.getJoinUserIds());
-        }
 
         MeetingAggregation meetingAggregation = getMeetingAggregation(meeting);
         return MeetingResponse.from(meetingAggregation);
@@ -194,19 +193,21 @@ public class MeetingFacade {
     }
 
 
+    @Transactional
     public MeetingResponse userMeetingOut(Long meetingId, Long userId) {
         Meeting meeting = meetingService.getMeetingEntity(meetingId);
+        meeting.outUser(userId);
 
         if(meeting.isLeader(userId) && ! meeting.isAlone()) {
             List<JoinMeeting> acceptedJoinMeeting = joinMeetingService.getAcceptedJoinMeeting(meetingId);
-            List<UserDetail> userDetails = userDetailService.getUserDetails(acceptedJoinMeeting.stream().map(JoinMeeting::getUserId).toList());
+            List<UserDetail> userDetails = userDetailService.getUserDetails(meeting.getJoinUserIds());
             UserDetail leaderUserDetail = userDetailService.getUserDetail(meeting.getLeaderUserId());
+
             NextMeetingLeader nextMeetingLeader = new NextMeetingLeader(acceptedJoinMeeting, userDetails, leaderUserDetail);
             nextMeetingLeader.getNextLeaderUserId();
             meeting.changeLeader(nextMeetingLeader.getNextLeaderUserId());
         }
 
-        meeting.outUser(userId);
         Meeting saveMeeting = meetingService.save(meeting);
         MeetingAggregation meetingAggregation = getMeetingAggregation(saveMeeting);
         return MeetingResponse.from(meetingAggregation);
