@@ -88,9 +88,6 @@ spring:
     kakao:
       client-id:
       callback-url: http://localhost:8080/glint/auth/kakao/callback
-
-
-
 ---
 spring:
   config:
@@ -121,6 +118,8 @@ spring:
     kakao:
       client-id: ${oauth.kakao.client-id}
       callback-url: http://localhost:3000/glint/auth/kakao/callback
+  jms:
+    pub-sub-domain: true
 
 cloud:
   aws:
@@ -133,6 +132,19 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+
+
+activemq:
+  broker-url: ${mq.broker-url}
+  stomp:
+    host: ${mq.host}
+    port: ${mq.port}
+  user: ${mq.user}
+  password: ${mq.password}
+  queue:
+    name: glint-queue
+
+
 
 logging:
   level:

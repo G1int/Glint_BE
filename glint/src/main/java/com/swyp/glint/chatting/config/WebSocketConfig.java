@@ -1,5 +1,6 @@
 package com.swyp.glint.chatting.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -11,18 +12,40 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 
+    @Value("${activemq.stomp.host}")
+    private String activemqStompHost;
+
+    @Value("${activemq.stomp.port}")
+    private String activemqStompPort;
+
+    @Value("${activemq.user}")
+    private String activemqUsername;
+
+    @Value("${activemq.password}")
+    private String activemqPassword;
+
+
     /**
      * 메시지 브로커 설정을 위한 메소드
-     * /api/sub -> 메세지 구독(수신)
-     * /api/pub -> 메세지 발행(송신)
+     * /sub -> 메세지 구독(수신)
+     * /pub -> 메세지 발행(송신)
      * @param registry
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         /* 메시지 앞에 해당 prefix로 해당 경로를 처리하고 있는 핸들러로 전달된다. */
         registry.setApplicationDestinationPrefixes("/pub");
-        registry.enableSimpleBroker("/sub");
+
+        registry.enableStompBrokerRelay("/sub") // 메시지를 구독할 경로를 설정
+                // ActiveMQ 브로커와 연결을 위한 호스트, 가상 호스트 및 포트, 관리자 로그인 설정
+                .setRelayHost(activemqStompHost)
+                .setRelayPort(Integer.parseInt(activemqStompPort))
+                .setSystemLogin(activemqUsername)
+                .setSystemPasscode(activemqPassword)
+                .setClientLogin(activemqUsername)
+                .setClientPasscode(activemqPassword);
     }
+
 
 
     /**
