@@ -2,10 +2,9 @@ package com.swyp.glint.image.application;
 
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
-import com.swyp.glint.common.exception.FileNotFoundException;
+import com.swyp.glint.core.common.exception.FileNotFoundException;
 import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

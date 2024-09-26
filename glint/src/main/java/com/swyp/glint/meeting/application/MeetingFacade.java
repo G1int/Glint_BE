@@ -1,9 +1,9 @@
 package com.swyp.glint.meeting.application;
 
 import com.swyp.glint.chatting.application.ChatRoomService;
-import com.swyp.glint.common.exception.ErrorCode;
-import com.swyp.glint.common.exception.InvalidValueException;
-import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.core.common.exception.ErrorCode;
+import com.swyp.glint.core.common.exception.InvalidValueException;
+import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.application.DrinkingService;
 import com.swyp.glint.keyword.application.LocationService;
 import com.swyp.glint.keyword.application.ReligionService;
@@ -23,9 +23,9 @@ import com.swyp.glint.meeting.exception.NumberOfPeopleException;
 import com.swyp.glint.meeting.repository.JoinMeetingRepository;
 import com.swyp.glint.meeting.repository.MeetingRepository;
 import com.swyp.glint.searchkeyword.application.SearchKeywordService;
-import com.swyp.glint.user.application.UserDetailService;
-import com.swyp.glint.user.application.UserProfileService;
-import com.swyp.glint.user.application.UserService;
+import com.swyp.glint.user.application.impl.UserDetailService;
+import com.swyp.glint.user.application.impl.UserProfileService;
+import com.swyp.glint.user.application.impl.UserServiceImpl;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
 import com.swyp.glint.user.domain.UserSimpleProfile;
@@ -49,7 +49,7 @@ public class MeetingFacade {
 
     private final UserProfileService userProfileService;
     private final UserDetailService userDetailService;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final DrinkingService drinkingService;
     private final SmokingService smokingService;
     private final ReligionService religionService;
@@ -69,7 +69,7 @@ public class MeetingFacade {
 
         Meeting savedMeeting = meetingService.save(meeting);
         LocationList locationList = getMeetingLocationList(savedMeeting);
-        List<UserSimpleProfile> userSimpleProfileList = userService.getUserSimpleProfileList(meeting.getJoinUserIds());
+        List<UserSimpleProfile> userSimpleProfileList = userServiceImpl.getUserSimpleProfileList(meeting.getJoinUserIds());
         joinMeetingService.createMeetingJoin(meetingRequest.leaderUserId(), savedMeeting.getId());
 
         chatRoomService.activeChatRoom(savedMeeting.getId(), meeting.getJoinUserIds());
@@ -134,7 +134,7 @@ public class MeetingFacade {
         List<Long> joinMeetingUserIds = joinMeetingService.getJoinMeetingUserIds(meeting.getId());
         LocationList locationList = getMeetingLocationList(meeting);
 
-        List<UserSimpleProfile> userSimpleProfileList = userService.getUserSimpleProfileList(meeting.getJoinUserIds());
+        List<UserSimpleProfile> userSimpleProfileList = userServiceImpl.getUserSimpleProfileList(meeting.getJoinUserIds());
         return new MeetingAggregation(
                 meeting,
                 userSimpleProfileList,
@@ -157,7 +157,7 @@ public class MeetingFacade {
         if(userGenderDetails.size() >= meeting.getPeopleCapacity()) {
             throw new NumberOfPeopleException("인원수 초과");
         }
-        userService.getUserById(userId);
+        userServiceImpl.getUserById(userId);
         meeting.addUser(userId);
 
 

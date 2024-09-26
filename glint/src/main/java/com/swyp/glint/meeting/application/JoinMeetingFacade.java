@@ -2,7 +2,7 @@ package com.swyp.glint.meeting.application;
 
 import com.swyp.glint.meeting.application.dto.response.UserJoinMeetingResponse;
 import com.swyp.glint.meeting.domain.JoinMeeting;
-import com.swyp.glint.user.application.UserFacade;
+import com.swyp.glint.user.application.impl.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

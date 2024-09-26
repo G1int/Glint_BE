@@ -2,16 +2,12 @@ package com.swyp.glint.keyword.api;
 
 import com.swyp.glint.keyword.application.ReligionService;
 import com.swyp.glint.keyword.domain.Religion;
-import com.swyp.glint.common.exception.NotFoundEntityException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/religions")

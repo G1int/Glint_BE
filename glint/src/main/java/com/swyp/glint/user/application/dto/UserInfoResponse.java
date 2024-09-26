@@ -1,6 +1,6 @@
 package com.swyp.glint.user.application.dto;
 
-import com.swyp.glint.common.exception.InvalidValueException;
+import com.swyp.glint.core.common.exception.InvalidValueException;
 import com.swyp.glint.keyword.domain.UniversityCategory;
 import com.swyp.glint.keyword.domain.WorkCategory;
 import com.swyp.glint.user.domain.UserDetail;

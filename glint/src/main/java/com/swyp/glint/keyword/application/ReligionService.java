@@ -1,6 +1,6 @@
 package com.swyp.glint.keyword.application;
 
-import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.domain.Religion;
 import com.swyp.glint.keyword.repository.ReligionRepository;
 import jakarta.transaction.Transactional;

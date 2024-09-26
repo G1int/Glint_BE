@@ -3,21 +3,14 @@ package com.swyp.glint.keyword.api;
 import com.swyp.glint.keyword.application.UniversityMappingService;
 import com.swyp.glint.keyword.application.UniversityService;
 import com.swyp.glint.keyword.application.dto.UniversityListResponse;
-import com.swyp.glint.keyword.domain.University;
 import com.swyp.glint.keyword.domain.UniversityCategory;
-import com.swyp.glint.common.exception.NotFoundEntityException;
-import com.swyp.glint.keyword.domain.Work;
 import com.swyp.glint.user.application.dto.UniversityResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/universities")

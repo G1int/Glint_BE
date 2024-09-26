@@ -1,6 +1,6 @@
 package com.swyp.glint.meeting.application;
 
-import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.meeting.application.dto.response.JoinMeetingResponse;
 import com.swyp.glint.meeting.domain.JoinMeeting;
 import com.swyp.glint.meeting.domain.JoinStatus;

@@ -1,6 +1,6 @@
 package com.swyp.glint.keyword.application;
 
-import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.application.dto.LocationListResponse;
 import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.keyword.repository.LocationRepository;

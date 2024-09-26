@@ -1,7 +1,6 @@
 package com.swyp.glint.meeting.domain;
 
-import com.swyp.glint.common.baseentity.BaseTimeEntity;
-import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
+import com.swyp.glint.core.common.baseentity.BaseTimeEntity;
 import com.swyp.glint.meeting.exception.NumberOfPeopleException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

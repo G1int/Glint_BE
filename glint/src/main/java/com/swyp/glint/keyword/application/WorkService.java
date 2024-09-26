@@ -1,6 +1,6 @@
 package com.swyp.glint.keyword.application;
 
-import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.application.dto.WorkListResponse;
 import com.swyp.glint.keyword.domain.Work;
 import com.swyp.glint.keyword.domain.WorkCategory;

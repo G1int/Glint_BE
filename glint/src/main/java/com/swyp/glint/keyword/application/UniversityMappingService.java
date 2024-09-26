@@ -1,9 +1,8 @@
 package com.swyp.glint.keyword.application;
 
-import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.domain.UniversityCategory;
 import com.swyp.glint.keyword.repository.UniversityCategoryRepository;
-import com.swyp.glint.keyword.repository.UniversityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
