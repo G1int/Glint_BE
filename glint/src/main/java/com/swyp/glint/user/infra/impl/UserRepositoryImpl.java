@@ -2,7 +2,7 @@ package com.swyp.glint.user.infra.impl;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.swyp.glint.user.application.dto.UserInfoResponse;
+import com.swyp.glint.user.domain.UserInfo;
 import com.swyp.glint.user.infra.UserCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -28,19 +28,17 @@ public class UserRepositoryImpl implements UserCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<UserInfoResponse> findUserInfoBy(Long userId) {
+    public Optional<UserInfo> findUserInfoBy(Long userId) {
         return Optional.ofNullable(
                 queryFactory
                 .select(
-                        Projections.constructor(UserInfoResponse.class,
-                                    userProfile,
+                        Projections.constructor(UserInfo.class,
                                     userDetail,
-                                    workCategory,
-                                    universityCategory
+                                    userProfile
                         )
                 ).distinct()
                 .from(user)
-                .leftJoin(userDetail).on(userDetail.userId.eq(user.id))
+                .join(userDetail).on(userDetail.userId.eq(user.id))
                 .leftJoin(userProfile).on(userProfile.userId.eq(user.id))
                 .leftJoin(userProfile.work, work).fetchJoin()
                 .leftJoin(userProfile.work.workCategory, workCategory).fetchJoin()
@@ -51,7 +49,6 @@ public class UserRepositoryImpl implements UserCustom {
                 .leftJoin(userProfile.smoking, smoking).fetchJoin()
                 .leftJoin(userProfile.drinking, drinking).fetchJoin()
                 .leftJoin(userProfile.hashtags)
-                .leftJoin(userDetail).on(userDetail.userId.eq(userProfile.userId))
                 .where(user.id.eq(userId))
                 .fetchOne()
         );

@@ -8,24 +8,24 @@ import com.swyp.glint.core.auth.application.social.SocialType;
 import com.swyp.glint.core.common.authority.AuthorityHelper;
 import com.swyp.glint.core.common.util.CookieUtil;
 import com.swyp.glint.core.common.util.RedisUtil;
-import com.swyp.glint.user.application.impl.UserServiceImpl;
 import com.swyp.glint.user.application.dto.UserLoginResponse;
 import com.swyp.glint.user.application.dto.UserRequest;
+import com.swyp.glint.user.application.usecase.UserAuthUseCase;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserAuthUseCase userAuthUseCase;
 
     private final SocialOauthProvider socialOauthProvider;
 
@@ -56,7 +56,7 @@ public class AuthController {
         OauthTokenResponse oauthTokenResponse = socialOauth.requestAccessToken(code);
         KakaoUserInfoResponse kakaoUserInfoResponse = socialOauth.getUserInfo(oauthTokenResponse.getAccess_token());
 
-        UserLoginResponse userLoginResponse = userServiceImpl.oauthLoginUser(
+        UserLoginResponse userLoginResponse = userAuthUseCase.oauthLoginUser(
                 UserRequest.of(kakaoUserInfoResponse.getKakao_account().getEmail(),"ROLE_OAUTH_USER", SocialType.KAKAO.name())
         );
 

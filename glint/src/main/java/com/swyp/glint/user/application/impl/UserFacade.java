@@ -1,5 +1,6 @@
 package com.swyp.glint.user.application.impl;
 
+import com.swyp.glint.user.application.service.impl.UserServiceImpl;
 import com.swyp.glint.user.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,11 @@ public class UserFacade {
     private final UserProfileService userProfileService;
 
 
-    public UserDetailAggregation getUserDetailAggregation(Long userId) {
+    public UserDetail getUserDetailAggregation(Long userId) {
         User user = userServiceImpl.getUserEntity(userId);
         UserDetail userDetail = userDetailService.getUserDetail(userId);
 
-        return UserDetailAggregation.of(user, userDetail);
+        return userDetail;
     }
 
     public UserSimpleProfile getUserSimpleProfile(Long userId) {

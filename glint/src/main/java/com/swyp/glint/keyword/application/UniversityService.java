@@ -25,13 +25,13 @@ public class UniversityService {
     public UniversityResponse findById(Long universityId) { // university id를 통한 University 응답 반환
         University university = universityRepository.findById(universityId)
                 .orElseThrow(() -> new NotFoundEntityException("University not found with id: " + universityId));
-        return UniversityResponse.from(university, university.getUniversityCategory());
+        return UniversityResponse.from(university);
     }
 
     public UniversityResponse findByName(String universityName, String universityDepartment) { // 대학교+학과명을 통한 University 응답 반환
         University university = universityRepository.findByUniversityNameAndUniversityDepartment(universityName, universityDepartment)
                 .orElseThrow(() -> new NotFoundEntityException("University not found with name: " + universityName + " department: " + universityDepartment));
-        return UniversityResponse.from(university, university.getUniversityCategory());
+        return UniversityResponse.from(university);
     }
 
     public University getEntityByName(String universityName, String universityDepartment) { // 대학교+학과명을 통한 University 응답 반환
@@ -64,7 +64,7 @@ public class UniversityService {
         University university = universityRepository.findByUniversityNameAndUniversityDepartment(universityName, universityDepartment)
                 .orElseGet(() -> { return universityRepository.save(University.createNewUniversity(universityName, universityDepartment, universityCategory)); });
 
-        return UniversityResponse.from(university, universityCategory);
+        return UniversityResponse.from(university);
     }
 
     @Transactional
@@ -73,7 +73,7 @@ public class UniversityService {
                 .orElseThrow(() -> new NotFoundEntityException("University not found with university id: " + universityId));
         UniversityCategory universityCategory = universityMappingService.determineUniversityCategory(universityName, universityDepartment);
         university.updateUniversity(universityName, universityDepartment, universityCategory);
-        return  UniversityResponse.from(universityRepository.save(university), universityCategory);
+        return  UniversityResponse.from(universityRepository.save(university));
     }
 
     @Transactional

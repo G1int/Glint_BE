@@ -32,13 +32,13 @@ public class UserProfileResponse {
     private List<String> hashtags;
 
 
-    public static UserProfileResponse from(UserProfile userProfile, WorkCategory workCategory, UniversityCategory universityCategory) {
+    public static UserProfileResponse from(UserProfile userProfile) {
         if(Objects.isNull(userProfile)) return null;
 
         return UserProfileResponse.builder()
                 .id(userProfile.getId())
-                .work(WorkResponse.from(userProfile.getWork(), workCategory))
-                .university(UniversityResponse.from(userProfile.getUniversity(), universityCategory))
+                .work(WorkResponse.from(userProfile.getWork()))
+                .university(UniversityResponse.from(userProfile.getUniversity()))
                 .location(LocationResponse.from(userProfile.getLocation()))
                 .religion(ReligionResponse.from(userProfile.getReligion()))
                 .smoking(SmokingResponse.from(userProfile.getSmoking()))

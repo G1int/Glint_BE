@@ -23,10 +23,15 @@ public class UniversityCategory extends BaseTimeEntity {
     private  String universityCategoryName;
 
     @Builder(access = AccessLevel.PRIVATE)
-    @PersistenceCreator
     public UniversityCategory(Long id, String universityCategoryName) {
         this.id = id;
         this.universityCategoryName = universityCategoryName;
+    }
+
+    public static UniversityCategory create(String universityCategoryName) {
+        return UniversityCategory.builder()
+                .universityCategoryName(universityCategoryName)
+                .build();
     }
 
 }

@@ -23,14 +23,14 @@ public class UniversityResponse {
 
     UniversityCategoryResponse universityCategory;
 
-    public static UniversityResponse from(University university, UniversityCategory universityCategory) {
+    public static UniversityResponse from(University university) {
         if(university == null) return null;
 
         return UniversityResponse.builder()
                 .universityId(university.getId())
                 .universityName(university.getUniversityName())
                 .universityDepartment(university.getUniversityDepartment())
-                .universityCategory(UniversityCategoryResponse.from(universityCategory))
+                .universityCategory(UniversityCategoryResponse.from(university.getUniversityCategory()))
                 .build();
     }
 }

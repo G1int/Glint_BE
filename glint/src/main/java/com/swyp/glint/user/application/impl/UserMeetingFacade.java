@@ -1,6 +1,7 @@
 package com.swyp.glint.user.application.impl;
 
 import com.swyp.glint.meeting.application.MeetingFacade;
+import com.swyp.glint.user.application.service.impl.UserServiceImpl;
 import com.swyp.glint.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

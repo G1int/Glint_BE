@@ -72,7 +72,7 @@ public class UserProfileService {
         UserProfile userProfile = getUserProfileEntityById(userId);
         UniversityCategory universityCategory = universityService.getUniversityCategoryByUniversity(userProfile.getUniversity()).orElse(null);
         WorkCategory workCategory = workCategoryService.getUWorkCategoryByWork(userProfile.getWork()).orElse(null);
-        return UserProfileResponse.from(userProfile, workCategory, universityCategory);
+        return UserProfileResponse.from(userProfile);
     }
 
     @Transactional
@@ -157,9 +157,9 @@ public class UserProfileService {
         Optional<UserProfile> userProfile = userProfileRepository.findByUserId(userId);
 
         if(userProfile.isEmpty()) {
-            return UserProfileResponse.from(userProfileRepository.save(UserProfile.createEmptyProfile(userId)), null, null);
+            return UserProfileResponse.from(userProfileRepository.save(UserProfile.createEmptyProfile(userId)));
         }
 
-        return UserProfileResponse.from(userProfile.get(), null, null);
+        return UserProfileResponse.from(userProfile.get());
     }
 }

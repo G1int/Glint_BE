@@ -43,7 +43,7 @@ public class UserDetailService {
         return getUserEntityOrElseThrow(userId);
     }
 
-    public Optional<UserDetail> findUserDetail(Long userId) {
+    public Optional<UserDetail> getUserDetailOptional(Long userId) {
         return userDetailRepository.findByUserId(userId);
     }
 
@@ -122,4 +122,7 @@ public class UserDetailService {
         userDetail.updateProfileUrl(imageResponse.url());
         return UserDetailResponse.from(userDetailRepository.save(userDetail));
     }
+
+
+
 }

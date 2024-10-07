@@ -1,13 +1,13 @@
-package com.swyp.glint.user.application.impl;
+package com.swyp.glint.user.application.service.impl;
 
 import com.swyp.glint.core.common.exception.NotFoundEntityException;
-import com.swyp.glint.user.application.UserService;
+import com.swyp.glint.user.application.service.UserService;
 import com.swyp.glint.user.application.dto.*;
+import com.swyp.glint.user.application.impl.UserDetailService;
 import com.swyp.glint.user.domain.User;
-import com.swyp.glint.user.domain.UserDetail;
+import com.swyp.glint.user.domain.UserInfo;
 import com.swyp.glint.user.domain.UserSimpleProfile;
 import com.swyp.glint.user.infra.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +20,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final UserDetailService userDetailService;
+
 
     @Override
-    public UserResponse getUserById(Long id) {
-        return UserResponse.from(userRepository.findById(id).orElseThrow(() -> new NotFoundEntityException("id : " + id + " not found")));
-
-    }
-
-    @Override
-    public UserInfoResponse getUserInfoBy(Long id) {
-        return userRepository.findUserInfoBy(id).orElseThrow(() -> new NotFoundEntityException("id : " + id + " not found"));
+    public User getUserBy(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundEntityException("id : " + id + " not found"));
 
     }
 
@@ -40,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public User getUserBy(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundEntityException("email : " + email + " not found"));
     }
 
@@ -59,12 +55,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserIds(userIds);
     }
 
-
-    public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
-    }
-
-
     @Override
     public User save(User user) {
         return userRepository.save(user);
@@ -74,4 +64,11 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findBy(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Override
+    public UserInfo getUserInfoBy(Long id) {
+        return userRepository.findUserInfoBy(id).orElseThrow(() -> new NotFoundEntityException("id : " + id + " not found"));
+    }
+
+
 }

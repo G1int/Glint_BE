@@ -25,7 +25,7 @@ import com.swyp.glint.meeting.repository.MeetingRepository;
 import com.swyp.glint.searchkeyword.application.SearchKeywordService;
 import com.swyp.glint.user.application.impl.UserDetailService;
 import com.swyp.glint.user.application.impl.UserProfileService;
-import com.swyp.glint.user.application.impl.UserServiceImpl;
+import com.swyp.glint.user.application.service.impl.UserServiceImpl;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
 import com.swyp.glint.user.domain.UserSimpleProfile;
@@ -69,7 +69,9 @@ public class MeetingFacade {
 
         Meeting savedMeeting = meetingService.save(meeting);
         LocationList locationList = getMeetingLocationList(savedMeeting);
+
         List<UserSimpleProfile> userSimpleProfileList = userServiceImpl.getUserSimpleProfileList(meeting.getJoinUserIds());
+
         joinMeetingService.createMeetingJoin(meetingRequest.leaderUserId(), savedMeeting.getId());
 
         chatRoomService.activeChatRoom(savedMeeting.getId(), meeting.getJoinUserIds());
@@ -157,7 +159,7 @@ public class MeetingFacade {
         if(userGenderDetails.size() >= meeting.getPeopleCapacity()) {
             throw new NumberOfPeopleException("인원수 초과");
         }
-        userServiceImpl.getUserById(userId);
+        userServiceImpl.getUserBy(userId);
         meeting.addUser(userId);
 
 

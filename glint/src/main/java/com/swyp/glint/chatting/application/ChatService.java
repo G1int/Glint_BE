@@ -8,7 +8,7 @@ import com.swyp.glint.chatting.domain.ChatRoom;
 import com.swyp.glint.chatting.repository.ChatRepository;
 import com.swyp.glint.core.common.exception.InvalidValueException;
 import com.swyp.glint.user.application.impl.UserFacade;
-import com.swyp.glint.user.domain.UserDetailAggregation;
+import com.swyp.glint.user.domain.UserDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -45,10 +45,10 @@ public class ChatService {
             throw new InvalidValueException("Not Active ChatRoom, ChatRoomId : " + chatRoom.getId());
         }
 
-        UserDetailAggregation userDetailAggregation = userFacade.getUserDetailAggregation(chat.getSendUserId());
+        UserDetail userDetail = userFacade.getUserDetailAggregation(chat.getSendUserId());
         chatRepository.save(chat);
 
-        return ChatResponse.of(chat, userDetailAggregation);
+        return ChatResponse.of(chat, userDetail);
     }
 
 

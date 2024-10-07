@@ -22,12 +22,12 @@ public class WorkService {
     public WorkResponse findById(Long workId) { // work id를 통한 Work 엔티티 반환
         Work work = workRepository.findById(workId)
                 .orElseThrow(() -> new NotFoundEntityException("Work not found with id: " + workId));
-        return WorkResponse.from(work, work.getWorkCategory());
+        return WorkResponse.from(work);
     }
 
     public WorkResponse findByName(String workName) {
         Work work = getEntityByName(workName);
-        return WorkResponse.from(work, work.getWorkCategory());
+        return WorkResponse.from(work);
     }
 
     public Work getEntityByName(String workName) {
@@ -45,7 +45,7 @@ public class WorkService {
     }
 
     public WorkResponse createNewWorkReturnDTO(String workName) {
-        return WorkResponse.from(createNewWork(workName), createNewWork(workName).getWorkCategory());
+        return WorkResponse.from(createNewWork(workName));
     }
 
     @Transactional

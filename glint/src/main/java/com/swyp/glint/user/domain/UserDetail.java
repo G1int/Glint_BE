@@ -126,4 +126,12 @@ public class UserDetail extends BaseTimeEntity {
                 Objects.nonNull(height) &&
                 Objects.nonNull(profileImage);
     }
+
+    public boolean isNotComplete() {
+        return Objects.isNull(nickname) ||
+                Objects.isNull(gender) ||
+                Objects.isNull(birthdate) ||
+                Objects.isNull(height) ||
+                Objects.isNull(profileImage);
+    }
 }

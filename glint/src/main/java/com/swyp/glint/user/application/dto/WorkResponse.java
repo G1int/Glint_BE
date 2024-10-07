@@ -20,12 +20,12 @@ public class WorkResponse {
 
     WorkCategoryResponse workCategory;
 
-    public static WorkResponse from(Work work, WorkCategory workCategory) {
+    public static WorkResponse from(Work work) {
         if(work == null) return null;
         return WorkResponse.builder()
                 .workId(work.getId())
                 .workName(work.getWorkName())
-                .workCategory(WorkCategoryResponse.from(workCategory))
+                .workCategory(WorkCategoryResponse.from(work.getWorkCategory()))
                 .build();
     }
 }

@@ -1,12 +1,10 @@
 package com.swyp.glint.chatting.application.dto.response;
 
 import com.swyp.glint.chatting.domain.Chat;
-import com.swyp.glint.user.domain.UserDetailAggregation;
+import com.swyp.glint.user.domain.UserDetail;
 import lombok.Builder;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Builder
 public record ChatResponse(
@@ -29,15 +27,15 @@ public record ChatResponse(
         this.sendDate = sendDate;
     }
 
-    public static ChatResponse of(Chat chat, UserDetailAggregation userDetailAggregation) {
+    public static ChatResponse of(Chat chat, UserDetail userDetail) {
         return ChatResponse.builder()
                 .id(chat.getId())
                 .message(chat.getMessage())
                 .chatRoomId(chat.getChatRoomId())
-                .userId(userDetailAggregation.getUserId())
-                .nickname(userDetailAggregation.getNickname())
+                .userId(userDetail.getUserId())
+                .nickname(userDetail.getNickname())
                 .sendDate(chat.getSendDate())
-                .userProfileImageUrl(userDetailAggregation.getProfileImage())
+                .userProfileImageUrl(userDetail.getProfileImage())
                 .build();
     }
 }

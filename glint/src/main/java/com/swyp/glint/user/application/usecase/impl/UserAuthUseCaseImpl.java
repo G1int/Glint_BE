@@ -1,24 +1,26 @@
-package com.swyp.glint.user.application.impl;
+package com.swyp.glint.user.application.usecase.impl;
 
-import com.swyp.glint.user.application.UserAuthService;
-import com.swyp.glint.user.application.UserService;
 import com.swyp.glint.user.application.dto.UserLoginResponse;
 import com.swyp.glint.user.application.dto.UserRequest;
+import com.swyp.glint.user.application.impl.UserDetailService;
+import com.swyp.glint.user.application.service.UserService;
+import com.swyp.glint.user.application.usecase.UserAuthUseCase;
 import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.domain.UserDetail;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class UserAuthServiceImpl implements UserAuthService {
+public class UserAuthUseCaseImpl implements UserAuthUseCase {
+
+    private final UserService userService;
 
     private final UserDetailService userDetailService;
 
-    private final UserService userService;
 
     @Transactional
     @Override
@@ -31,14 +33,17 @@ public class UserAuthServiceImpl implements UserAuthService {
             return UserLoginResponse.from(userService.save(userRequest.toEntity()), false);
         }
 
-        Optional<UserDetail> userDetailOptional = userDetailService.findUserDetail(userOptional.get().getId());
+        Optional<UserDetail> userDetailOptional = userDetailService.getUserDetailOptional(userOptional.get().getId());
 
         // 이미 회원가입은 했지만 detail 없는경우
         if(userDetailOptional.isEmpty()) {
             return UserLoginResponse.from(userOptional.get(), false);
         }
+
+        UserDetail userDetail = userDetailOptional.get();
+
         // 이미 회원가입은 했지만 detail 있지만 완료하지 않은경우
-        if(! userDetailOptional.get().isComplete()) {
+        if(userDetail.isNotComplete()) {
             return UserLoginResponse.from(userOptional.get(), false);
         }
 
