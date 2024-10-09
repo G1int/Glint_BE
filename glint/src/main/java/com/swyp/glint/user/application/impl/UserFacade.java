@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserFacade {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserServiceImpl userService;
 
     private final UserDetailService userDetailService;
 
@@ -17,7 +17,7 @@ public class UserFacade {
 
 
     public UserDetail getUserDetailAggregation(Long userId) {
-        User user = userServiceImpl.getUserEntity(userId);
+        User user = userService.getUserEntity(userId);
         UserDetail userDetail = userDetailService.getUserDetail(userId);
 
         return userDetail;

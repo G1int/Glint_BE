@@ -13,12 +13,12 @@ public class UserMeetingFacade {
 
     private final MeetingFacade meetingFacade;
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserServiceImpl userService;
 
 
     @Transactional
     public void deleteUser(Long userId) {
-        User user = userServiceImpl.getUserEntity(userId);
+        User user = userService.getUserEntity(userId);
         user.archive();
 //        userService.deleteUser();
         meetingFacade.deleteUserMeeting(userId);

@@ -25,6 +25,7 @@ import com.swyp.glint.meeting.repository.MeetingRepository;
 import com.swyp.glint.searchkeyword.application.SearchKeywordService;
 import com.swyp.glint.user.application.impl.UserDetailService;
 import com.swyp.glint.user.application.impl.UserProfileService;
+import com.swyp.glint.user.application.service.UserSimpleProfileService;
 import com.swyp.glint.user.application.service.impl.UserServiceImpl;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
@@ -49,7 +50,7 @@ public class MeetingFacade {
 
     private final UserProfileService userProfileService;
     private final UserDetailService userDetailService;
-    private final UserServiceImpl userServiceImpl;
+    private final UserServiceImpl userService;
     private final DrinkingService drinkingService;
     private final SmokingService smokingService;
     private final ReligionService religionService;
@@ -57,6 +58,8 @@ public class MeetingFacade {
     private final SearchKeywordService searchKeywordService;
     private final MeetingRepository meetingRepository;
     private final JoinMeetingRepository joinMeetingRepository;
+
+    private final UserSimpleProfileService userSimpleProfileService;
 
 
     @Transactional
@@ -70,7 +73,7 @@ public class MeetingFacade {
         Meeting savedMeeting = meetingService.save(meeting);
         LocationList locationList = getMeetingLocationList(savedMeeting);
 
-        List<UserSimpleProfile> userSimpleProfileList = userServiceImpl.getUserSimpleProfileList(meeting.getJoinUserIds());
+        List<UserSimpleProfile> userSimpleProfileList = userSimpleProfileService.getUserSimpleProfileList(meeting.getJoinUserIds());
 
         joinMeetingService.createMeetingJoin(meetingRequest.leaderUserId(), savedMeeting.getId());
 
@@ -136,7 +139,7 @@ public class MeetingFacade {
         List<Long> joinMeetingUserIds = joinMeetingService.getJoinMeetingUserIds(meeting.getId());
         LocationList locationList = getMeetingLocationList(meeting);
 
-        List<UserSimpleProfile> userSimpleProfileList = userServiceImpl.getUserSimpleProfileList(meeting.getJoinUserIds());
+        List<UserSimpleProfile> userSimpleProfileList = userSimpleProfileService.getUserSimpleProfileList(meeting.getJoinUserIds());
         return new MeetingAggregation(
                 meeting,
                 userSimpleProfileList,
@@ -159,7 +162,7 @@ public class MeetingFacade {
         if(userGenderDetails.size() >= meeting.getPeopleCapacity()) {
             throw new NumberOfPeopleException("인원수 초과");
         }
-        userServiceImpl.getUserBy(userId);
+        userService.getUserBy(userId);
         meeting.addUser(userId);
 
 

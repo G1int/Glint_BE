@@ -39,6 +39,7 @@ public class UserController {
     @Operation(summary = "Delete user", description = "User 삭제, 참가중인 미팅에서 모두 Out,참가신청 모두 거절")
     @DeleteMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId) {
+        //todo 분리
         userMeetingFacade.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }

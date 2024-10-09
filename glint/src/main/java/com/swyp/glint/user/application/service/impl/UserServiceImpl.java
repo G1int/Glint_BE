@@ -2,8 +2,6 @@ package com.swyp.glint.user.application.service.impl;
 
 import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.user.application.service.UserService;
-import com.swyp.glint.user.application.dto.*;
-import com.swyp.glint.user.application.impl.UserDetailService;
 import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.domain.UserInfo;
 import com.swyp.glint.user.domain.UserSimpleProfile;
@@ -19,9 +17,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
-    private final UserDetailService userDetailService;
-
 
     @Override
     public User getUserBy(Long id) {
@@ -43,16 +38,6 @@ public class UserServiceImpl implements UserService {
 
     public List<User> getUsers(List<Long> userIds) {
         return userRepository.findAllById(userIds);
-    }
-
-
-    public List<UserMeetingResponse> getUserMeetingResponseList(List<Long> userIds) {
-        return userRepository.findByUserIds(userIds).stream().map(UserMeetingResponse::from).toList();
-    }
-
-    @Override
-    public List<UserSimpleProfile> getUserSimpleProfileList(List<Long> userIds) {
-        return userRepository.findByUserIds(userIds);
     }
 
     @Override
