@@ -104,15 +104,14 @@ class GetUserSimpleProfileServiceTest {
                 "안녕하세요",
                 List.of("비흡연", "INTJ")
         );
-
-        //when
         userProfileRepository.save(userProfile);
+
 
 
         //when
         List<UserSimpleProfile> userSimpleProfileList = userSimpleProfileService.getUserSimpleProfileList(List.of(user.getId()));
-        //then
 
+        //then
         assertThat(userSimpleProfileList.size()).isEqualTo(1);
         assertThat(userSimpleProfileList.get(0).getUserId()).isEqualTo(user.getId());
         assertThat(userSimpleProfileList.get(0).getNickname()).isEqualTo("nickname");

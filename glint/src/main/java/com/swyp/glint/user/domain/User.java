@@ -53,4 +53,8 @@ public class User extends BaseTimeEntity {
     public void archive() {
         this.archived = true;
     }
+
+    public boolean isArchived() {
+        return this.archived;
+    }
 }
