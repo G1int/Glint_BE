@@ -155,7 +155,7 @@ public class MeetingFacade {
     public MeetingResponse joinUser(Long meetingId, Long userId) {
         Meeting meeting = meetingService.getMeetingEntity(meetingId);
         Map<String, List<UserDetail>> userGenderMap = userDetailService.getUserDetails(meeting.getJoinUserIds()).stream().collect(Collectors.groupingBy(UserDetail::getGender));
-        UserDetail userDetail = userDetailService.getUserDetail(userId);
+        UserDetail userDetail = userDetailService.getUserDetailBy(userId);
 
         //todo 리팩토링
         List<UserDetail> userGenderDetails = Optional.ofNullable(userGenderMap.get(userDetail.getGender())).orElse(List.of());
@@ -205,7 +205,7 @@ public class MeetingFacade {
         if(meeting.isLeader(userId) && ! meeting.isAlone()) {
             List<JoinMeeting> acceptedJoinMeeting = joinMeetingService.getAcceptedJoinMeeting(meetingId);
             List<UserDetail> userDetails = userDetailService.getUserDetails(meeting.getJoinUserIds());
-            UserDetail leaderUserDetail = userDetailService.getUserDetail(meeting.getLeaderUserId());
+            UserDetail leaderUserDetail = userDetailService.getUserDetailBy(meeting.getLeaderUserId());
 
             NextMeetingLeader nextMeetingLeader = new NextMeetingLeader(acceptedJoinMeeting, userDetails, leaderUserDetail);
             nextMeetingLeader.getNextLeaderUserId();
@@ -238,7 +238,7 @@ public class MeetingFacade {
             validateUserMeetingCondition(userId, updateRequestMeeting);
             UserProfile userProfile = userProfileByIdMap.get(userId);
             UserDetail userDetail = userDetails.get(userId);
-            UserDetail leaderUserDetail = userDetailService.getUserDetail(foundMeeting.getLeaderUserId());
+            UserDetail leaderUserDetail = userDetailService.getUserDetailBy(foundMeeting.getLeaderUserId());
 
             UserMeetingValidator userMeetingValidator = new UserMeetingValidator(userProfile, userDetail ,leaderUserDetail, updateRequestMeeting);
 
@@ -257,8 +257,8 @@ public class MeetingFacade {
 
     public void validateUserMeetingCondition(Long leaderUserId, Meeting meeting) {
         UserProfile userProfile = userProfileService.getUserProfileEntityById(leaderUserId);
-        UserDetail userDetail = userDetailService.getUserDetail(leaderUserId);
-        UserDetail leaderUserDetail = userDetailService.getUserDetail(leaderUserId);
+        UserDetail userDetail = userDetailService.getUserDetailBy(leaderUserId);
+        UserDetail leaderUserDetail = userDetailService.getUserDetailBy(leaderUserId);
 
         UserMeetingValidator userMeetingValidator = new UserMeetingValidator(userProfile, userDetail ,leaderUserDetail, meeting);
 

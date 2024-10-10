@@ -33,7 +33,7 @@ public class UserAuthUseCaseImpl implements UserAuthUseCase {
             return UserLoginResponse.from(userService.save(userRequest.toEntity()), false);
         }
 
-        Optional<UserDetail> userDetailOptional = userDetailService.getUserDetailOptional(userOptional.get().getId());
+        Optional<UserDetail> userDetailOptional = userDetailService.findBy(userOptional.get().getId());
 
         // 이미 회원가입은 했지만 detail 없는경우
         if(userDetailOptional.isEmpty()) {

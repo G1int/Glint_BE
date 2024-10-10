@@ -4,7 +4,6 @@ import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.user.application.service.UserService;
 import com.swyp.glint.user.domain.User;
 import com.swyp.glint.user.domain.UserInfo;
-import com.swyp.glint.user.domain.UserSimpleProfile;
 import com.swyp.glint.user.infra.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
