@@ -15,7 +15,7 @@ public class SmokingService {
 
     private final SmokingRepository smokingRepository;
 
-    public Smoking findById(Long smokingId) { // smoking id를 통한 Smoking 엔티티 반환
+    public Smoking getSmokingById(Long smokingId) { // smoking id를 통한 Smoking 엔티티 반환
         return smokingRepository.findById(smokingId)
                 .orElseThrow(() -> new NotFoundEntityException("Smoking not found with id: " + smokingId));
     }

@@ -21,8 +21,6 @@ public class UpdateUserDetailUseCaseImpl implements UpdateUserDetailUseCase {
 
     private final UserDetailService userDetailService;
 
-    private final UserProfileService userProfileService;
-
     private final ImageService imageService;
 
     @Transactional
@@ -31,8 +29,6 @@ public class UpdateUserDetailUseCaseImpl implements UpdateUserDetailUseCase {
 
         UserDetail userDetail = userDetailService.findBy(userId)
                 .orElse(userDetailRequest.toEntity(userId));
-
-        userProfileService.createEmptyUserProfile(userId);
 
         userDetail.updateUserDetail(
                 userDetailRequest.nickname(),

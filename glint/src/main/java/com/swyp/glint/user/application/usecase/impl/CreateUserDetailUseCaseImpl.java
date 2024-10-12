@@ -27,7 +27,6 @@ public class CreateUserDetailUseCaseImpl implements CreateUserDetailUseCase {
     @Transactional
     public UserDetailResponse createUserDetail(Long userId, UserDetailRequest userDetailRequest) {
         UserDetail userDetail = userDetailRequest.toEntity(userId);
-        userProfileService.createEmptyUserProfile(userId);
         return UserDetailResponse.from(userDetailService.save(userDetail));
     }
 

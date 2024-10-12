@@ -36,7 +36,7 @@ public class ReligionController {
     @GetMapping("/{religionId}/religion")
     @Operation(summary = "Get a religion by its ID", description = "Religion Id를 통한 종교 조회")
     public ResponseEntity<Religion> getReligionById(@PathVariable Long religionId) {
-        Religion religion = religionService.findById(religionId);
+        Religion religion = religionService.getById(religionId);
         return ResponseEntity.ok(religion);
     }
 

@@ -1,15 +1,10 @@
 package com.swyp.glint.keyword.api;
 
-import com.swyp.glint.keyword.application.ReligionService;
 import com.swyp.glint.keyword.application.SmokingService;
-import com.swyp.glint.keyword.domain.Religion;
 import com.swyp.glint.keyword.domain.Smoking;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +35,7 @@ public class SmokingController {
     @GetMapping("/{smokingId}/smoking")
     @Operation(summary = "Get a smoking by its ID", description = "Smoking Id를 통한 흡연 조회")
     public ResponseEntity<Smoking> getSmokingById(@PathVariable Long smokingId) {
-        Smoking smoking = smokingService.findById(smokingId);
+        Smoking smoking = smokingService.getSmokingById(smokingId);
         return ResponseEntity.ok(smoking);
     }
 

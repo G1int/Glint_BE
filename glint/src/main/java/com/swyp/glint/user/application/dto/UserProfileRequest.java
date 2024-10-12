@@ -1,7 +1,5 @@
 package com.swyp.glint.user.application.dto;
 
-import com.swyp.glint.keyword.domain.*;
-import com.swyp.glint.user.domain.UserProfile;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -44,27 +42,5 @@ public record UserProfileRequest(
         List<@Size(min = 1, max = 15, message = "각 키워드는 1글자에서 15글자 사이여야 합니다.") String> hashtags
 
 ) {
-    public UserProfile toEntity(
-            Long userId,
-            Work work,
-            University university,
-            Location location,
-            Religion religion,
-            Smoking smoking,
-            Drinking drinking
-    ) {
-
-        return UserProfile.createNewUserProfile(
-                userId,
-                work,
-                university,
-                location,
-                religion,
-                smoking,
-                drinking,
-                selfIntroduction,
-                hashtags
-        );
-    }
 
 }

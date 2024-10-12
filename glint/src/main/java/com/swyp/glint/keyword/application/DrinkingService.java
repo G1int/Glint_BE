@@ -15,7 +15,7 @@ public class DrinkingService {
 
     private final DrinkingRepository drinkingRepository;
 
-    public Drinking findById(Long drinkingId) {
+    public Drinking getDrinkBy(Long drinkingId) {
         return drinkingRepository.findById(drinkingId)
                 .orElseThrow(() -> new NotFoundEntityException("Drinking not found with id: " + drinkingId));
     }

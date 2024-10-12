@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class WorkService {
 
     private final WorkRepository workRepository;
-
     private final WorkCategoryService workCategoryService;
     private final WorkMappingService workMappingService;
 
@@ -37,8 +36,7 @@ public class WorkService {
 
     @Transactional
     public Work createNewWork(String workName) { // 이미 해당하는 workName을 가진 work가 있다면, 해당 객체를 반환하고, 없다면 work객체를 새로 생성하고 저장한 후 반환.
-        Work work = workRepository.findByWorkName(workName)
-                .orElseGet(() -> Work.createNewWork(workName));
+        Work work = workRepository.findByWorkName(workName).orElseGet(() -> Work.createNewWork(workName));
         WorkCategory workCategory = workCategoryService.findCategoryByWorkName(workName);
         work.updateWork(workName, workCategory);
         return workRepository.save(work);

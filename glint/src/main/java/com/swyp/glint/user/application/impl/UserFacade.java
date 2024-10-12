@@ -17,7 +17,6 @@ public class UserFacade {
 
 
     public UserDetail getUserDetailAggregation(Long userId) {
-        User user = userService.getUserEntity(userId);
         UserDetail userDetail = userDetailService.getUserDetailBy(userId);
 
         return userDetail;
@@ -25,7 +24,7 @@ public class UserFacade {
 
     public UserSimpleProfile getUserSimpleProfile(Long userId) {
         UserDetail userDetail = userDetailService.getUserDetailBy(userId);
-        UserProfile userProfile = userProfileService.getUserProfileEntityById(userId);
+        UserProfile userProfile = userProfileService.getUserProfileBy(userId);
         return UserSimpleProfile.of(userDetail, userProfile);
     }
 

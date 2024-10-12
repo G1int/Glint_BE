@@ -256,7 +256,7 @@ public class MeetingFacade {
 
 
     public void validateUserMeetingCondition(Long leaderUserId, Meeting meeting) {
-        UserProfile userProfile = userProfileService.getUserProfileEntityById(leaderUserId);
+        UserProfile userProfile = userProfileService.getUserProfileBy(leaderUserId);
         UserDetail userDetail = userDetailService.getUserDetailBy(leaderUserId);
         UserDetail leaderUserDetail = userDetailService.getUserDetailBy(leaderUserId);
 
