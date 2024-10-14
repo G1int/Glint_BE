@@ -17,6 +17,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
+
 @SpringBootTest
 public class UserInfoRepositoryTest {
 
@@ -111,34 +113,34 @@ public class UserInfoRepositoryTest {
         //then
         Optional<UserInfo> userInfoOptional = userRepository.findUserInfoBy(user.getId());
 
-        Assertions.assertThat(userInfoOptional).isPresent();
+        assertThat(userInfoOptional).isPresent();
         UserInfo userInfo = userInfoOptional.get();
         UserDetail foundUserDetail = userInfo.getUserDetail();
         UserProfile foundUserProfile = userInfo.getUserProfile();
 
-        Assertions.assertThat(userInfo.getUserId()).isEqualTo(user.getId());
+        assertThat(userInfo.getUserId()).isEqualTo(user.getId());
 
-        Assertions.assertThat(foundUserDetail.getUserId()).isEqualTo(userDetail.getUserId());
-        Assertions.assertThat(foundUserDetail.getNickname()).isEqualTo("nickname");
-        Assertions.assertThat(foundUserDetail.getGender()).isEqualTo(Gender.MALE.name());
-        Assertions.assertThat(foundUserDetail.getBirthdate()).isEqualTo(LocalDate.of(1990, 01, 01));
-        Assertions.assertThat(foundUserDetail.getHeight()).isEqualTo(185);
-        Assertions.assertThat(foundUserDetail.getProfileImage()).isEqualTo("80");
+        assertThat(foundUserDetail.getUserId()).isEqualTo(userDetail.getUserId());
+        assertThat(foundUserDetail.getNickname()).isEqualTo("nickname");
+        assertThat(foundUserDetail.getGender()).isEqualTo(Gender.MALE.name());
+        assertThat(foundUserDetail.getBirthdate()).isEqualTo(LocalDate.of(1990, 01, 01));
+        assertThat(foundUserDetail.getHeight()).isEqualTo(185);
+        assertThat(foundUserDetail.getProfileImage()).isEqualTo("80");
 
-        Assertions.assertThat(foundUserProfile.getUserId()).isEqualTo(userProfile.getUserId());
-        Assertions.assertThat(foundUserProfile.getWork().getWorkName()).isEqualTo("workName");
-        Assertions.assertThat(foundUserProfile.getUniversity().getUniversityName()).isEqualTo("universityName");
-        Assertions.assertThat(foundUserProfile.getUniversity().getUniversityDepartment()).isEqualTo("universityMajor");
-        Assertions.assertThat(foundUserProfile.getUniversity().getUniversityCategory().getUniversityCategoryName()).isEqualTo("대학교");
+        assertThat(foundUserProfile.getUserId()).isEqualTo(userProfile.getUserId());
+        assertThat(foundUserProfile.getWork().getWorkName()).isEqualTo("workName");
+        assertThat(foundUserProfile.getUniversity().getUniversityName()).isEqualTo("universityName");
+        assertThat(foundUserProfile.getUniversity().getUniversityDepartment()).isEqualTo("universityMajor");
+        assertThat(foundUserProfile.getUniversity().getUniversityCategory().getUniversityCategoryName()).isEqualTo("대학교");
 
-        Assertions.assertThat(foundUserProfile.getLocation().getState()).isEqualTo("locationName");
-        Assertions.assertThat(foundUserProfile.getLocation().getCity()).isEqualTo("locationStatus");
+        assertThat(foundUserProfile.getLocation().getState()).isEqualTo("locationName");
+        assertThat(foundUserProfile.getLocation().getCity()).isEqualTo("locationStatus");
 
-        Assertions.assertThat(foundUserProfile.getReligion().getReligionName()).isEqualTo("religionName");
-        Assertions.assertThat(foundUserProfile.getSmoking().getSmokingName()).isEqualTo("비흡연");
-        Assertions.assertThat(foundUserProfile.getDrinking().getDrinkingName()).isEqualTo("가끔마심");
-        Assertions.assertThat(foundUserProfile.getSelfIntroduction()).isEqualTo("안녕하세요");
-        Assertions.assertThat(foundUserProfile.getHashtags()).contains("비흡연", "INTJ");
+        assertThat(foundUserProfile.getReligion().getReligionName()).isEqualTo("religionName");
+        assertThat(foundUserProfile.getSmoking().getSmokingName()).isEqualTo("비흡연");
+        assertThat(foundUserProfile.getDrinking().getDrinkingName()).isEqualTo("가끔마심");
+        assertThat(foundUserProfile.getSelfIntroduction()).isEqualTo("안녕하세요");
+        assertThat(foundUserProfile.getHashtags()).contains("비흡연", "INTJ");
 
     }
 

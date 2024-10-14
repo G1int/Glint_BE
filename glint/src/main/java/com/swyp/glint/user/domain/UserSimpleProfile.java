@@ -33,7 +33,6 @@ public class UserSimpleProfile {
         this.age = userDetail.getAge();
         this.gender = userDetail.getGender();
         this.nickname = userDetail.getNickname();
-        //todo refactoring
         this.affiliation = Optional.ofNullable(userProfile)
                 .map(UserProfile::getAffiliation)
                 .orElse(null);

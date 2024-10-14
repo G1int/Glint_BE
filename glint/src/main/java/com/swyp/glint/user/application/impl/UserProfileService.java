@@ -30,12 +30,6 @@ public class UserProfileService {
         return userProfileRepository.findAllByUserId(userIds);
     }
 
-    public UserProfile createEmptyUserProfile(Long userId) {
-        return userProfileRepository.findByUserId(userId)
-                .orElseGet(() -> userProfileRepository.save(UserProfile.createEmptyProfile(userId)));
-
-    }
-
     public UserProfile save(UserProfile userProfile) {
         return userProfileRepository.save(userProfile);
     }

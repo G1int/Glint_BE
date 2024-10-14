@@ -56,28 +56,8 @@ public class UserProfile extends BaseTimeEntity { // 회사 or 학교, 위치, �
     @Column(name = "hashtag")
     private List<String> hashtags;
 
-//    @Column
-//    private Long workId;
-//
-//    @Column
-//    private Long universityId;
-//
-//    @Column
-//    private Long locationId;
-//
-//    @Column
-//    private Long religionId;
-//
-//    @Column
-//    private Long smokingId;
-//
-//    @Column
-//    private Long drinkingId;
-
-
-
     @Builder(access = AccessLevel.PRIVATE)
-    public UserProfile(Long id, Long userId, Work work, University university, Location location, Religion religion,
+    private UserProfile(Long id, Long userId, Work work, University university, Location location, Religion religion,
                        Smoking smoking, Drinking drinking, String selfIntroduction, List<String> hashtags) {
         this.id = id;
         this.userId = userId;
@@ -103,12 +83,6 @@ public class UserProfile extends BaseTimeEntity { // 회사 or 학교, 위치, �
                 .drinking(drinking)
                 .selfIntroduction(selfIntroduction)
                 .hashtags(hashtags)
-                .build();
-    }
-
-    public static UserProfile createEmptyProfile(Long userId) {
-        return UserProfile.builder()
-                .userId(userId)
                 .build();
     }
 

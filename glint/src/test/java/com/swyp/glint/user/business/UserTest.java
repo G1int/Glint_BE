@@ -21,7 +21,6 @@ public class UserTest {
         user.archive();
 
         //then
-
         Assertions.assertThat(user.isArchived()).isTrue();
     }
 

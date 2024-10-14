@@ -117,6 +117,7 @@ public class UserDetailTest {
         //when
         boolean ageIn = userDetail.isAgeIn(20, 40);
 
+        //then
         assertThat(ageIn).isTrue();
     }
 
@@ -326,9 +327,4 @@ public class UserDetailTest {
         //then
         assertThat(isCompleteDetail).isTrue();
     }
-
-
-
-
-
 }
