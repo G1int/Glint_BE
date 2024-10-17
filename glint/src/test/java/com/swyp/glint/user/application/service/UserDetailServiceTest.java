@@ -1,4 +1,4 @@
-package com.swyp.glint.user.application.usecase;
+package com.swyp.glint.user.application.service;
 
 import com.swyp.glint.user.application.impl.UserDetailService;
 import com.swyp.glint.user.domain.Gender;

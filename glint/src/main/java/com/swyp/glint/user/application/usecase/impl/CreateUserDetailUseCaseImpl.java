@@ -5,7 +5,6 @@ import com.swyp.glint.core.common.exception.InvalidValueException;
 import com.swyp.glint.user.application.dto.UserDetailRequest;
 import com.swyp.glint.user.application.dto.UserDetailResponse;
 import com.swyp.glint.user.application.impl.UserDetailService;
-import com.swyp.glint.user.application.impl.UserProfileService;
 import com.swyp.glint.user.application.usecase.CreateUserDetailUseCase;
 import com.swyp.glint.user.domain.NickNameValidator;
 import com.swyp.glint.user.domain.UserDetail;
@@ -21,8 +20,6 @@ public class CreateUserDetailUseCaseImpl implements CreateUserDetailUseCase {
 
     private final UserDetailService userDetailService;
 
-    private final UserProfileService userProfileService;
-
     @Override
     @Transactional
     public UserDetailResponse createUserDetail(Long userId, UserDetailRequest userDetailRequest) {
@@ -34,7 +31,7 @@ public class CreateUserDetailUseCaseImpl implements CreateUserDetailUseCase {
     @Transactional
     @Override
     public UserDetailResponse createTempUserDetail(Long userId, String nickname) {
-        if (!NickNameValidator.isValid(nickname)) {
+        if (NickNameValidator.isInvalid(nickname)) {
             throw new InvalidValueException(ErrorCode.NICKNAME_INVALID);
         }
         Optional<UserDetail> userDetailOptional = userDetailService.findBy(nickname);

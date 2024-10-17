@@ -69,6 +69,10 @@ public class ChatRoom extends BaseTimeEntity {
         return this.isActivated;
     }
 
+    public boolean isDeactivated() {
+        return !this.isActivated;
+    }
+
     public boolean isJoinUser(Long sendUserId) {
 
         return false;

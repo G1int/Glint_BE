@@ -1,7 +1,6 @@
-package com.swyp.glint.user.application.usecase;
+package com.swyp.glint.user.application.service;
 
 import com.swyp.glint.core.common.exception.NotFoundEntityException;
-import com.swyp.glint.user.application.service.UserService;
 import com.swyp.glint.user.domain.*;
 import com.swyp.glint.user.infra.UserRepository;
 import jakarta.transaction.Transactional;

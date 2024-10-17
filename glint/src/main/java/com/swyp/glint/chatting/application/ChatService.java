@@ -7,8 +7,10 @@ import com.swyp.glint.chatting.domain.Chat;
 import com.swyp.glint.chatting.domain.ChatRoom;
 import com.swyp.glint.chatting.repository.ChatRepository;
 import com.swyp.glint.core.common.exception.InvalidValueException;
+import com.swyp.glint.user.application.impl.UserDetailService;
 import com.swyp.glint.user.application.impl.UserFacade;
 import com.swyp.glint.user.domain.UserDetail;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -23,10 +25,11 @@ public class ChatService {
 
     private final ChatRepository chatRepository;
 
-    private final UserFacade userFacade;
-
     private final ChatRoomService chatRoomService;
 
+    private final UserDetailService userDetailService;
+
+    @Transactional
     public ChatResponse createChatMessage(CreateChatMessageRequest createChatMessageRequest) {
         Chat chat = createChatMessageRequest.toEntity();
 
@@ -40,12 +43,12 @@ public class ChatService {
 //            throw new InvalidValueException("Not Join User, SendUserId : " + chat.getSendUserId() + " MeetingId : " + chatRoom.getMeetingId());
 //        }
 
-        if(!chatRoom.isActivated()) {
+        if(chatRoom.isDeactivated()) {
             log.error("Not Active ChatRoom, ChatRoomId : {}", chatRoom.getId());
             throw new InvalidValueException("Not Active ChatRoom, ChatRoomId : " + chatRoom.getId());
         }
 
-        UserDetail userDetail = userFacade.getUserDetailAggregation(chat.getSendUserId());
+        UserDetail userDetail = userDetailService.getUserDetailBy(chat.getSendUserId());
         chatRepository.save(chat);
 
         return ChatResponse.of(chat, userDetail);
@@ -60,11 +63,9 @@ public class ChatService {
 
     public ChatResponses getChatMessageNoOffset(Long lastChatId, Long chatRoomId, Integer size) {
         lastChatId = Optional.ofNullable(lastChatId)
-                .orElseGet(() -> {
-                    return chatRepository.findTop1ByChatRoomIdOrderByIdDesc(chatRoomId)
-                            .map(Chat::getId)
-                            .orElse(0L);
-                });
+                .orElseGet(() -> chatRepository.findTop1ByChatRoomIdOrderByIdDesc(chatRoomId)
+                        .map(Chat::getId)
+                        .orElse(0L));
 
 
         return ChatResponses.of(chatRepository.findAllByChatRoomIdOrderByIdDesc(chatRoomId, lastChatId, PageRequest.of(0, size)));

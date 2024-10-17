@@ -9,18 +9,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserFacade {
 
-    private final UserServiceImpl userService;
-
     private final UserDetailService userDetailService;
 
     private final UserProfileService userProfileService;
-
-
-    public UserDetail getUserDetailAggregation(Long userId) {
-        UserDetail userDetail = userDetailService.getUserDetailBy(userId);
-
-        return userDetail;
-    }
 
     public UserSimpleProfile getUserSimpleProfile(Long userId) {
         UserDetail userDetail = userDetailService.getUserDetailBy(userId);

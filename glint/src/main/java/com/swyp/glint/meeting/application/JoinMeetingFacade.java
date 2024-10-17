@@ -18,18 +18,20 @@ public class JoinMeetingFacade {
     private final JoinMeetingService joinMeetingService;
 
 
-
     public UserJoinMeetingResponses getAllJoinMeeting(Long meetingId, Long lastJoinMeetingId) {
         List<JoinMeeting> joinMeetings = Optional.ofNullable(lastJoinMeetingId)
                 .map(id -> joinMeetingService.getAllJoinMeetingEntity(meetingId, lastJoinMeetingId))
                 .orElseGet(() -> joinMeetingService.getAllJoinMeetingEntity(meetingId, 0L));
 
-        List<UserJoinMeetingResponse> userJoinMeetingResponseList =
-                joinMeetings.stream()
-                        .map(joinMeeting -> UserJoinMeetingResponse.from(joinMeeting.getId(), userFacade.getUserSimpleProfile(joinMeeting.getUserId())))
-                        .toList();
 
-        return UserJoinMeetingResponses.from(userJoinMeetingResponseList);
+        return UserJoinMeetingResponses.from(
+                joinMeetings.stream()
+                        .map(joinMeeting -> UserJoinMeetingResponse.from(
+                                        joinMeeting.getId(),
+                                        userFacade.getUserSimpleProfile(joinMeeting.getUserId())
+                                ))
+                        .toList()
+        );
     }
 
 
