@@ -1,6 +1,7 @@
 package com.swyp.glint.user.application.impl;
 
 import com.swyp.glint.meeting.application.MeetingFacade;
+import com.swyp.glint.user.application.service.UserService;
 import com.swyp.glint.user.application.service.impl.UserServiceImpl;
 import com.swyp.glint.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ public class UserMeetingFacade {
 
     private final MeetingFacade meetingFacade;
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
 
     @Transactional

@@ -5,7 +5,6 @@ import com.swyp.glint.core.system.error.ServiceExceptionHandler;
 import com.swyp.glint.user.application.dto.*;
 import com.swyp.glint.user.application.usecase.GetUserUseCase;
 import com.swyp.glint.user.application.usecase.UserInfoUseCase;
-import com.swyp.glint.user.domain.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,15 +12,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,7 +61,7 @@ public class UserControllerTest {
 
         Mockito.when(getUserUseCase.getUserBy(1L)).thenReturn(userResponse);
 
-        // 위 UserResponse에 따른 테스트 검증 로직
+
         mockMvc.perform(get("/users/{userId}", 1L))
                 .andDo(print())
                 .andExpect(status().isOk())

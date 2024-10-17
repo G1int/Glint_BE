@@ -32,9 +32,11 @@ public class UserRepositoryImpl implements UserCustom {
         return Optional.ofNullable(
                 queryFactory
                 .select(
-                        Projections.constructor(UserInfo.class,
-                                    userDetail,
-                                    userProfile
+                        Projections.fields(
+                                UserInfo.class,
+                                user.id.as("userId"),
+                                userDetail,
+                                userProfile
                         )
                 ).distinct()
                 .from(user)

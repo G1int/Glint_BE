@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 
@@ -74,19 +75,19 @@ class UpdateUserDetailUseCaseTest {
 
         // given
         Long userId = 1L;
-        MultipartFile profileImageFile = new MockMultipartFile("imageFile", "test.jpg", "image/jpeg", "test".getBytes());
-        Mockito.when(imageService.uploadProfileImageFile(profileImageFile)).thenReturn(new ImageResponse("test", "test"));
+        MultipartFile profileImageFile = new MockMultipartFile("updatedProfileImage", "updatedProfileImage.jpg", "image/jpeg", "test".getBytes());
+        when(imageService.uploadProfileImageFile(profileImageFile)).thenReturn(new ImageResponse("updatedProfileImage", "updatedProfileImage.jpg"));
 
         // when
         UserDetailResponse userDetailResponse = updateUserDetailUseCase.updateUserProfileImage(userId, profileImageFile);
 
         // then
         assertThat(userDetailResponse.userId()).isEqualTo(1L);
-        assertThat(userDetailResponse.nickname()).isEqualTo("updateNickName");
+        assertThat(userDetailResponse.nickname()).isEqualTo("test");
         assertThat(userDetailResponse.gender()).isEqualTo("MALE");
-        assertThat(userDetailResponse.birthdate()).isEqualTo("2000-01-01");
-        assertThat(userDetailResponse.height()).isEqualTo(175);
-        assertThat(userDetailResponse.profileImage()).isEqualTo("test");
+        assertThat(userDetailResponse.birthdate()).isEqualTo("1990-01-01");
+        assertThat(userDetailResponse.height()).isEqualTo(180);
+        assertThat(userDetailResponse.profileImage()).isEqualTo("updatedProfileImage.jpg");
     }
 
 

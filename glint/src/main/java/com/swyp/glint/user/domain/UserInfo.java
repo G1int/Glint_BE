@@ -20,6 +20,8 @@ public class UserInfo {
     }
 
 
+
+
     public static UserInfo of(UserDetail userDetail, UserProfile userProfile) {
         return UserInfo.builder()
                 .userDetail(userDetail)
