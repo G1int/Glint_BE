@@ -5,7 +5,6 @@ import com.swyp.glint.image.application.dto.ImageResponse;
 import com.swyp.glint.user.application.dto.UserDetailRequest;
 import com.swyp.glint.user.application.dto.UserDetailResponse;
 import com.swyp.glint.user.application.impl.UserDetailService;
-import com.swyp.glint.user.application.impl.UserProfileService;
 import com.swyp.glint.user.application.usecase.UpdateUserDetailUseCase;
 import com.swyp.glint.user.domain.UserDetail;
 import jakarta.transaction.Transactional;

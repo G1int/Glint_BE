@@ -1,7 +1,6 @@
 package com.swyp.glint.user.application.usecase;
 
 import com.swyp.glint.user.application.dto.UserResponse;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,8 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @SqlGroup({
-        @Sql(value = "/sql/get-user-use-case-test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-        @Sql(value = "/sql/delete-all-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD),
+        @Sql(value = "/sql/user/get-user-use-case-test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        @Sql(value = "/sql/user/delete-all-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD),
 })
 class GetUserUseCaseTest {
 

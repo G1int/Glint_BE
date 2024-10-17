@@ -193,10 +193,15 @@ public class Meeting extends BaseTimeEntity {
         return joinUserIds.size() == 1;
     }
 
+    public boolean isJoinedUser() {
+        int joinUserCount = joinUserIds.size();
+        return joinUserCount != 1 && joinUserCount > 0;
+    }
+
     public boolean isUpdatable() {
         return this.status.equals(MeetingStatus.WAITING.getName());
     }
-
+    
     public void update(Meeting meeting) {
         updatePeopleCapacity(meeting.peopleCapacity);
         this.title = meeting.title;
