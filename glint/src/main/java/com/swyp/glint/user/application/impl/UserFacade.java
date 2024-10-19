@@ -1,7 +1,8 @@
 package com.swyp.glint.user.application.impl;
 
-import com.swyp.glint.user.application.service.impl.UserServiceImpl;
-import com.swyp.glint.user.domain.*;
+import com.swyp.glint.user.domain.UserDetail;
+import com.swyp.glint.user.domain.UserProfile;
+import com.swyp.glint.user.domain.UserSimpleProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

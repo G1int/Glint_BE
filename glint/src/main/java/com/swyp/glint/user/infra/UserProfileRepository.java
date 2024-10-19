@@ -15,7 +15,14 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Long>,
     @Query(
             """
                 SELECT up
-                FROM UserProfile up
+                FROM UserProfile up join fetch up.work
+                join fetch up.university
+                join fetch up.university.universityCategory
+                join fetch up.location
+                join fetch up.religion
+                join fetch up.smoking
+                join fetch up.drinking
+                join fetch up.hashtags
                 WHERE up.userId = :userId
             """
     )

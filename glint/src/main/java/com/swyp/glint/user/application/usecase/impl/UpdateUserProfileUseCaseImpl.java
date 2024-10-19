@@ -65,6 +65,7 @@ public class UpdateUserProfileUseCaseImpl implements UpdateUserProfileUseCase {
         );
 
         UserDetail userDetail = userDetailService.getUserDetailBy(userId);
+        userProfileService.save(userProfile);
 
         return UserInfoResponse.from(UserInfo.of(userDetail, userProfile));
 

@@ -26,10 +26,7 @@ public class JoinMeetingFacade {
 
         return UserJoinMeetingResponses.from(
                 joinMeetings.stream()
-                        .map(joinMeeting -> UserJoinMeetingResponse.from(
-                                        joinMeeting.getId(),
-                                        userFacade.getUserSimpleProfile(joinMeeting.getUserId())
-                                ))
+                        .map(joinMeeting -> UserJoinMeetingResponse.from(joinMeeting.getId(), userFacade.getUserSimpleProfile(joinMeeting.getUserId())))
                         .toList()
         );
     }

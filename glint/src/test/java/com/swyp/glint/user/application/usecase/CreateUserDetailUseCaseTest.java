@@ -74,8 +74,6 @@ class CreateUserDetailUseCaseTest {
         Long userId = 1L;
         String nickname = "nickname";
 
-        UserDetailResponse userDetailResponse = createUserDetailUseCase.createTempUserDetail(userId, nickname);
-
         //when
         //then
         assertThatThrownBy(() -> createUserDetailUseCase.createTempUserDetail(2L, nickname))

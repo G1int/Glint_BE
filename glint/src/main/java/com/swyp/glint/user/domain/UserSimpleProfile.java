@@ -14,7 +14,6 @@ public class UserSimpleProfile {
     private String nickname;
     private String gender;
     private Integer age;
-
     private String affiliation;
 
     @Builder(access = AccessLevel.PRIVATE)

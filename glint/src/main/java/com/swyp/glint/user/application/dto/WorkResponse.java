@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class WorkResponse {
     @Schema(description = "Work ID", example = "1")
     Long workId;
+
     @Schema(description = "직업명", example = "삼성전자")
     String workName;
 
