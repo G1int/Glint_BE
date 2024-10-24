@@ -1,27 +1,36 @@
 package com.swyp.glint.meeting.repository.impl;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
-import com.swyp.glint.meeting.domain.JoinStatus;
-import com.swyp.glint.meeting.domain.MeetingInfo;
-import com.swyp.glint.meeting.domain.MeetingStatus;
+import com.swyp.glint.meeting.domain.*;
 import com.swyp.glint.meeting.repository.MeetingRepositoryCustom;
+import com.swyp.glint.user.domain.QUserDetail;
+import com.swyp.glint.user.domain.QUserSimpleProfile;
+import com.swyp.glint.user.domain.UserSimpleProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.types.Projections.list;
 
+import static com.swyp.glint.keyword.domain.QDrinking.drinking;
 import static com.swyp.glint.keyword.domain.QLocation.location;
+import static com.swyp.glint.keyword.domain.QReligion.religion;
+import static com.swyp.glint.keyword.domain.QSmoking.smoking;
 import static com.swyp.glint.meeting.domain.QJoinMeeting.joinMeeting;
 import static com.swyp.glint.meeting.domain.QMeeting.meeting;
 import static com.swyp.glint.user.domain.QUserDetail.userDetail;
+import static com.swyp.glint.user.domain.QUserProfile.userProfile;
 import static org.springframework.util.StringUtils.hasText;
 
 @Repository
@@ -56,6 +65,55 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                 .orderBy(meeting.id.desc())
                 .groupBy(meeting.id)
                 .fetch();
+    }
+
+    @Override
+    public Optional<MeetingDetail> findMeetingDetail(Long meetingId) {
+
+        return Optional.ofNullable(
+                queryFactory
+                        .select(
+                                Projections.constructor(
+                                        MeetingDetail.class,
+                                        meeting,
+                                        list(
+                                                Projections.constructor(
+                                                        UserSimpleProfile.class,
+                                                        userDetail,
+                                                        userProfile
+                                                )
+                                        ),
+
+                                        Projections.constructor(
+                                                LocationList.class,
+                                                list(location)
+                                        ),
+                                        list(drinking),
+                                        list(smoking),
+                                        list(religion),
+                                        list(joinMeeting.userId)
+                                )
+                        )
+                        .from(meeting)
+                        .leftJoin(userDetail).on(meeting.joinUserIds.contains(userDetail.userId))
+                        .leftJoin(userProfile).on(userDetail.userId.eq(userProfile.userId))
+                        .leftJoin(joinMeeting).on(meeting.id.eq(joinMeeting.meetingId), joinMeeting.status.eq(JoinStatus.WAITING.getName()))
+                        .leftJoin(location).on(meeting.locationIds.contains(location.id))
+                        .leftJoin(drinking).on(meeting.maleCondition.drinkingIds.contains(drinking.id))
+                        .leftJoin(smoking).on(meeting.maleCondition.smokingIds.contains(smoking.id))
+                        .leftJoin(religion).on(meeting.maleCondition.religionIds.contains(religion.id))
+                        .where(
+                                meetingIdEq(meetingId)
+
+                        )
+                        .fetchOne()
+        );
+
+
+    }
+
+    private static BooleanExpression meetingIdEq(Long meetingId) {
+        return meeting.id.eq(meetingId);
     }
 
 
@@ -175,11 +233,11 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
         return booleanBuilder;
     }
 
-    private static BooleanExpression locationStateLike(String keyword) {
+    private BooleanExpression locationStateLike(String keyword) {
         return hasText(keyword) ? location.state.like("%" + keyword + "%") : null;
     }
 
-    private static BooleanExpression locationCityLike(String keyword) {
+    private BooleanExpression locationCityLike(String keyword) {
         return hasText(keyword) ? location.city.like("%" + keyword + "%") : null;
     }
 
@@ -209,7 +267,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
         return null;
     }
 
-    private static BooleanExpression joinMeetingIdEqAndStatusEq(Long userId, JoinStatus joinStatus) {
+    private BooleanExpression joinMeetingIdEqAndStatusEq(Long userId, JoinStatus joinStatus) {
         return joinMeeting.userId.eq(userId).and(joinMeeting.status.eq(joinStatus.getName()));
     }
 

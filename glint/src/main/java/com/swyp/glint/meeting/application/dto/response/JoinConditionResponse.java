@@ -1,6 +1,6 @@
 package com.swyp.glint.meeting.application.dto.response;
 
-import com.swyp.glint.meeting.domain.JoinConditionAggregation;
+import com.swyp.glint.meeting.domain.MeetingJoinCondition;
 import com.swyp.glint.user.application.dto.DrinkingResponse;
 import com.swyp.glint.user.application.dto.ReligionResponse;
 import com.swyp.glint.user.application.dto.SmokingResponse;
@@ -32,7 +32,7 @@ public record JoinConditionResponse(
         List<DrinkingResponse> drinking
 ) {
 
-    public static JoinConditionResponse from(JoinConditionAggregation joinCondition) {
+    public static JoinConditionResponse from(MeetingJoinCondition joinCondition) {
         return JoinConditionResponse.builder()
                 .selectConditions(joinCondition.getSelectConditions())
                 .affiliation(joinCondition.getAffiliation())

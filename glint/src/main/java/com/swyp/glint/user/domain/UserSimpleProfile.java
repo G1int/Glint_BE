@@ -1,5 +1,6 @@
 package com.swyp.glint.user.domain;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class UserSimpleProfile {
         this.affiliation = affiliation;
     }
 
+    @QueryProjection
     public UserSimpleProfile(UserDetail userDetail, UserProfile userProfile) {
         this.userId = userDetail.getUserId();
         this.profileImage = userDetail.getProfileImage();

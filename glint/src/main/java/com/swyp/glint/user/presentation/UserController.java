@@ -2,7 +2,7 @@ package com.swyp.glint.user.presentation;
 
 import com.swyp.glint.user.application.dto.UserInfoResponse;
 import com.swyp.glint.user.application.dto.UserResponse;
-import com.swyp.glint.user.application.impl.UserMeetingFacade;
+import com.swyp.glint.user.application.usecase.impl.DeleteUserMeetingUseCaseImpl;
 import com.swyp.glint.user.application.usecase.GetUserUseCase;
 import com.swyp.glint.user.application.usecase.UserInfoUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserMeetingFacade userMeetingFacade;
+    private final DeleteUserMeetingUseCaseImpl deleteUserMeetingUseCaseImpl;
     private final UserInfoUseCase userInfoUseCase;
     private final GetUserUseCase getUserUseCase;
 
@@ -40,7 +40,7 @@ public class UserController {
     @DeleteMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId) {
         //todo 분리
-        userMeetingFacade.deleteUser(userId);
+        deleteUserMeetingUseCaseImpl.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 

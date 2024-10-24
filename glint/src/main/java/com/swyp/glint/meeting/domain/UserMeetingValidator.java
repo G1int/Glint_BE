@@ -29,15 +29,14 @@ public class UserMeetingValidator {
         this.selectedConditionValueMap = getSelectedConditionValueMap();
     }
 
-    public JoinConditionElement getMatchCondition() {
-        // todo 일치 개수 체크
+    private JoinConditionElement getMatchCondition() {
         if(userDetail.sameGender(Gender.MALE.name())) {
             return meeting.getMaleCondition();
         }
         return meeting.getFemaleCondition();
     }
 
-    public HashMap<String, ConditionValidator> getSelectedConditionValueMap() {
+    private HashMap<String, ConditionValidator> getSelectedConditionValueMap() {
         HashMap<String, ConditionValidator> conditionValueMap = new HashMap<>();
 
 
@@ -69,7 +68,7 @@ public class UserMeetingValidator {
         return conditionValueMap;
     }
 
-    public boolean validate() {
+    public boolean isValidate() {
         if(Objects.isNull(userProfile)) {
             return false;
         }
@@ -81,6 +80,10 @@ public class UserMeetingValidator {
             }
         }
         return true;
+    }
+
+    public boolean isInvalid() {
+        return !isValidate();
     }
 
 }

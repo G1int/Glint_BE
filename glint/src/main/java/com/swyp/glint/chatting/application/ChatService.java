@@ -8,7 +8,6 @@ import com.swyp.glint.chatting.domain.ChatRoom;
 import com.swyp.glint.chatting.repository.ChatRepository;
 import com.swyp.glint.core.common.exception.InvalidValueException;
 import com.swyp.glint.user.application.impl.UserDetailService;
-import com.swyp.glint.user.application.impl.UserFacade;
 import com.swyp.glint.user.domain.UserDetail;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

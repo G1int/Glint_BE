@@ -72,10 +72,8 @@ public class Meeting extends BaseTimeEntity {
     })
     private JoinConditionElement femaleCondition;
 
-    // 인원수
     private Integer peopleCapacity;
 
-    // 미팅 상태
     private String status;
 
     private String meetingImage;
@@ -166,7 +164,7 @@ public class Meeting extends BaseTimeEntity {
     }
 
     public boolean isLeader(Long userId) {
-        return leaderUserId.equals(userId);
+        return leaderUserId.equals(userId) && isJoinUser(userId);
     }
 
     public void changeLeader(Long nextLeaderUserId) {
@@ -200,6 +198,10 @@ public class Meeting extends BaseTimeEntity {
 
     public boolean isUpdatable() {
         return this.status.equals(MeetingStatus.WAITING.getName());
+    }
+
+    public boolean isUnableUpdatable() {
+        return !this.status.equals(MeetingStatus.WAITING.getName());
     }
     
     public void update(Meeting meeting) {
