@@ -1,28 +1,21 @@
 package com.swyp.glint.meeting.repository.impl;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
 import com.swyp.glint.meeting.domain.*;
 import com.swyp.glint.meeting.repository.MeetingRepositoryCustom;
-import com.swyp.glint.user.domain.QUserDetail;
-import com.swyp.glint.user.domain.QUserSimpleProfile;
 import com.swyp.glint.user.domain.UserSimpleProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.types.Projections.list;
-
 import static com.swyp.glint.keyword.domain.QDrinking.drinking;
 import static com.swyp.glint.keyword.domain.QLocation.location;
 import static com.swyp.glint.keyword.domain.QReligion.religion;
@@ -63,7 +56,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                 )
                 .limit(getLimit(limit))
                 .orderBy(meeting.id.desc())
-                .groupBy(meeting.id)
+                .distinct()
                 .fetch();
     }
 
@@ -136,7 +129,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                         getLt(lastId)
                 )
                 .orderBy(meeting.createdDate.desc())
-                .groupBy(meeting.id)
+                .groupBy(meeting.id, userDetail.id, location.id)
                 .limit(getLimit(size))
                 .fetch();
     }
@@ -162,6 +155,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                         searchBooleanBuilder(searchCondition.getKeyword())
                 )
                 .orderBy(meeting.createdDate.desc())
+                .groupBy(meeting.id, userDetail.id, location.id)
                 .limit(getLimit(searchCondition.getLimit()))
                 .fetch();
     }
@@ -201,7 +195,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                         locationIdsIn(searchCondition.getLocationIds())
                 )
                 .orderBy(meeting.createdDate.desc())
-                .groupBy(meeting.id)
+                .groupBy(meeting.id, userDetail.id, location.id)
                 .limit(getLimit(searchCondition.getLimit()))
                 .fetch();
 

@@ -26,4 +26,6 @@ delete from work where 1;
 delete from drinking where 1;
 delete from location where 1;
 delete from join_meeting where 1;
+delete from meeting_affiliation where 1;
+delete from meeting where 1;
 
