@@ -34,7 +34,7 @@ public class MeetingJoinUseCaseImpl implements MeetingJoinUseCase {
 
         joinMeetingService.getWaitStatusJoinMeetingRequest(userId, meetingId);
 
-        Meeting meeting = meetingService.getMeetingEntity(meetingId);
+        Meeting meeting = meetingService.getMeeting(meetingId);
 
         if(meeting.isJoinUser(userId)) {
             throw new AlreadyJoinMeetingException("이미 참가한 미팅입니다.");
@@ -60,7 +60,7 @@ public class MeetingJoinUseCaseImpl implements MeetingJoinUseCase {
     @Transactional
     @Override
     public void joinUser(Long meetingId, Long userId) {
-        Meeting meeting = meetingService.getMeetingEntity(meetingId);
+        Meeting meeting = meetingService.getMeeting(meetingId);
         UserDetail userDetail = userDetailService.getUserDetailBy(userId);
 
         MeetingJoinRequestValidator meetingJoinRequestValidator = new MeetingJoinRequestValidator(userDetailService.getUserDetails(meeting.getJoinUserIds()), meeting, userDetail);

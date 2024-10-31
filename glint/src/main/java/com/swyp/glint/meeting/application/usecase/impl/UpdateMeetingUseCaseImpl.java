@@ -33,7 +33,7 @@ public class UpdateMeetingUseCaseImpl implements UpdateMeetingUseCase {
     @Override
     public MeetingDetailResponse updateMeeting(Long meetingId, MeetingRequest meetingRequest) {
         Meeting updateRequestMeeting = meetingRequest.toEntity();
-        Meeting foundMeeting = meetingService.getMeetingEntity(meetingId);
+        Meeting foundMeeting = meetingService.getMeeting(meetingId);
 
         // waiting 상태일때만 변경이 가능
         if(foundMeeting.isUnableUpdatable()) {

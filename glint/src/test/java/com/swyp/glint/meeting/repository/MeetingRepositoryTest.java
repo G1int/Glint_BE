@@ -66,8 +66,8 @@ public class MeetingRepositoryTest {
         assertThat(meetingDetail.getMaleCondition().getAffiliation().get(1)).isEqualTo("서울대학교");
         assertThat(meetingDetail.getMaleCondition().getAgeRange().getMinAge()).isEqualTo(20);
         assertThat(meetingDetail.getMaleCondition().getAgeRange().getMaxAge()).isEqualTo(30);
-        assertThat(meetingDetail.getMaleCondition().getHeightRange().getMinHeight()).isEqualTo(200);
-        assertThat(meetingDetail.getMaleCondition().getHeightRange().getMaxHeight()).isEqualTo(140);
+        assertThat(meetingDetail.getMaleCondition().getHeightRange().getMinHeight()).isEqualTo(140);
+        assertThat(meetingDetail.getMaleCondition().getHeightRange().getMaxHeight()).isEqualTo(200);
         assertThat(meetingDetail.getMaleCondition().getReligionConditions()).hasSize(1);
         assertThat(meetingDetail.getMaleCondition().getReligionConditions().get(0)).satisfies(religionCondition -> {
             assertThat(religionCondition.getId()).isEqualTo(1L);
@@ -92,8 +92,8 @@ public class MeetingRepositoryTest {
         assertThat(meetingDetail.getFemaleCondition().getAffiliation().get(1)).isEqualTo("서울대학교");
         assertThat(meetingDetail.getFemaleCondition().getAgeRange().getMinAge()).isEqualTo(20);
         assertThat(meetingDetail.getFemaleCondition().getAgeRange().getMaxAge()).isEqualTo(30);
-        assertThat(meetingDetail.getFemaleCondition().getHeightRange().getMinHeight()).isEqualTo(200);
-        assertThat(meetingDetail.getFemaleCondition().getHeightRange().getMaxHeight()).isEqualTo(140);
+        assertThat(meetingDetail.getFemaleCondition().getHeightRange().getMinHeight()).isEqualTo(140);
+        assertThat(meetingDetail.getFemaleCondition().getHeightRange().getMaxHeight()).isEqualTo(200);
         assertThat(meetingDetail.getFemaleCondition().getReligionConditions()).hasSize(1);
         assertThat(meetingDetail.getFemaleCondition().getReligionConditions().get(0)).satisfies(religionCondition -> {
             assertThat(religionCondition.getId()).isEqualTo(1L);

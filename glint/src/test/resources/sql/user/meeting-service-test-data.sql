@@ -33,7 +33,7 @@ insert into user_profile_hashtags (user_profile_id, hashtag) values (1, 'INTJ');
 
 
 INSERT INTO meeting (meeting_id, created_date, modified_date, description, leader_user_id, man_age_max_age, man_age_min_age, man_height_max_height, man_height_min_height, meeting_image, people_capacity, status, title, woman_age_max_age, woman_age_min_age, woman_height_max_height, woman_height_min_height)
-VALUES (1, '2024-07-18 04:52:15.521588', '2024-07-18 04:52:15.521588', '모두 모여모라', 1, 30, 20, 200, 140, null, 4, 'WAITING', '다모여라', 30, 20, 200, 140);
+VALUES (1, '2024-07-18 04:52:15.521588', '2024-07-18 04:52:15.521588', '모두 모여모라', 1, 30, 20, 140, 200, null, 4, 'WAITING', '다모여라', 30, 20, 140, 200);
 
 insert into meeting_drinking_ids (man_drinking_id, meeting_meeting_id, woman_drinking_id)
 values (1,1,1);

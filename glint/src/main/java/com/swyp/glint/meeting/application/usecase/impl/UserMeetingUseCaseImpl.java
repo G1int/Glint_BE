@@ -27,7 +27,7 @@ public class UserMeetingUseCaseImpl implements UserMeetingUseCase {
     @Transactional
     @Override
     public MeetingDetailResponse userMeetingOut(Long meetingId, Long userId) {
-        Meeting meeting = meetingService.getMeetingEntity(meetingId);
+        Meeting meeting = meetingService.getMeeting(meetingId);
 
         if(meeting.isLeader(userId) && meeting.isJoinedUser()) {
             List<JoinMeeting> acceptedJoinMeeting = joinMeetingService.getAcceptedJoinMeeting(meetingId);

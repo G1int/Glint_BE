@@ -4,7 +4,6 @@ package com.swyp.glint.meeting.application.service;
 import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
-import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.domain.Meeting;
 import com.swyp.glint.meeting.domain.MeetingDetail;
 import com.swyp.glint.meeting.domain.MeetingInfo;
@@ -20,7 +19,7 @@ public class MeetingService {
 
     private final MeetingRepository meetingRepository;
 
-    public Meeting getMeetingEntity(Long id) {
+    public Meeting getMeeting(Long id) {
         return meetingRepository.findById(id).orElseThrow(() -> new NotFoundEntityException("Not found meeting id : " + id));
     }
 
