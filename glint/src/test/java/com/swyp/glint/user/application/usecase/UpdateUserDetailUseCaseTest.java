@@ -5,12 +5,8 @@ import com.swyp.glint.image.application.dto.ImageResponse;
 import com.swyp.glint.user.application.dto.UserDetailRequest;
 import com.swyp.glint.user.application.dto.UserDetailResponse;
 import com.swyp.glint.user.domain.Gender;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,7 +16,6 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase;
@@ -30,7 +25,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 @Transactional
 @SqlGroup({
         @Sql(value = "/sql/user/update-user-detail-use-case-test-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-        @Sql(value = "/sql/user/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD),
+        @Sql(value = "/sql/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD),
 })
 class UpdateUserDetailUseCaseTest {
 

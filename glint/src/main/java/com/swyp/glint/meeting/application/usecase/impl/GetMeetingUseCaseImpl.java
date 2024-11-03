@@ -1,21 +1,16 @@
 package com.swyp.glint.meeting.application.usecase.impl;
 
 import com.swyp.glint.keyword.application.LocationService;
-import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingDetailResponse;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.application.service.MeetingService;
 import com.swyp.glint.meeting.application.usecase.GetMeetingUseCase;
-import com.swyp.glint.meeting.domain.LocationList;
-import com.swyp.glint.meeting.domain.Meeting;
 import com.swyp.glint.searchkeyword.application.SearchKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 @Component
@@ -46,12 +41,6 @@ public class GetMeetingUseCaseImpl implements GetMeetingUseCase {
     public MeetingInfoCountResponses searchMeeting(MeetingSearchCondition searchCondition, Long userId) {
         searchKeywordService.saveSearchKeyword(searchCondition.getKeyword(), userId);
         return meetingService.searchMeetingWithTotalCount(searchCondition);
-    }
-
-
-    public LocationList getMeetingLocationList(Meeting meeting) {
-        List<Location> locations = locationService.getLocationsByIds(meeting.getLocationIds());
-        return new LocationList(locations);
     }
 
 }

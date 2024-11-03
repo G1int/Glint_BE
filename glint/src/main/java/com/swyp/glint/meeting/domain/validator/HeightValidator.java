@@ -1,6 +1,5 @@
 package com.swyp.glint.meeting.domain.validator;
 
-import com.swyp.glint.meeting.domain.AgeRange;
 import com.swyp.glint.meeting.domain.ConditionValidator;
 import com.swyp.glint.meeting.domain.HeightRange;
 import com.swyp.glint.meeting.domain.JoinConditionElement;
@@ -21,6 +20,6 @@ public class HeightValidator implements ConditionValidator {
     @Override
     public boolean validateCondition() {
         HeightRange heightRange = joinConditionElement.getHeightRange();
-        return userDetail.isHeightIn(heightRange.getMaxHeight(), heightRange.getMinHeight());
+        return userDetail.isHeightIn(heightRange.getMinHeight(), heightRange.getMaxHeight());
     }
 }

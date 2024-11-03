@@ -2,30 +2,21 @@ package com.swyp.glint.user.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swyp.glint.core.system.error.ServiceExceptionHandler;
-import com.swyp.glint.image.application.ImageService;
-import com.swyp.glint.image.application.dto.ImageResponse;
-import com.swyp.glint.user.application.dto.UserDetailRequest;
-import com.swyp.glint.user.application.dto.UserNickNameRequest;
 import com.swyp.glint.user.application.dto.UserProfileRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -34,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SqlGroup({
         @Sql(value = "/sql/user/user-profile-controller-test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-        @Sql(value = "/sql/user/delete-all-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD),
+        @Sql(value = "/sql/delete-all-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD),
 })
 @SpringBootTest
 public class UserProfileControllerTest {

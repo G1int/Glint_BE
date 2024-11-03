@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 @SqlGroup({
         @Sql(value = "/sql/user/get-user-use-case-test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-        @Sql(value = "/sql/user/delete-all-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD),
+        @Sql(value = "/sql/delete-all-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD),
 })
 class GetUserUseCaseTest {
 

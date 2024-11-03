@@ -29,3 +29,6 @@ delete from join_meeting where 1;
 delete from meeting_affiliation where 1;
 delete from meeting where 1;
 
+delete from chat_room_user_ids where 1;
+delete from chat_room where 1;
+

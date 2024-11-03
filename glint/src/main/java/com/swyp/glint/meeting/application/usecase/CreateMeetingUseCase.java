@@ -9,6 +9,4 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CreateMeetingUseCase {
     @Transactional
     MeetingDetailResponse createMeeting(MeetingRequest meetingRequest);
-
-    LocationList getMeetingLocationList(Meeting meeting);
 }

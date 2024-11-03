@@ -68,7 +68,7 @@ public class CreateMeetingUseCaseImpl implements CreateMeetingUseCase {
         return MeetingDetailResponse.from(meetingDetail);
     }
 
-    @Override
+
     public LocationList getMeetingLocationList(Meeting meeting) {
         List<Location> locations = locationService.getLocationsByIds(meeting.getLocationIds());
         return new LocationList(locations);
