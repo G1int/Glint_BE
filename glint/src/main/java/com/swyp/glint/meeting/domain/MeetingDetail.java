@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -63,15 +64,18 @@ public class MeetingDetail {
 
 
     private Map<Long,Drinking> getDringkingIdMap(List<Drinking> drinkings) {
-        return drinkings.stream().collect(Collectors.toMap(Drinking::getId, drinking -> drinking));
+        if(Objects.isNull(drinkings)) return null;
+        return drinkings.stream().filter(Objects::nonNull).collect(Collectors.toMap(Drinking::getId, drinking -> drinking));
     }
 
     private Map<Long, Smoking> getSmokingIdMap(List<Smoking> smokings) {
-        return smokings.stream().collect(Collectors.toMap(Smoking::getId, smoking -> smoking));
+        if(Objects.isNull(smokings)) return null;
+        return smokings.stream().filter(Objects::nonNull).collect(Collectors.toMap(Smoking::getId, smoking -> smoking));
     }
 
     private Map<Long, Religion> getReligionIdMap(List<Religion> religions) {
-        return religions.stream().collect(Collectors.toMap(Religion::getId, religion -> religion));
+        if (Objects.isNull(religions)) return null;
+        return religions.stream().filter(Objects::nonNull).collect(Collectors.toMap(Religion::getId, religion -> religion));
     }
 
     public List<String> getLocationNames() {

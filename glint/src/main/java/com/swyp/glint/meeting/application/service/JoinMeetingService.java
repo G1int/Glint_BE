@@ -53,14 +53,6 @@ public class JoinMeetingService {
         joinMeetingRepository.saveAll(joinMeetings);
     }
 
-    public List<Long> getJoinMeetingUserIds(Long meetingId) {
-        return joinMeetingRepository.findByMeetingIdAndStatus(meetingId, JoinStatus.WAITING.getName())
-                .stream()
-                .map(JoinMeeting::getUserId)
-                .toList();
-    }
-
-
     public JoinMeeting getWaitStatusJoinMeetingRequest(Long userId, Long meetingId) {
         return joinMeetingRepository.findByUserAndMeeting(userId, meetingId, JoinStatus.WAITING.getName())
                 .orElseThrow(() -> new NotFoundEntityException("Not found join meeting."));

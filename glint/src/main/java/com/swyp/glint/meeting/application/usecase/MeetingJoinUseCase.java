@@ -12,4 +12,6 @@ public interface MeetingJoinUseCase {
 
     @Transactional
     void joinUser(Long meetingId, Long userId);
+
+    JoinMeetingResponse rejectJoinMeeting(Long userId, Long meetingId);
 }

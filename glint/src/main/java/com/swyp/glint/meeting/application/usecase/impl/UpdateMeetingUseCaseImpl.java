@@ -7,6 +7,7 @@ import com.swyp.glint.meeting.application.dto.response.MeetingDetailResponse;
 import com.swyp.glint.meeting.application.service.MeetingService;
 import com.swyp.glint.meeting.application.usecase.UpdateMeetingUseCase;
 import com.swyp.glint.meeting.domain.Meeting;
+import com.swyp.glint.meeting.domain.MeetingDetail;
 import com.swyp.glint.meeting.domain.UserMeetingValidator;
 import com.swyp.glint.user.application.impl.UserDetailService;
 import com.swyp.glint.user.application.impl.UserProfileService;

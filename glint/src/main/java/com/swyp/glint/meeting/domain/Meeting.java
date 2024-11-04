@@ -97,7 +97,7 @@ public class Meeting extends BaseTimeEntity {
                 .title(title)
                 .description(description)
                 .leaderUserId(leaderUserId)
-                .joinUserIds(List.of(leaderUserId))
+                .joinUserIds(new ArrayList<>(List.of(leaderUserId)))
                 .locationIds(locationIds)
                 .maleCondition(maleCondition)
                 .femaleCondition(femaleCondition)
@@ -223,4 +223,27 @@ public class Meeting extends BaseTimeEntity {
     private int getTotalPeoPleCapacity(Integer peopleCapacity) {
         return peopleCapacity * 2;
     }
+
+    public List<Long> getAllDrinkingIds() {
+        List<Long> drinkingIds = new ArrayList<>();
+        drinkingIds.addAll(maleCondition.getDrinkingIds());
+        drinkingIds.addAll(femaleCondition.getDrinkingIds());
+        return drinkingIds;
+    }
+
+    public List<Long> getAllSmokingIds() {
+        List<Long> smokingIds = new ArrayList<>();
+        smokingIds.addAll(maleCondition.getSmokingIds());
+        smokingIds.addAll(femaleCondition.getSmokingIds());
+        return smokingIds;
+    }
+
+    public List<Long> getAllReligionIds() {
+        List<Long> religionIds = new ArrayList<>();
+        religionIds.addAll(maleCondition.getReligionIds());
+        religionIds.addAll(femaleCondition.getReligionIds());
+        return religionIds;
+    }
+
+
 }

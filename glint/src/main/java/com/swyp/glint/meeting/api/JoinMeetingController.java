@@ -1,9 +1,9 @@
 package com.swyp.glint.meeting.api;
 
-import com.swyp.glint.meeting.application.usecase.impl.JoinMeetingUseCaseImpl;
+import com.swyp.glint.meeting.application.usecase.MeetingJoinUseCase;
 import com.swyp.glint.meeting.application.dto.response.UserJoinMeetingResponses;
 import com.swyp.glint.meeting.application.dto.response.JoinMeetingResponse;
-import com.swyp.glint.meeting.application.usecase.impl.MeetingJoinUseCaseImpl;
+import com.swyp.glint.meeting.application.usecase.impl.JoinMeetingUseCaseImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class JoinMeetingController {
 
-    private final MeetingJoinUseCaseImpl meetingJoinUseCase;
+    private final MeetingJoinUseCase meetingJoinUseCase;
 
     private final JoinMeetingUseCaseImpl joinMeetingUseCase;
 

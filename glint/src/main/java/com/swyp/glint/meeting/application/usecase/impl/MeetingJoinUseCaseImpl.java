@@ -32,8 +32,6 @@ public class MeetingJoinUseCaseImpl implements MeetingJoinUseCase {
     @Override
     public JoinMeetingResponse joinMeetingRequest(Long userId, Long meetingId) {
 
-        joinMeetingService.getWaitStatusJoinMeetingRequest(userId, meetingId);
-
         Meeting meeting = meetingService.getMeeting(meetingId);
 
         if(meeting.isJoinUser(userId)) {
@@ -58,7 +56,6 @@ public class MeetingJoinUseCaseImpl implements MeetingJoinUseCase {
     }
 
     @Transactional
-    @Override
     public void joinUser(Long meetingId, Long userId) {
         Meeting meeting = meetingService.getMeeting(meetingId);
         UserDetail userDetail = userDetailService.getUserDetailBy(userId);
@@ -75,10 +72,10 @@ public class MeetingJoinUseCaseImpl implements MeetingJoinUseCase {
     }
 
 
-    public void validateUserMeetingCondition(Long leaderUserId, Meeting meeting) {
-        UserProfile userProfile = userProfileService.getUserProfileBy(leaderUserId);
-        UserDetail userDetail = userDetailService.getUserDetailBy(leaderUserId);
-        UserDetail leaderUserDetail = userDetailService.getUserDetailBy(leaderUserId);
+    public void validateUserMeetingCondition(Long userId, Meeting meeting) {
+        UserProfile userProfile = userProfileService.getUserProfileBy(userId);
+        UserDetail userDetail = userDetailService.getUserDetailBy(userId);
+        UserDetail leaderUserDetail = userDetailService.getUserDetailBy(userId);
 
         UserMeetingValidator userMeetingValidator = new UserMeetingValidator(userProfile, userDetail ,leaderUserDetail, meeting);
 
@@ -88,6 +85,7 @@ public class MeetingJoinUseCaseImpl implements MeetingJoinUseCase {
     }
 
 
+    @Override
     public JoinMeetingResponse rejectJoinMeeting(Long userId, Long meetingId) {
 
         return JoinMeetingResponse.from(joinMeetingService.rejectJoinMeeting(userId, meetingId));

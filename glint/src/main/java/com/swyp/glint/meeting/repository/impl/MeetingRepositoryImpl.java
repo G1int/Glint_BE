@@ -1,9 +1,17 @@
 package com.swyp.glint.meeting.repository.impl;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.swyp.glint.keyword.domain.Drinking;
+import com.swyp.glint.keyword.domain.Location;
+import com.swyp.glint.keyword.domain.Religion;
+import com.swyp.glint.keyword.domain.Smoking;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
 import com.swyp.glint.meeting.domain.*;
@@ -15,6 +23,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import static com.querydsl.core.types.Projections.constructor;
 import static com.querydsl.core.types.Projections.list;
 import static com.swyp.glint.keyword.domain.QDrinking.drinking;
 import static com.swyp.glint.keyword.domain.QLocation.location;
@@ -63,44 +72,40 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
     @Override
     public Optional<MeetingDetail> findMeetingDetail(Long meetingId) {
 
-        return Optional.ofNullable(
-                queryFactory
-                        .select(
-                                Projections.constructor(
-                                        MeetingDetail.class,
-                                        meeting,
-                                        list(
-                                                Projections.constructor(
-                                                        UserSimpleProfile.class,
-                                                        userDetail,
-                                                        userProfile
-                                                )
-                                        ),
+        Meeting foundMeeting = queryFactory.selectFrom(meeting).where(meeting.id.eq(meetingId)).fetchOne();
 
-                                        Projections.constructor(
-                                                LocationList.class,
-                                                list(location)
-                                        ),
-                                        list(drinking),
-                                        list(smoking),
-                                        list(religion),
-                                        list(joinMeeting.userId)
-                                )
-                        )
-                        .from(meeting)
-                        .leftJoin(userDetail).on(meeting.joinUserIds.contains(userDetail.userId))
-                        .leftJoin(userProfile).on(userDetail.userId.eq(userProfile.userId))
-                        .leftJoin(joinMeeting).on(meeting.id.eq(joinMeeting.meetingId), joinMeeting.status.eq(JoinStatus.WAITING.getName()))
-                        .leftJoin(location).on(meeting.locationIds.contains(location.id))
-                        .leftJoin(drinking).on(meeting.maleCondition.drinkingIds.contains(drinking.id))
-                        .leftJoin(smoking).on(meeting.maleCondition.smokingIds.contains(smoking.id))
-                        .leftJoin(religion).on(meeting.maleCondition.religionIds.contains(religion.id))
-                        .where(
-                                meetingIdEq(meetingId)
+        List<UserSimpleProfile> userSimpleProfiles = queryFactory
+                .select(
+                        constructor(
+                                UserSimpleProfile.class,
+                                userDetail,
+                                userProfile
+                        ))
+                .from(userDetail)
+                .leftJoin(userProfile).on(userDetail.userId.eq(userProfile.userId))
+                .where(userDetail.userId.in(foundMeeting.getJoinUserIds()))
+                .fetch();
 
-                        )
-                        .fetchOne()
-        );
+        List<Location> locations = queryFactory.select(location).from(location).where(location.id.in(foundMeeting.getLocationIds())).fetch();
+        List<Drinking> drinkings = queryFactory.selectFrom(drinking).where(drinking.id.in(foundMeeting.getAllDrinkingIds())).fetch();
+        List<Smoking> smokings = queryFactory.selectFrom(smoking).where(smoking.id.in(foundMeeting.getAllSmokingIds())).fetch();
+        List<Religion> religions = queryFactory.selectFrom(religion).where(religion.id.in(foundMeeting.getAllReligionIds())).fetch();
+
+        List<Long> joinRequestUserIds = queryFactory.select(joinMeeting.userId).from(joinMeeting).where(joinMeeting.meetingId.eq(meetingId)).fetch();
+
+
+
+        return
+                Optional.of(MeetingDetail.of(
+                        foundMeeting,
+                        userSimpleProfiles,
+                        new LocationList(locations),
+                        drinkings,
+                        smokings,
+                        religions,
+                        joinRequestUserIds
+                ))
+        ;
 
 
     }
@@ -129,7 +134,6 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                         getLt(lastId)
                 )
                 .orderBy(meeting.createdDate.desc())
-                .groupBy(meeting.id, userDetail.id, location.id)
                 .limit(getLimit(size))
                 .fetch();
     }
