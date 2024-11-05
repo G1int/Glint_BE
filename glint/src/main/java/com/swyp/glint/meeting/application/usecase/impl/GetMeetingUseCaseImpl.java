@@ -22,6 +22,7 @@ public class GetMeetingUseCaseImpl implements GetMeetingUseCase {
     private final SearchKeywordService searchKeywordService;
 
     @Override
+    @Transactional
     public MeetingDetailResponse getMeeting(Long meetingId) {
         return MeetingDetailResponse.from(meetingService.getMeetingDetail(meetingId));
     }

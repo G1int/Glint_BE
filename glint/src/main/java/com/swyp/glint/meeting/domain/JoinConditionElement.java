@@ -15,12 +15,12 @@ import java.util.List;
 public class JoinConditionElement {
 
     // 적용선택 조건
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "select_condition")
     private List<String> selectConditions;
 
     // 소속 (회사, 대학교)
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "affiliation")
     private List<String> affiliation;
 
@@ -34,17 +34,17 @@ public class JoinConditionElement {
 
     //종교
     @Column(name = "religion_id")
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> religionIds;
 
     // 흡연
     @Column(name = "smoking_id")
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> smokingIds;
 
     // 음주
     @Column(name = "drinking_id")
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> drinkingIds;
 
 

@@ -6,8 +6,8 @@ values (1, 'test@kakao.com', '2021-07-01 00:00:00', '2021-07-01 00:00:00', 0, 't
 
 insert into `user_detail` (id, created_date, modified_date, birthdate, gender, height, nickname, profile_image, user_id)
 values (1, '2021-07-01 00:00:00', '2021-07-01 00:00:00', '1995-01-01', 'MALE', '180', 'test', 'test.jpg', 1),
-       (2, '2021-07-01 00:00:00', '2021-07-01 00:00:00', '2001-01-01', 'FEMALE', '160', 'test2', 'test2.jpg', 2),
-       (3, '2021-07-01 00:00:00', '2021-07-01 00:00:00', '2002-01-01', 'FEMALE', '130', 'test3', 'test3.jpg', 3)
+       (2, '2021-07-01 00:00:00', '2021-07-01 00:00:00', '1997-01-01', 'FEMALE', '160', 'test2', 'test2.jpg', 2),
+       (3, '2021-07-01 00:00:00', '2021-07-01 00:00:00', '1997-01-01', 'FEMALE', '150', 'test3', 'test3.jpg', 3)
 ;
 
 
@@ -45,7 +45,7 @@ insert into user_profile_hashtags (user_profile_id, hashtag) values (1, 'INTJ');
 
 
 INSERT INTO meeting (meeting_id, created_date, modified_date, description, leader_user_id, man_age_max_age, man_age_min_age, man_height_max_height, man_height_min_height, meeting_image, people_capacity, status, title, woman_age_max_age, woman_age_min_age, woman_height_max_height, woman_height_min_height)
-VALUES (1, '2024-07-18 04:52:15.521588', '2024-07-18 04:52:15.521588', '모두 모여모라', 1, 30, 20, 200, 140, 'https://glint.com/image.png', 4, 'WAITING', '다모여라', 30, 20, 200, 140);
+VALUES (1, '2024-07-18 04:52:15.521588', '2024-07-18 04:52:15.521588', '모두 모여라아', 1, 30, 20, 200, 140, 'https://glint.com/image.png', 4, 'WAITING', '다모여라', 30, 20, 200, 140);
 
 insert into meeting_drinking_ids (man_drinking_id, meeting_meeting_id, woman_drinking_id)
 values (1,1,1);

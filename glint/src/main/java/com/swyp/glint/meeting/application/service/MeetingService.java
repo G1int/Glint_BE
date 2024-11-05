@@ -10,6 +10,7 @@ import com.swyp.glint.meeting.domain.MeetingInfo;
 import com.swyp.glint.meeting.repository.MeetingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

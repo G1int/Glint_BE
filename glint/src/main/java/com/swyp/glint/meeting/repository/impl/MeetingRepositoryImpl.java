@@ -1,12 +1,8 @@
 package com.swyp.glint.meeting.repository.impl;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.swyp.glint.keyword.domain.Drinking;
 import com.swyp.glint.keyword.domain.Location;
@@ -19,6 +15,7 @@ import com.swyp.glint.meeting.repository.MeetingRepositoryCustom;
 import com.swyp.glint.user.domain.UserSimpleProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +26,7 @@ import static com.swyp.glint.keyword.domain.QDrinking.drinking;
 import static com.swyp.glint.keyword.domain.QLocation.location;
 import static com.swyp.glint.keyword.domain.QReligion.religion;
 import static com.swyp.glint.keyword.domain.QSmoking.smoking;
+import static com.swyp.glint.meeting.domain.QJoinConditionElement.joinConditionElement;
 import static com.swyp.glint.meeting.domain.QJoinMeeting.joinMeeting;
 import static com.swyp.glint.meeting.domain.QMeeting.meeting;
 import static com.swyp.glint.user.domain.QUserDetail.userDetail;
@@ -58,7 +56,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                 .join(userDetail).on(meeting.joinUserIds.contains(userDetail.userId))
                 .leftJoin(location).on(meeting.locationIds.contains(location.id))
                 .where(
-                        joinMeeting.status.eq(status),
+                        meeting.status.eq(status),
                         joinMeeting.userId.eq(userId),
                         statusEqProgressJoinUserContain(status, userId),
                         getLt(lastMeetingId)
@@ -72,7 +70,9 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
     @Override
     public Optional<MeetingDetail> findMeetingDetail(Long meetingId) {
 
-        Meeting foundMeeting = queryFactory.selectFrom(meeting).where(meeting.id.eq(meetingId)).fetchOne();
+        Meeting foundMeeting = queryFactory
+                .selectFrom(meeting)
+                .where(meeting.id.eq(meetingId)).fetchOne();
 
         List<UserSimpleProfile> userSimpleProfiles = queryFactory
                 .select(
@@ -96,7 +96,8 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
 
 
         return
-                Optional.of(MeetingDetail.of(
+                Optional.of(
+                        MeetingDetail.of(
                         foundMeeting,
                         userSimpleProfiles,
                         new LocationList(locations),
