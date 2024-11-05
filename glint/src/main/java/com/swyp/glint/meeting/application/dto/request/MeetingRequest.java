@@ -4,9 +4,11 @@ import com.swyp.glint.meeting.domain.Meeting;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
 import java.util.List;
 
+@Builder
 public record MeetingRequest(
         @Schema(description = "Meeting 제목", example = "다모여라", nullable = false)
         String title,
@@ -20,7 +22,6 @@ public record MeetingRequest(
         JoinConditionRequest maleConditions,
         @Schema(description = "여성 참가조건", nullable = true)
         JoinConditionRequest femaleConditions,
-
         @Schema(description = "정원", example = "3", nullable = false )
         @Pattern(regexp = "^[0-9]$")
         String peopleCapacity

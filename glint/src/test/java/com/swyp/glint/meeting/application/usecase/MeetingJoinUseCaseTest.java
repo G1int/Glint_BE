@@ -1,4 +1,4 @@
-package com.swyp.glint.meeting.application.service.usecase;
+package com.swyp.glint.meeting.application.usecase;
 
 import com.swyp.glint.core.common.exception.InvalidValueException;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;

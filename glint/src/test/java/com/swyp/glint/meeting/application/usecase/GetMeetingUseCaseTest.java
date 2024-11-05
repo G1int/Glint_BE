@@ -1,4 +1,4 @@
-package com.swyp.glint.meeting.application.service.usecase;
+package com.swyp.glint.meeting.application.usecase;
 
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingDetailResponse;
