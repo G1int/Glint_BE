@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         @Sql(value = "/sql/user/user-controller-test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
         @Sql(value = "/sql/delete-all-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD),
 })
+@ActiveProfiles("local")
 @SpringBootTest
 public class UserDetailControllerTest {
 
@@ -105,7 +107,7 @@ public class UserDetailControllerTest {
     }
 
     @Test
-    @DisplayName("유저 nickname유효성 검사를 할 수 있다. 성공시 임시 UserDetail을 생성하여 반환한다.")
+    @DisplayName("유저 nickname유효성 검사를 할 수 있다")
     public void userNickNameValidateTempUserDetail() throws Exception {
         // given
 
@@ -121,12 +123,8 @@ public class UserDetailControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nickname").value("nickname"))
-                .andExpect(jsonPath("$.gender").doesNotExist())
-                .andExpect(jsonPath("$.birthdate").doesNotExist())
-                .andExpect(jsonPath("$.age").doesNotExist())
-                .andExpect(jsonPath("$.height").doesNotExist())
-                .andExpect(jsonPath("$.profileImage").doesNotExist());
+                .andExpect(jsonPath("$.isAvailable").value(true))
+                .andExpect(jsonPath("$.nickname").value("nickname"));
     }
 
 

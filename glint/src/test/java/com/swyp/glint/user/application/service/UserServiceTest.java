@@ -2,7 +2,7 @@ package com.swyp.glint.user.application.service;
 
 import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.user.domain.*;
-import com.swyp.glint.user.infra.UserRepository;
+import com.swyp.glint.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

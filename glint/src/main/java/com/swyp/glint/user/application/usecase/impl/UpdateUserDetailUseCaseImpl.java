@@ -1,5 +1,6 @@
 package com.swyp.glint.user.application.usecase.impl;
 
+import com.swyp.glint.core.common.cache.CacheStore;
 import com.swyp.glint.image.application.ImageService;
 import com.swyp.glint.image.application.dto.ImageResponse;
 import com.swyp.glint.user.application.dto.UserDetailRequest;
@@ -21,6 +22,10 @@ public class UpdateUserDetailUseCaseImpl implements UpdateUserDetailUseCase {
     private final UserDetailService userDetailService;
 
     private final ImageService imageService;
+
+
+    private final CacheStore cacheStore;
+
 
     @Transactional
     @Override

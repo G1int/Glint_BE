@@ -44,11 +44,11 @@ public class UserDetailController {
         return ResponseEntity.ok(userNickNameUseCase.isNicknameTaken(nickname));
     }
 
-    @Operation(summary = "User NickName Validate Check", description = "유저 닉네임 중복 체크, 닉네임 유효성 체크, 유효성 통과시 임시 UserDetail 생성 후 반환 (닉네임 선점)")
+    @Operation(summary = "User NickName Validate Check", description = "유저 닉네임 중복 체크, 닉네임 유효성 체크, redis 20분간 보관(닉네임 선점)")
     @PostMapping(path = "/{userId}/nickname", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDetailResponse> userNickNameValidate(@PathVariable Long userId, @RequestBody UserNickNameRequest userNickNameRequest) {
+    public ResponseEntity<UserNickNameValidationResponse> userNickNameValidate(@PathVariable Long userId, @RequestBody UserNickNameRequest userNickNameRequest) {
 
-        return ResponseEntity.ok(createUserDetailUseCase.createTempUserDetail(userId, userNickNameRequest.nickname()));
+        return ResponseEntity.ok(userNickNameUseCase.validateNickname(userId, userNickNameRequest.nickname()));
     }
 
     @Operation(summary = "Get User Detail", description = "User Id를 통한 User 추가 정보 조회")

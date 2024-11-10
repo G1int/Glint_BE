@@ -2,7 +2,7 @@ package com.swyp.glint.core.auth.filter;
 
 import com.swyp.glint.core.auth.exception.NotMathRefreshTokenException;
 import com.swyp.glint.core.common.authority.AuthorityHelper;
-import com.swyp.glint.core.common.cache.RemoteCache;
+import com.swyp.glint.core.common.cache.CacheStore;
 import com.swyp.glint.core.common.util.CookieUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -27,7 +27,7 @@ public class JwtLoginFilter extends OncePerRequestFilter {
 
     private final AuthorityHelper authorityHelper;
 
-    private final RemoteCache redisUtil;
+    private final CacheStore cacheStore;
 
     private final UserDetailsService userPrincipalDetailsService;
 
@@ -73,7 +73,7 @@ public class JwtLoginFilter extends OncePerRequestFilter {
         try{
             if(refreshToken != null) {
                 email = authorityHelper.getEmail(refreshToken);
-                String cachedRefreshToken = redisUtil.getData(email);
+                String cachedRefreshToken = cacheStore.getData(email);
                 validateRefreshToken(request, cachedRefreshToken);
 
                 UserDetails userDetails = userPrincipalDetailsService.loadUserByUsername(email);
@@ -111,8 +111,8 @@ public class JwtLoginFilter extends OncePerRequestFilter {
         response.setHeader("Authorization", "Bearer "  + generateAccessToken);
         response.setHeader("RefreshToken", "Bearer "  + generateRefreshToken);
 
-        redisUtil.setDataExpire(email, generateAccessToken, AuthorityHelper.ACCESS_TOKEN_VALIDATION_SECOND);
-        redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
+        cacheStore.setDataExpire(email, generateAccessToken, AuthorityHelper.ACCESS_TOKEN_VALIDATION_SECOND);
+        cacheStore.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
     private void refreshTokenCookie(HttpServletResponse response, String email) {
@@ -125,8 +125,8 @@ public class JwtLoginFilter extends OncePerRequestFilter {
         response.addCookie(tokenCookie);
         response.addCookie(refreshTokenCookie);
 
-        redisUtil.setDataExpire(email, generateAccessToken, AuthorityHelper.ACCESS_TOKEN_VALIDATION_SECOND);
-        redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
+        cacheStore.setDataExpire(email, generateAccessToken, AuthorityHelper.ACCESS_TOKEN_VALIDATION_SECOND);
+        cacheStore.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
 
