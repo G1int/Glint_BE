@@ -1,8 +1,9 @@
-package com.swyp.glint.chatting.api;
+package com.swyp.glint.chatting.presentation;
 
-import com.swyp.glint.chatting.application.ChatService;
 import com.swyp.glint.chatting.application.dto.request.CreateChatMessageRequest;
-import com.swyp.glint.chatting.application.dto.response.ChatResponse;
+import com.swyp.glint.chatting.application.usecase.GetChatUseCase;
+import com.swyp.glint.chatting.application.usecase.CreateChatMessageUseCase;
+import com.swyp.glint.chatting.domain.UserChat;
 import com.swyp.glint.chatting.application.dto.response.ChatResponses;
 import com.swyp.glint.chatting.exception.NotFoundChatRoomException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ChatController {
 
-    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final GetChatUseCase getChatUseCase;
 
-    private final ChatService chatService;
+    private final CreateChatMessageUseCase createChatMessageUseCase;
+
+    private final MessageSender messageSender;
 
     @MessageMapping("/chatrooms/{meetingId}")
     public void chatting(@DestinationVariable Long meetingId, @RequestBody CreateChatMessageRequest request) {
@@ -26,8 +29,8 @@ public class ChatController {
         if(meetingId == null) {
             throw new NotFoundChatRoomException("roomId is null");
         }
-        ChatResponse chatMessage = chatService.createChatMessage(request);
-        simpMessagingTemplate.convertAndSend("/sub/chatrooms/" + meetingId, chatMessage);
+        UserChat chatMessage = createChatMessageUseCase.createChatMessage(request);
+        messageSender.send("/sub/chatrooms/", meetingId , chatMessage);
     }
 
     @GetMapping(path = "/chatrooms/{roomId}/chats", produces = "application/json")
@@ -37,7 +40,7 @@ public class ChatController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size
             ) {
-        return chatService.getChatMessage(roomId, page, size);
+        return getChatUseCase.getChatMessage(roomId, page, size);
     }
 
     @Operation(summary = "채팅방 메시지 조회, noOffSet", description = "채팅방 noOffSet방식 메시지 조회, lastChatId가 null이면 최신 메시지부터 조회")
@@ -48,7 +51,7 @@ public class ChatController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size
     ) {
-        return chatService.getChatMessageNoOffset(lastChatId, roomId, size);
+        return getChatUseCase.getChatMessagesNoOffset(lastChatId, roomId, size);
     }
 
 }

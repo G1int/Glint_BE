@@ -113,6 +113,9 @@ public class Meeting extends BaseTimeEntity {
         return joinUserIds.contains(userId);
     }
 
+    public boolean isNotJoinUser(Long userId) {
+        return !joinUserIds.contains(userId);
+    }
     public boolean isJoinUser(List<Long> sendUserIds) {
         for (Long sendUserId : sendUserIds) {
             if (joinUserIds.contains(sendUserId)) {

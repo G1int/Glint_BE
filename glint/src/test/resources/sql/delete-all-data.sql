@@ -31,4 +31,5 @@ delete from meeting where 1;
 
 delete from chat_room_user_ids where 1;
 delete from chat_room where 1;
+delete from chat where 1;
 

@@ -1,17 +1,23 @@
 package com.swyp.glint.chatting.application.dto.response;
 
+import com.swyp.glint.chatting.domain.UserChat;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 public record ChatResponses(
-        List<ChatResponse> chats
+        List<UserChatResponse> chats
 ) {
 
-    public static ChatResponses of(List<ChatResponse> chatResponseList) {
+    public static ChatResponses from(List<UserChat> userChatList) {
         return ChatResponses.builder()
-                .chats(chatResponseList)
+                .chats(
+                        userChatList.stream()
+                                .map(UserChatResponse::from)
+                                .collect(Collectors.toList())
+                )
                 .build();
     }
 }

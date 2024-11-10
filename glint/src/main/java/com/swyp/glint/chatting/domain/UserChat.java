@@ -1,44 +1,40 @@
 package com.swyp.glint.chatting.domain;
 
-import com.swyp.glint.user.domain.User;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.swyp.glint.user.domain.UserDetail;
 import lombok.Builder;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Getter
-public class UserChat {
+@Builder
+public record UserChat(
+        Long id,
+        String message,
+        Long chatRoomId,
+        Long userId,
+        String nickname,
+        String userProfileImageUrl,
+        LocalDateTime sendDate
+) {
 
-    private Long chatId;
-
-    private String message;
-
-    private User sendUser;
-
-    private Long chatRoomId;
-
-    private LocalDateTime sendDate;
-
-    @Builder(access = lombok.AccessLevel.PRIVATE)
-    private UserChat(Long chatId, String message, User sendUser, Long chatRoomId, LocalDateTime sendDate) {
-        this.chatId = chatId;
+    public UserChat(Long id, String message, Long chatRoomId, Long userId, String nickname, String userProfileImageUrl, LocalDateTime sendDate) {
+        this.id = id;
         this.message = message;
-        this.sendUser = sendUser;
         this.chatRoomId = chatRoomId;
+        this.userId = userId;
+        this.nickname = nickname;
+        this.userProfileImageUrl = userProfileImageUrl;
         this.sendDate = sendDate;
     }
 
-    public static UserChat of(Long chatId, String message, User sendUser, Long chatRoomId, LocalDateTime sendDate) {
+    public static UserChat of(Chat chat, UserDetail userDetail) {
         return UserChat.builder()
-                .chatId(chatId)
-                .message(message)
-                .sendUser(sendUser)
-                .chatRoomId(chatRoomId)
-                .sendDate(sendDate)
+                .id(chat.getId())
+                .message(chat.getMessage())
+                .chatRoomId(chat.getChatRoomId())
+                .userId(userDetail.getUserId())
+                .nickname(userDetail.getNickname())
+                .sendDate(chat.getSendDate())
+                .userProfileImageUrl(userDetail.getProfileImage())
                 .build();
     }
-
-
 }

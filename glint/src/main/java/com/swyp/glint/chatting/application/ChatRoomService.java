@@ -1,15 +1,12 @@
 package com.swyp.glint.chatting.application;
 
-import com.swyp.glint.chatting.application.dto.ChatRoomRequest;
-import com.swyp.glint.chatting.application.dto.response.ChatRoomResponse;
 import com.swyp.glint.chatting.domain.ChatRoom;
 import com.swyp.glint.chatting.repository.ChatRoomRepository;
 import com.swyp.glint.core.common.exception.NotFoundEntityException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,47 +15,20 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
 
 
-    public ChatRoomResponse createChatRoom(Long meetingId, ChatRoomRequest chatRoomRequest) {
-        ChatRoom chatRoom = chatRoomRequest.toEntity(meetingId);
-
-        //todo 요청 유저가 미팅에 모두 속해있는지 검증 로직 추가
-//        Meeting meeting = meetingService.getMeeting(chatRoom.getMeetingId());
-//
-//        List<Long> invalidUserIds = meeting.isJoinUsers(chatRoom.getUserIds());
-//        if(!invalidUserIds.isEmpty()) {
-//            throw new InvalidValueException("Invalid User Contain" + invalidUserIds);
-//        }
-
-        return ChatRoomResponse.from(chatRoomRepository.save(chatRoom));
+    public Optional<ChatRoom> findBy(Long meetingId) {
+        return chatRoomRepository.findByMeetingId(meetingId);
     }
-
-    @Transactional
-    public void removeChatRoom(Long meetingId) {
-        ChatRoom chatRoom = chatRoomRepository.findByMeetingId(meetingId)
-                .orElseThrow(() -> new NotFoundEntityException("Not Found ChatRoom MeetingId" + meetingId));
-
-        chatRoom.archive();
-
-        chatRoomRepository.save(chatRoom);
-    }
-
-    @Transactional
-    public void activeChatRoom(Long meetingId, List<Long> joinUserIds) {
-        ChatRoom chatRoom = chatRoomRepository.findByMeetingId(meetingId)
-                .orElseGet(() -> chatRoomRepository.save(ChatRoom.createByMeeting(meetingId, joinUserIds)));
-
-        chatRoom.updateJoinUsers(joinUserIds);
-        chatRoom.active();
-
-        chatRoomRepository.save(chatRoom);
-    }
-
 
     public ChatRoom getChatRoom(Long chatRoomId) {
-        return chatRoomRepository.findByMeetingId(chatRoomId).orElseThrow(() -> new NotFoundEntityException("Not Found ChatRoom Id : " + chatRoomId));
+        return findBy(chatRoomId).orElseThrow(() -> new NotFoundEntityException("Not Found ChatRoom Id : " + chatRoomId));
     }
 
-    public ChatRoomResponse getChatRoomByMeetingId(Long meetingId) {
-        return ChatRoomResponse.from(chatRoomRepository.findByMeetingId(meetingId).orElseThrow(() -> new NotFoundEntityException("Not Found ChatRoom meetingId : " + meetingId)));
+    public ChatRoom getChatRoomByMeetingId(Long meetingId) {
+        return findBy(meetingId).orElseThrow(() -> new NotFoundEntityException("Not Found ChatRoom meetingId : " + meetingId));
     }
+
+    public ChatRoom save(ChatRoom chatRoom) {
+        return chatRoomRepository.save(chatRoom);
+    }
+
 }
