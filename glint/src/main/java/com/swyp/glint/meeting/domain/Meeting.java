@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,10 +73,8 @@ public class Meeting extends BaseTimeEntity {
     })
     private JoinConditionElement femaleCondition;
 
-    // 인원수
     private Integer peopleCapacity;
 
-    // 미팅 상태
     private String status;
 
     private String meetingImage;
@@ -99,7 +98,7 @@ public class Meeting extends BaseTimeEntity {
                 .title(title)
                 .description(description)
                 .leaderUserId(leaderUserId)
-                .joinUserIds(List.of(leaderUserId))
+                .joinUserIds(new ArrayList<>(List.of(leaderUserId)))
                 .locationIds(locationIds)
                 .maleCondition(maleCondition)
                 .femaleCondition(femaleCondition)
@@ -166,7 +165,7 @@ public class Meeting extends BaseTimeEntity {
     }
 
     public boolean isLeader(Long userId) {
-        return leaderUserId.equals(userId);
+        return leaderUserId.equals(userId) && isJoinUser(userId);
     }
 
     public void changeLeader(Long nextLeaderUserId) {
@@ -201,6 +200,10 @@ public class Meeting extends BaseTimeEntity {
     public boolean isUpdatable() {
         return this.status.equals(MeetingStatus.WAITING.getName());
     }
+
+    public boolean isUnableUpdatable() {
+        return !this.status.equals(MeetingStatus.WAITING.getName());
+    }
     
     public void update(Meeting meeting) {
         updatePeopleCapacity(meeting.peopleCapacity);
@@ -221,4 +224,27 @@ public class Meeting extends BaseTimeEntity {
     private int getTotalPeoPleCapacity(Integer peopleCapacity) {
         return peopleCapacity * 2;
     }
+
+    public List<Long> getAllDrinkingIds() {
+        List<Long> drinkingIds = new ArrayList<>();
+        drinkingIds.addAll(maleCondition.getDrinkingIds());
+        drinkingIds.addAll(femaleCondition.getDrinkingIds());
+        return drinkingIds;
+    }
+
+    public List<Long> getAllSmokingIds() {
+        List<Long> smokingIds = new ArrayList<>();
+        smokingIds.addAll(maleCondition.getSmokingIds());
+        smokingIds.addAll(femaleCondition.getSmokingIds());
+        return smokingIds;
+    }
+
+    public List<Long> getAllReligionIds() {
+        List<Long> religionIds = new ArrayList<>();
+        religionIds.addAll(maleCondition.getReligionIds());
+        religionIds.addAll(femaleCondition.getReligionIds());
+        return religionIds;
+    }
+
+
 }

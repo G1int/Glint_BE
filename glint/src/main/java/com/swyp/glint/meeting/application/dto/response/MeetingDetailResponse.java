@@ -1,8 +1,6 @@
 package com.swyp.glint.meeting.application.dto.response;
 
-import com.swyp.glint.keyword.domain.Location;
-import com.swyp.glint.meeting.domain.Meeting;
-import com.swyp.glint.meeting.domain.MeetingAggregation;
+import com.swyp.glint.meeting.domain.MeetingDetail;
 import com.swyp.glint.user.application.dto.UserMeetingResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -10,7 +8,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record MeetingResponse(
+public record MeetingDetailResponse(
         @Schema(description = "미팅 ID", example = "1")
         Long id,
         @Schema(description = "리더 유저 ID", example = "1")
@@ -37,19 +35,19 @@ public record MeetingResponse(
 
 
 
-    public static MeetingResponse from(MeetingAggregation meetingAggregation) {
-        return MeetingResponse.builder()
-                .id(meetingAggregation.getId())
-                .leaderUserId(meetingAggregation.getLeaderUserId())
-                .title(meetingAggregation.getTitle())
-                .description(meetingAggregation.getDescription())
-                .users(meetingAggregation.getUsers().stream().map(UserMeetingResponse::from).toList())
-                .locations(meetingAggregation.getLocations())
-                .maleCondition(JoinConditionResponse.from(meetingAggregation.getMaleCondition()))
-                .femaleCondition(JoinConditionResponse.from(meetingAggregation.getFemaleCondition()))
-                .peopleCapacity(meetingAggregation.getPeopleCapacity())
-                .status(meetingAggregation.getStatus())
-                .joinRequestUserIds(meetingAggregation.getJoinRequestUserIds())
+    public static MeetingDetailResponse from(MeetingDetail meetingDetail) {
+        return MeetingDetailResponse.builder()
+                .id(meetingDetail.getId())
+                .leaderUserId(meetingDetail.getLeaderUserId())
+                .title(meetingDetail.getTitle())
+                .description(meetingDetail.getDescription())
+                .users(meetingDetail.getUsers().stream().map(UserMeetingResponse::from).toList())
+                .locations(meetingDetail.getLocationNames())
+                .maleCondition(JoinConditionResponse.from(meetingDetail.getMaleCondition()))
+                .femaleCondition(JoinConditionResponse.from(meetingDetail.getFemaleCondition()))
+                .peopleCapacity(meetingDetail.getPeopleCapacity())
+                .status(meetingDetail.getStatus())
+                .joinRequestUserIds(meetingDetail.getJoinRequestUserIds())
                 .build();
     }
 }

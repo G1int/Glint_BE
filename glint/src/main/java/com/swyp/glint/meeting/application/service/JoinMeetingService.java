@@ -1,4 +1,4 @@
-package com.swyp.glint.meeting.application;
+package com.swyp.glint.meeting.application.service;
 
 import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.meeting.application.dto.response.JoinMeetingResponse;
@@ -19,11 +19,10 @@ public class JoinMeetingService {
 
 
     @Transactional
-    public JoinMeetingResponse rejectJoinMeeting(Long userId, Long meetingId) {
+    public JoinMeeting rejectJoinMeeting(Long userId, Long meetingId) {
         JoinMeeting joinMeeting = joinMeetingRepository.findByUserAndMeeting(userId, meetingId, JoinStatus.WAITING.getName()).orElseThrow(() -> new NotFoundEntityException("Not found join meeting."));
         joinMeeting.reject();
-        joinMeetingRepository.save(joinMeeting);
-        return JoinMeetingResponse.from(joinMeeting);
+        return joinMeetingRepository.save(joinMeeting);
     }
 
     public List<JoinMeeting> getAllJoinMeetingEntity(Long meetingId, Long lastJoinMeetingId) {
@@ -54,11 +53,12 @@ public class JoinMeetingService {
         joinMeetingRepository.saveAll(joinMeetings);
     }
 
-    public List<Long> getJoinMeetingUserIds(Long meetingId) {
-        return joinMeetingRepository.findByMeetingIdAndStatus(meetingId, JoinStatus.WAITING.getName())
-                .stream()
-                .map(JoinMeeting::getUserId)
-                .toList();
+    public JoinMeeting getWaitStatusJoinMeetingRequest(Long userId, Long meetingId) {
+        return joinMeetingRepository.findByUserAndMeeting(userId, meetingId, JoinStatus.WAITING.getName())
+                .orElseThrow(() -> new NotFoundEntityException("Not found join meeting."));
     }
+
+
+
 }
 

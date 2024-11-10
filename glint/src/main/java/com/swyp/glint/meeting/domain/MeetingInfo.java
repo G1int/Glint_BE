@@ -1,6 +1,5 @@
 package com.swyp.glint.meeting.domain;
 
-import com.querydsl.core.annotations.QueryProjection;
 import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.user.domain.UserDetail;
 import lombok.Getter;

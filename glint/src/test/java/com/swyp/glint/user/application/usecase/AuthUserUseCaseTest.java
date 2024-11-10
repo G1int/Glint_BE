@@ -1,6 +1,5 @@
 package com.swyp.glint.user.application.usecase;
 
-import com.swyp.glint.user.application.dto.UserDetailResponse;
 import com.swyp.glint.user.application.dto.UserLoginResponse;
 import com.swyp.glint.user.application.dto.UserRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +18,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 @Transactional
 @SqlGroup({
         @Sql(value = "/sql/user/auth-user-use-case-test-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-        @Sql(value = "/sql/user/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD),
+        @Sql(value = "/sql/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD),
 })
 class AuthUserUseCaseTest {
 

@@ -1,14 +1,16 @@
-package com.swyp.glint.meeting.application;
+package com.swyp.glint.meeting.application.service;
 
 
 import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
-import com.swyp.glint.meeting.application.dto.response.MeetingInfoResponses;
 import com.swyp.glint.meeting.domain.Meeting;
+import com.swyp.glint.meeting.domain.MeetingDetail;
+import com.swyp.glint.meeting.domain.MeetingInfo;
 import com.swyp.glint.meeting.repository.MeetingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,9 +20,7 @@ public class MeetingService {
 
     private final MeetingRepository meetingRepository;
 
-
-
-    public Meeting getMeetingEntity(Long id) {
+    public Meeting getMeeting(Long id) {
         return meetingRepository.findById(id).orElseThrow(() -> new NotFoundEntityException("Not found meeting id : " + id));
     }
 
@@ -28,13 +28,12 @@ public class MeetingService {
         return meetingRepository.save(meeting);
     }
 
-    public MeetingInfoResponses getMyMeeting(Long userId, String meetingStatus, Long lastMeetingId, Integer limit) {
-        return MeetingInfoResponses.from(meetingRepository.findAllMeetingInfoByStatus(userId, meetingStatus, lastMeetingId, limit));
+    public List<MeetingInfo> getMyMeeting(Long userId, String meetingStatus, Long lastMeetingId, Integer limit) {
+        return meetingRepository.findAllMeetingInfoByStatus(userId, meetingStatus, lastMeetingId, limit);
     }
 
-
-    public MeetingInfoResponses getNewMeeting(Long lastId, Integer size) {
-        return MeetingInfoResponses.from(meetingRepository.findAllNotFinishMeeting(lastId, size));
+    public List<MeetingInfo> getNewMeeting(Long lastId, Integer size) {
+        return meetingRepository.findAllNotFinishMeeting(lastId, size);
     }
 
 
@@ -50,6 +49,10 @@ public class MeetingService {
         return meetingRepository.searchMeetingWithTotalCount(meetingSearchCondition);
     }
 
+    public MeetingDetail getMeetingDetail(Long meetingId) {
+        return meetingRepository.findMeetingDetail(meetingId)
+                .orElseThrow(() -> new NotFoundEntityException("Not found meeting id : " + meetingId));
+    }
 
 
 }

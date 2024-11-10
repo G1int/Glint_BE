@@ -16,7 +16,7 @@ import static org.springframework.test.context.jdbc.Sql.*;
 @Transactional
 @SqlGroup({
         @Sql(value = "/sql/user/get-user-detail-use-case-test-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-        @Sql(value = "/sql/user/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD),
+        @Sql(value = "/sql/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD),
 })
 class GetUserDetailUseCaseTest {
 

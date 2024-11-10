@@ -11,9 +11,8 @@ import java.util.Map;
 import java.util.Objects;
 
 @Getter
-public class JoinConditionAggregation {
+public class MeetingJoinCondition {
 
-    // 적용선택 조건
     private final List<String> selectConditions;
 
     private final List<String> affiliation;
@@ -30,7 +29,7 @@ public class JoinConditionAggregation {
 
 
 
-    private JoinConditionAggregation(JoinConditionElement joinConditionElement, Map<Long, Drinking> drinkingIdMap, Map<Long, Smoking> smokingIdMap, Map<Long, Religion> religionIdMap) {
+    private MeetingJoinCondition(JoinConditionElement joinConditionElement, Map<Long, Drinking> drinkingIdMap, Map<Long, Smoking> smokingIdMap, Map<Long, Religion> religionIdMap) {
         this.selectConditions = joinConditionElement.getSelectConditions();
         this.affiliation = joinConditionElement.getAffiliation();
         this.ageRange = joinConditionElement.getAgeRange();
@@ -40,11 +39,11 @@ public class JoinConditionAggregation {
         this.drinkingConditions = getDrinkings(joinConditionElement.getDrinkingIds(), drinkingIdMap);
     }
 
-    public static JoinConditionAggregation of(JoinConditionElement joinConditionElement, Map<Long, Drinking> drinkingIdMap, Map<Long, Smoking> smokingIdMap, Map<Long, Religion> religionIdMap) {
+    public static MeetingJoinCondition of(JoinConditionElement joinConditionElement, Map<Long, Drinking> drinkingIdMap, Map<Long, Smoking> smokingIdMap, Map<Long, Religion> religionIdMap) {
         if(Objects.isNull(joinConditionElement)) {
             return null;
         }
-        return new JoinConditionAggregation(joinConditionElement, drinkingIdMap, smokingIdMap, religionIdMap);
+        return new MeetingJoinCondition(joinConditionElement, drinkingIdMap, smokingIdMap, religionIdMap);
     }
 
     private List<Drinking> getDrinkings(List<Long> drinkingIds, Map<Long, Drinking> drinkingIdMap) {

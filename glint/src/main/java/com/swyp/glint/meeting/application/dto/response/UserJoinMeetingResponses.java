@@ -1,6 +1,4 @@
-package com.swyp.glint.meeting.application;
-
-import com.swyp.glint.meeting.application.dto.response.UserJoinMeetingResponse;
+package com.swyp.glint.meeting.application.dto.response;
 
 import java.util.List;
 

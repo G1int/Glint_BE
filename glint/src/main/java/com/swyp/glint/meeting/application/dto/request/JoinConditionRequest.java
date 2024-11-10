@@ -6,10 +6,11 @@ import com.swyp.glint.meeting.domain.JoinConditionElement;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
 import java.util.List;
 
-
+@Builder
 public record JoinConditionRequest(
         @Schema(description = "선택한 참가 조건, AFFILIATION(직장,학교), AGE(나이), HEIGHT(키), RELIGION(종교), DRINKING(음주), SMOKING(흡연) ", example = "[\"AFFILIATION\", \"AGE\"]")
         List<String> selectConditions,

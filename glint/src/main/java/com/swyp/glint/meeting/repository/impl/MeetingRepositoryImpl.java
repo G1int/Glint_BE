@@ -4,24 +4,33 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.swyp.glint.keyword.domain.Drinking;
+import com.swyp.glint.keyword.domain.Location;
+import com.swyp.glint.keyword.domain.Religion;
+import com.swyp.glint.keyword.domain.Smoking;
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.response.MeetingInfoCountResponses;
-import com.swyp.glint.meeting.domain.JoinStatus;
-import com.swyp.glint.meeting.domain.MeetingInfo;
-import com.swyp.glint.meeting.domain.MeetingStatus;
+import com.swyp.glint.meeting.domain.*;
 import com.swyp.glint.meeting.repository.MeetingRepositoryCustom;
+import com.swyp.glint.user.domain.UserSimpleProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.querydsl.core.types.Projections.constructor;
 import static com.querydsl.core.types.Projections.list;
-
+import static com.swyp.glint.keyword.domain.QDrinking.drinking;
 import static com.swyp.glint.keyword.domain.QLocation.location;
+import static com.swyp.glint.keyword.domain.QReligion.religion;
+import static com.swyp.glint.keyword.domain.QSmoking.smoking;
+import static com.swyp.glint.meeting.domain.QJoinConditionElement.joinConditionElement;
 import static com.swyp.glint.meeting.domain.QJoinMeeting.joinMeeting;
 import static com.swyp.glint.meeting.domain.QMeeting.meeting;
 import static com.swyp.glint.user.domain.QUserDetail.userDetail;
+import static com.swyp.glint.user.domain.QUserProfile.userProfile;
 import static org.springframework.util.StringUtils.hasText;
 
 @Repository
@@ -47,15 +56,63 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                 .join(userDetail).on(meeting.joinUserIds.contains(userDetail.userId))
                 .leftJoin(location).on(meeting.locationIds.contains(location.id))
                 .where(
-                        joinMeeting.status.eq(status),
+                        meeting.status.eq(status),
                         joinMeeting.userId.eq(userId),
                         statusEqProgressJoinUserContain(status, userId),
                         getLt(lastMeetingId)
                 )
                 .limit(getLimit(limit))
                 .orderBy(meeting.id.desc())
-                .groupBy(meeting.id)
+                .distinct()
                 .fetch();
+    }
+
+    @Override
+    public Optional<MeetingDetail> findMeetingDetail(Long meetingId) {
+
+        Meeting foundMeeting = queryFactory
+                .selectFrom(meeting)
+                .where(meeting.id.eq(meetingId)).fetchOne();
+
+        List<UserSimpleProfile> userSimpleProfiles = queryFactory
+                .select(
+                        constructor(
+                                UserSimpleProfile.class,
+                                userDetail,
+                                userProfile
+                        ))
+                .from(userDetail)
+                .leftJoin(userProfile).on(userDetail.userId.eq(userProfile.userId))
+                .where(userDetail.userId.in(foundMeeting.getJoinUserIds()))
+                .fetch();
+
+        List<Location> locations = queryFactory.select(location).from(location).where(location.id.in(foundMeeting.getLocationIds())).fetch();
+        List<Drinking> drinkings = queryFactory.selectFrom(drinking).where(drinking.id.in(foundMeeting.getAllDrinkingIds())).fetch();
+        List<Smoking> smokings = queryFactory.selectFrom(smoking).where(smoking.id.in(foundMeeting.getAllSmokingIds())).fetch();
+        List<Religion> religions = queryFactory.selectFrom(religion).where(religion.id.in(foundMeeting.getAllReligionIds())).fetch();
+
+        List<Long> joinRequestUserIds = queryFactory.select(joinMeeting.userId).from(joinMeeting).where(joinMeeting.meetingId.eq(meetingId)).fetch();
+
+
+
+        return
+                Optional.of(
+                        MeetingDetail.of(
+                        foundMeeting,
+                        userSimpleProfiles,
+                        new LocationList(locations),
+                        drinkings,
+                        smokings,
+                        religions,
+                        joinRequestUserIds
+                ))
+        ;
+
+
+    }
+
+    private static BooleanExpression meetingIdEq(Long meetingId) {
+        return meeting.id.eq(meetingId);
     }
 
 
@@ -78,7 +135,6 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                         getLt(lastId)
                 )
                 .orderBy(meeting.createdDate.desc())
-                .groupBy(meeting.id)
                 .limit(getLimit(size))
                 .fetch();
     }
@@ -104,6 +160,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                         searchBooleanBuilder(searchCondition.getKeyword())
                 )
                 .orderBy(meeting.createdDate.desc())
+                .groupBy(meeting.id, userDetail.id, location.id)
                 .limit(getLimit(searchCondition.getLimit()))
                 .fetch();
     }
@@ -143,7 +200,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
                         locationIdsIn(searchCondition.getLocationIds())
                 )
                 .orderBy(meeting.createdDate.desc())
-                .groupBy(meeting.id)
+                .groupBy(meeting.id, userDetail.id, location.id)
                 .limit(getLimit(searchCondition.getLimit()))
                 .fetch();
 
@@ -175,11 +232,11 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
         return booleanBuilder;
     }
 
-    private static BooleanExpression locationStateLike(String keyword) {
+    private BooleanExpression locationStateLike(String keyword) {
         return hasText(keyword) ? location.state.like("%" + keyword + "%") : null;
     }
 
-    private static BooleanExpression locationCityLike(String keyword) {
+    private BooleanExpression locationCityLike(String keyword) {
         return hasText(keyword) ? location.city.like("%" + keyword + "%") : null;
     }
 
@@ -209,7 +266,7 @@ public class MeetingRepositoryImpl implements MeetingRepositoryCustom {
         return null;
     }
 
-    private static BooleanExpression joinMeetingIdEqAndStatusEq(Long userId, JoinStatus joinStatus) {
+    private BooleanExpression joinMeetingIdEqAndStatusEq(Long userId, JoinStatus joinStatus) {
         return joinMeeting.userId.eq(userId).and(joinMeeting.status.eq(joinStatus.getName()));
     }
 
