@@ -45,38 +45,4 @@ class CreateUserDetailUseCaseTest {
         assertThat(userDetailResponse.profileImage()).isEqualTo("profileImage");
 
     }
-
-    @Test
-    @DisplayName("유저 nickname 중복검사시 nickname 선점을 위해 tempUserDetail을 생성한다.")
-    void createTempUserDetail() {
-
-        //given
-        Long userId = 1L;
-        String nickname = "nickname";
-
-        //when
-        UserDetailResponse userDetailResponse = createUserDetailUseCase.createTempUserDetail(userId, nickname);
-
-        //then
-        assertThat(userDetailResponse.userId()).isEqualTo(1L);
-        assertThat(userDetailResponse.nickname()).isEqualTo("nickname");
-        assertThat(userDetailResponse.gender()).isNull();
-        assertThat(userDetailResponse.birthdate()).isNull();
-        assertThat(userDetailResponse.height()).isNull();
-        assertThat(userDetailResponse.profileImage()).isNull();
-    }
-
-
-    @Test
-    @DisplayName("유저 nickname 중복검사시 nickname이 선점한 userId와 다른 userId가 요청되면 예외를 발생시킨다.")
-    void createTempUserDetailNickNameValidateFail() {
-        //given
-        Long userId = 1L;
-        String nickname = "nickname";
-
-        //when
-        //then
-        assertThatThrownBy(() -> createUserDetailUseCase.createTempUserDetail(2L, nickname))
-                .isInstanceOf(InvalidValueException.class);
-    }
 }

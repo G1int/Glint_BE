@@ -1,4 +1,4 @@
-package com.swyp.glint.user.infra;
+package com.swyp.glint.user.repository;
 
 import com.swyp.glint.user.domain.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;

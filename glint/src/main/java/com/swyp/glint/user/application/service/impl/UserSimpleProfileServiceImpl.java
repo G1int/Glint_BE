@@ -2,7 +2,7 @@ package com.swyp.glint.user.application.service.impl;
 
 import com.swyp.glint.user.application.service.UserSimpleProfileService;
 import com.swyp.glint.user.domain.UserSimpleProfile;
-import com.swyp.glint.user.infra.UserRepository;
+import com.swyp.glint.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

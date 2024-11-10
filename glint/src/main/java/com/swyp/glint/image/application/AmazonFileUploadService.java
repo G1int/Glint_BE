@@ -27,7 +27,6 @@ public class AmazonFileUploadService implements FileUploadService {
     private String bucket = "resource-glint";
 
     private static final String profileImagePreObjectKey = "profile";
-    private static final String authenticationImagePreObjectKey = "authentication";
 
     private final AmazonS3 s3Client;
 

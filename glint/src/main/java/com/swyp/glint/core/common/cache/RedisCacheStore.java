@@ -1,8 +1,7 @@
-package com.swyp.glint.core.common.util;
+package com.swyp.glint.core.common.cache;
 
-import com.swyp.glint.core.common.cache.RemoteCache;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
@@ -10,14 +9,13 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-@Getter
 @Component
+@Profile({"dev", "release"})
 @RequiredArgsConstructor
-public class RedisUtil implements RemoteCache {
+public class RedisCacheStore implements CacheStore {
 
     private final StringRedisTemplate stringRedisTemplate;
-
-
+    
     @Override
     public String getData(String key) {
         ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
@@ -39,13 +37,18 @@ public class RedisUtil implements RemoteCache {
     }
 
     @Override
+    public void setDataExpire(String key, String value, Duration expireDuration) {
+        ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
+
+        valueOperations.set(key, value, expireDuration);
+    }
+
+    @Override
     public void deleteData(String key) {
         stringRedisTemplate.delete(key);
     }
 
 
-
-    @Override
     public Long incData(String key) {
         return stringRedisTemplate.opsForValue().increment(key);
     }

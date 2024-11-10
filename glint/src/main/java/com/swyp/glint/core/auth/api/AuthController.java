@@ -6,8 +6,8 @@ import com.swyp.glint.core.auth.application.social.KakaoOauth;
 import com.swyp.glint.core.auth.application.social.SocialOauthProvider;
 import com.swyp.glint.core.auth.application.social.SocialType;
 import com.swyp.glint.core.common.authority.AuthorityHelper;
+import com.swyp.glint.core.common.cache.CacheStore;
 import com.swyp.glint.core.common.util.CookieUtil;
-import com.swyp.glint.core.common.util.RedisUtil;
 import com.swyp.glint.user.application.dto.UserLoginResponse;
 import com.swyp.glint.user.application.dto.UserRequest;
 import com.swyp.glint.user.application.usecase.UserAuthUseCase;
@@ -31,7 +31,7 @@ public class AuthController {
 
     private final AuthorityHelper authorityHelper;
 
-    private final RedisUtil redisUtil;
+    private final CacheStore cacheStore;
 
     private final CookieUtil cookieUtil;
 
@@ -74,7 +74,7 @@ public class AuthController {
         response.setHeader("RefreshToken", "");
 
         String email = authorityHelper.getEmail(refreshToken.replace("Bearer ", ""));
-        redisUtil.deleteData(email);
+        cacheStore.deleteData(email);
         return ResponseEntity.ok().build();
     }
 
@@ -87,7 +87,7 @@ public class AuthController {
         response.setHeader("Authorization", "Bearer "  + generateAccessToken);
         response.setHeader("RefreshToken", "Bearer "  + generateRefreshToken);
 
-        redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
+        cacheStore.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
     private void refreshTokenCookie(HttpServletResponse response, String email) {
@@ -100,7 +100,7 @@ public class AuthController {
         response.addCookie(tokenCookie);
         response.addCookie(refreshTokenCookie);
 
-        redisUtil.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
+        cacheStore.setDataExpire(email, generateRefreshToken, AuthorityHelper.REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
 }

@@ -1,14 +1,8 @@
 package com.swyp.glint.user.application.impl;
 
 import com.swyp.glint.core.common.exception.NotFoundEntityException;
-import com.swyp.glint.keyword.application.*;
-import com.swyp.glint.keyword.domain.*;
-import com.swyp.glint.user.application.dto.UserInfoResponse;
-import com.swyp.glint.user.application.dto.UserProfileRequest;
-import com.swyp.glint.user.application.dto.UserProfileResponse;
 import com.swyp.glint.user.domain.UserProfile;
-import com.swyp.glint.user.infra.UserProfileRepository;
-import jakarta.transaction.Transactional;
+import com.swyp.glint.user.repository.UserProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,9 @@
-package com.swyp.glint.user.infra.impl;
+package com.swyp.glint.user.repository.impl;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.swyp.glint.user.application.dto.UserInfoResponse;
-import com.swyp.glint.user.infra.UserProfileCustom;
+import com.swyp.glint.user.repository.UserProfileCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
