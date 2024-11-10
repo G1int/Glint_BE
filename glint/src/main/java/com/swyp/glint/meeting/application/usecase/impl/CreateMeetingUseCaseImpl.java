@@ -1,6 +1,7 @@
 package com.swyp.glint.meeting.application.usecase.impl;
 
 import com.swyp.glint.chatting.application.ChatRoomService;
+import com.swyp.glint.chatting.domain.ChatRoom;
 import com.swyp.glint.core.common.exception.ErrorCode;
 import com.swyp.glint.core.common.exception.InvalidValueException;
 import com.swyp.glint.keyword.application.DrinkingService;
@@ -34,15 +35,17 @@ import java.util.List;
 public class CreateMeetingUseCaseImpl implements CreateMeetingUseCase {
 
     private final MeetingService meetingService;
+
     private final DrinkingService drinkingService;
     private final SmokingService smokingService;
     private final ReligionService religionService;
     private final LocationService locationService;
     private final UserSimpleProfileService userSimpleProfileService;
     private final JoinMeetingService joinMeetingService;
-    private final ChatRoomService chatRoomService;
+
     private final UserDetailService userDetailService;
     private final UserProfileService userProfileService;
+    private final ChatRoomService chatRoomService;
 
     @Transactional
     @Override
@@ -50,7 +53,7 @@ public class CreateMeetingUseCaseImpl implements CreateMeetingUseCase {
         Meeting meeting = meetingRequest.toEntity();
         Meeting savedMeeting = meetingService.save(meeting);
         joinMeetingService.createMeetingJoin(meetingRequest.leaderUserId(), savedMeeting.getId());
-        chatRoomService.activeChatRoom(savedMeeting.getId(), meeting.getJoinUserIds());
+        activeChatRoom(savedMeeting.getId(), meeting.getJoinUserIds());
 
         Long leaderUserId = meetingRequest.leaderUserId();
         validateUserMeetingCondition(leaderUserId, meeting);
@@ -67,7 +70,6 @@ public class CreateMeetingUseCaseImpl implements CreateMeetingUseCase {
 
         return MeetingDetailResponse.from(meetingDetail);
     }
-
 
     public LocationList getMeetingLocationList(Meeting meeting) {
         List<Location> locations = locationService.getLocationsByIds(meeting.getLocationIds());
@@ -87,5 +89,15 @@ public class CreateMeetingUseCaseImpl implements CreateMeetingUseCase {
         if(userMeetingValidator.isInvalid()) {
             throw new InvalidValueException(ErrorCode.NOT_MATCH_CONDITION);
         }
+    }
+
+    public void activeChatRoom(Long meetingId, List<Long> joinUserIds) {
+        ChatRoom chatRoom = chatRoomService.findBy(meetingId)
+                .orElseGet(() -> chatRoomService.save(ChatRoom.createByMeeting(meetingId, joinUserIds)));
+
+        chatRoom.updateJoinUsers(joinUserIds);
+        chatRoom.active();
+
+        chatRoomService.save(chatRoom);
     }
 }

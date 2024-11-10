@@ -1,4 +1,4 @@
-package com.swyp.glint.meeting.application.presentation;
+package com.swyp.glint.meeting.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swyp.glint.core.system.error.ServiceExceptionHandler;

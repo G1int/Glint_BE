@@ -1,8 +1,5 @@
 package com.swyp.glint.chatting.application.dto.response;
 
-import com.swyp.glint.user.domain.User;
-import lombok.Builder;
-
 public class ChatUserResponse {
 
     private Long userId;

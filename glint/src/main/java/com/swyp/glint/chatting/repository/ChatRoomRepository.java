@@ -13,6 +13,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long>{
     @Query("""
             select c 
             from ChatRoom c
+            join fetch c.userIds uid
             where c.meetingId = :meetingId
         """)
     Optional<ChatRoom> findByMeetingId(Long meetingId);
