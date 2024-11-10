@@ -2,16 +2,12 @@ package com.swyp.glint.keyword.api;
 
 import com.swyp.glint.keyword.application.ReligionService;
 import com.swyp.glint.keyword.domain.Religion;
-import com.swyp.glint.common.exception.NotFoundEntityException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/religions")
@@ -40,7 +36,7 @@ public class ReligionController {
     @GetMapping("/{religionId}/religion")
     @Operation(summary = "Get a religion by its ID", description = "Religion Id를 통한 종교 조회")
     public ResponseEntity<Religion> getReligionById(@PathVariable Long religionId) {
-        Religion religion = religionService.findById(religionId);
+        Religion religion = religionService.getById(religionId);
         return ResponseEntity.ok(religion);
     }
 

@@ -1,6 +1,6 @@
 package com.swyp.glint.chatting.domain;
 
-import com.swyp.glint.common.baseentity.BaseTimeEntity;
+import com.swyp.glint.core.common.baseentity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -67,6 +67,10 @@ public class ChatRoom extends BaseTimeEntity {
 
     public boolean isActivated() {
         return this.isActivated;
+    }
+
+    public boolean isDeactivated() {
+        return !this.isActivated;
     }
 
     public boolean isJoinUser(Long sendUserId) {

@@ -6,4 +6,5 @@ public record UserNickNameRequest(
         @Parameter(description = "User Nickname", example = "철수", required = true)
         String nickname
 ) {
+
 }

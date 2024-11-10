@@ -15,17 +15,18 @@ import lombok.NoArgsConstructor;
 public class WorkResponse {
     @Schema(description = "Work ID", example = "1")
     Long workId;
+
     @Schema(description = "직업명", example = "삼성전자")
     String workName;
 
     WorkCategoryResponse workCategory;
 
-    public static WorkResponse from(Work work, WorkCategory workCategory) {
+    public static WorkResponse from(Work work) {
         if(work == null) return null;
         return WorkResponse.builder()
                 .workId(work.getId())
                 .workName(work.getWorkName())
-                .workCategory(WorkCategoryResponse.from(workCategory))
+                .workCategory(WorkCategoryResponse.from(work.getWorkCategory()))
                 .build();
     }
 }

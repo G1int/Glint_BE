@@ -1,7 +1,6 @@
 package com.swyp.glint.meeting.domain;
 
-import com.swyp.glint.common.baseentity.BaseTimeEntity;
-import com.swyp.glint.meeting.application.dto.response.MeetingResponse;
+import com.swyp.glint.core.common.baseentity.BaseTimeEntity;
 import com.swyp.glint.meeting.exception.NumberOfPeopleException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -194,10 +193,15 @@ public class Meeting extends BaseTimeEntity {
         return joinUserIds.size() == 1;
     }
 
+    public boolean isJoinedUser() {
+        int joinUserCount = joinUserIds.size();
+        return joinUserCount != 1 && joinUserCount > 0;
+    }
+
     public boolean isUpdatable() {
         return this.status.equals(MeetingStatus.WAITING.getName());
     }
-
+    
     public void update(Meeting meeting) {
         updatePeopleCapacity(meeting.peopleCapacity);
         this.title = meeting.title;

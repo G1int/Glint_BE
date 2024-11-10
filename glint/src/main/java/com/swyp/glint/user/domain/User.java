@@ -1,6 +1,6 @@
 package com.swyp.glint.user.domain;
 
-import com.swyp.glint.common.baseentity.BaseTimeEntity;
+import com.swyp.glint.core.common.baseentity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -52,5 +52,9 @@ public class User extends BaseTimeEntity {
 
     public void archive() {
         this.archived = true;
+    }
+
+    public boolean isArchived() {
+        return this.archived;
     }
 }

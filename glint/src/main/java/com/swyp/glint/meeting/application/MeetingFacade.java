@@ -1,9 +1,9 @@
 package com.swyp.glint.meeting.application;
 
 import com.swyp.glint.chatting.application.ChatRoomService;
-import com.swyp.glint.common.exception.ErrorCode;
-import com.swyp.glint.common.exception.InvalidValueException;
-import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.core.common.exception.ErrorCode;
+import com.swyp.glint.core.common.exception.InvalidValueException;
+import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.application.DrinkingService;
 import com.swyp.glint.keyword.application.LocationService;
 import com.swyp.glint.keyword.application.ReligionService;
@@ -23,9 +23,10 @@ import com.swyp.glint.meeting.exception.NumberOfPeopleException;
 import com.swyp.glint.meeting.repository.JoinMeetingRepository;
 import com.swyp.glint.meeting.repository.MeetingRepository;
 import com.swyp.glint.searchkeyword.application.SearchKeywordService;
-import com.swyp.glint.user.application.UserDetailService;
-import com.swyp.glint.user.application.UserProfileService;
-import com.swyp.glint.user.application.UserService;
+import com.swyp.glint.user.application.impl.UserDetailService;
+import com.swyp.glint.user.application.impl.UserProfileService;
+import com.swyp.glint.user.application.service.UserSimpleProfileService;
+import com.swyp.glint.user.application.service.impl.UserServiceImpl;
 import com.swyp.glint.user.domain.UserDetail;
 import com.swyp.glint.user.domain.UserProfile;
 import com.swyp.glint.user.domain.UserSimpleProfile;
@@ -49,7 +50,7 @@ public class MeetingFacade {
 
     private final UserProfileService userProfileService;
     private final UserDetailService userDetailService;
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final DrinkingService drinkingService;
     private final SmokingService smokingService;
     private final ReligionService religionService;
@@ -57,6 +58,8 @@ public class MeetingFacade {
     private final SearchKeywordService searchKeywordService;
     private final MeetingRepository meetingRepository;
     private final JoinMeetingRepository joinMeetingRepository;
+
+    private final UserSimpleProfileService userSimpleProfileService;
 
 
     @Transactional
@@ -69,7 +72,9 @@ public class MeetingFacade {
 
         Meeting savedMeeting = meetingService.save(meeting);
         LocationList locationList = getMeetingLocationList(savedMeeting);
-        List<UserSimpleProfile> userSimpleProfileList = userService.getUserSimpleProfileList(meeting.getJoinUserIds());
+
+        List<UserSimpleProfile> userSimpleProfileList = userSimpleProfileService.getUserSimpleProfileList(meeting.getJoinUserIds());
+
         joinMeetingService.createMeetingJoin(meetingRequest.leaderUserId(), savedMeeting.getId());
 
         chatRoomService.activeChatRoom(savedMeeting.getId(), meeting.getJoinUserIds());
@@ -134,7 +139,7 @@ public class MeetingFacade {
         List<Long> joinMeetingUserIds = joinMeetingService.getJoinMeetingUserIds(meeting.getId());
         LocationList locationList = getMeetingLocationList(meeting);
 
-        List<UserSimpleProfile> userSimpleProfileList = userService.getUserSimpleProfileList(meeting.getJoinUserIds());
+        List<UserSimpleProfile> userSimpleProfileList = userSimpleProfileService.getUserSimpleProfileList(meeting.getJoinUserIds());
         return new MeetingAggregation(
                 meeting,
                 userSimpleProfileList,
@@ -150,14 +155,14 @@ public class MeetingFacade {
     public MeetingResponse joinUser(Long meetingId, Long userId) {
         Meeting meeting = meetingService.getMeetingEntity(meetingId);
         Map<String, List<UserDetail>> userGenderMap = userDetailService.getUserDetails(meeting.getJoinUserIds()).stream().collect(Collectors.groupingBy(UserDetail::getGender));
-        UserDetail userDetail = userDetailService.getUserDetail(userId);
+        UserDetail userDetail = userDetailService.getUserDetailBy(userId);
 
         //todo 리팩토링
         List<UserDetail> userGenderDetails = Optional.ofNullable(userGenderMap.get(userDetail.getGender())).orElse(List.of());
         if(userGenderDetails.size() >= meeting.getPeopleCapacity()) {
             throw new NumberOfPeopleException("인원수 초과");
         }
-        userService.getUserById(userId);
+        userService.getUserBy(userId);
         meeting.addUser(userId);
 
 
@@ -197,10 +202,10 @@ public class MeetingFacade {
     public MeetingResponse userMeetingOut(Long meetingId, Long userId) {
         Meeting meeting = meetingService.getMeetingEntity(meetingId);
 
-        if(meeting.isLeader(userId) && ! meeting.isAlone()) {
+        if(meeting.isLeader(userId) && meeting.isJoinedUser()) {
             List<JoinMeeting> acceptedJoinMeeting = joinMeetingService.getAcceptedJoinMeeting(meetingId);
             List<UserDetail> userDetails = userDetailService.getUserDetails(meeting.getJoinUserIds());
-            UserDetail leaderUserDetail = userDetailService.getUserDetail(meeting.getLeaderUserId());
+            UserDetail leaderUserDetail = userDetailService.getUserDetailBy(meeting.getLeaderUserId());
 
             NextMeetingLeader nextMeetingLeader = new NextMeetingLeader(acceptedJoinMeeting, userDetails, leaderUserDetail);
             nextMeetingLeader.getNextLeaderUserId();
@@ -210,6 +215,7 @@ public class MeetingFacade {
         meeting.outUser(userId);
         Meeting saveMeeting = meetingService.save(meeting);
         MeetingAggregation meetingAggregation = getMeetingAggregation(saveMeeting);
+
         return MeetingResponse.from(meetingAggregation);
     }
 
@@ -233,7 +239,7 @@ public class MeetingFacade {
             validateUserMeetingCondition(userId, updateRequestMeeting);
             UserProfile userProfile = userProfileByIdMap.get(userId);
             UserDetail userDetail = userDetails.get(userId);
-            UserDetail leaderUserDetail = userDetailService.getUserDetail(foundMeeting.getLeaderUserId());
+            UserDetail leaderUserDetail = userDetailService.getUserDetailBy(foundMeeting.getLeaderUserId());
 
             UserMeetingValidator userMeetingValidator = new UserMeetingValidator(userProfile, userDetail ,leaderUserDetail, updateRequestMeeting);
 
@@ -251,9 +257,9 @@ public class MeetingFacade {
 
 
     public void validateUserMeetingCondition(Long leaderUserId, Meeting meeting) {
-        UserProfile userProfile = userProfileService.getUserProfileEntityById(leaderUserId);
-        UserDetail userDetail = userDetailService.getUserDetail(leaderUserId);
-        UserDetail leaderUserDetail = userDetailService.getUserDetail(leaderUserId);
+        UserProfile userProfile = userProfileService.getUserProfileBy(leaderUserId);
+        UserDetail userDetail = userDetailService.getUserDetailBy(leaderUserId);
+        UserDetail leaderUserDetail = userDetailService.getUserDetailBy(leaderUserId);
 
         UserMeetingValidator userMeetingValidator = new UserMeetingValidator(userProfile, userDetail ,leaderUserDetail, meeting);
 

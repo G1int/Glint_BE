@@ -1,6 +1,6 @@
 package com.swyp.glint.keyword.application;
 
-import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.domain.Drinking;
 import com.swyp.glint.keyword.repository.DrinkingRepository;
 import jakarta.transaction.Transactional;
@@ -15,7 +15,7 @@ public class DrinkingService {
 
     private final DrinkingRepository drinkingRepository;
 
-    public Drinking findById(Long drinkingId) {
+    public Drinking getDrinkBy(Long drinkingId) {
         return drinkingRepository.findById(drinkingId)
                 .orElseThrow(() -> new NotFoundEntityException("Drinking not found with id: " + drinkingId));
     }

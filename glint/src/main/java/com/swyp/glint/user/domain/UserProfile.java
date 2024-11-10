@@ -1,6 +1,6 @@
 package com.swyp.glint.user.domain;
 
-import com.swyp.glint.common.baseentity.BaseTimeEntity;
+import com.swyp.glint.core.common.baseentity.BaseTimeEntity;
 import com.swyp.glint.keyword.domain.*;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -57,7 +57,7 @@ public class UserProfile extends BaseTimeEntity { // 회사 or 학교, 위치, �
     private List<String> hashtags;
 
     @Builder(access = AccessLevel.PRIVATE)
-    public UserProfile(Long id, Long userId, Work work, University university, Location location, Religion religion,
+    private UserProfile(Long id, Long userId, Work work, University university, Location location, Religion religion,
                        Smoking smoking, Drinking drinking, String selfIntroduction, List<String> hashtags) {
         this.id = id;
         this.userId = userId;
@@ -83,12 +83,6 @@ public class UserProfile extends BaseTimeEntity { // 회사 or 학교, 위치, �
                 .drinking(drinking)
                 .selfIntroduction(selfIntroduction)
                 .hashtags(hashtags)
-                .build();
-    }
-
-    public static UserProfile createEmptyProfile(Long userId) {
-        return UserProfile.builder()
-                .userId(userId)
                 .build();
     }
 

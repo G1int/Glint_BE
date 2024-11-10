@@ -2,10 +2,8 @@ package com.swyp.glint.keyword.api;
 
 import com.swyp.glint.keyword.application.DrinkingService;
 import com.swyp.glint.keyword.domain.Drinking;
-import com.swyp.glint.keyword.domain.Work;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +38,7 @@ public class DrinkingController {
     @GetMapping("/{drinkingId}/drinking")
     @Operation(summary = "Get a drinking by its ID", description = "Drinking Id를 통한 음주 조회")
     public ResponseEntity<Drinking> getDrinkingById(@PathVariable Long drinkingId) {
-        Drinking drinking = drinkingService.findById(drinkingId);
+        Drinking drinking = drinkingService.getDrinkBy(drinkingId);
         return ResponseEntity.ok(drinking);
     }
 

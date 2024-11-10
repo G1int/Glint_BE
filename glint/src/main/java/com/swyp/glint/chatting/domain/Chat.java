@@ -1,6 +1,6 @@
 package com.swyp.glint.chatting.domain;
 
-import com.swyp.glint.common.baseentity.BaseTimeEntity;
+import com.swyp.glint.core.common.baseentity.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

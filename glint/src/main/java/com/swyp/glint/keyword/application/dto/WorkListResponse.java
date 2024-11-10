@@ -9,14 +9,13 @@ import java.util.List;
 
 @Builder
 public record WorkListResponse(
-
         @Schema(description = "직업 리스트")
         List<WorkResponse> works
 ) {
     public static WorkListResponse from(List<Work> workList) {
         if(workList == null) return null;
         List<WorkResponse> WorkResponses = workList.stream()
-                .map(work -> WorkResponse.from(work, work.getWorkCategory()))
+                .map(work -> WorkResponse.from(work))
                 .toList();
         return new WorkListResponse(WorkResponses);
     }

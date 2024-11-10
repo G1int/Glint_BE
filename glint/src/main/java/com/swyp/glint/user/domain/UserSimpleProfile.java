@@ -1,6 +1,5 @@
 package com.swyp.glint.user.domain;
 
-import com.swyp.glint.common.baseentity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,14 +7,13 @@ import lombok.Getter;
 import java.util.Optional;
 
 @Getter
-public class UserSimpleProfile extends BaseTimeEntity {
+public class UserSimpleProfile {
 
     private Long userId;
     private String profileImage;
     private String nickname;
-    private Integer age;
     private String gender;
-    //직장, 학교
+    private Integer age;
     private String affiliation;
 
     @Builder(access = AccessLevel.PRIVATE)
@@ -34,7 +32,6 @@ public class UserSimpleProfile extends BaseTimeEntity {
         this.age = userDetail.getAge();
         this.gender = userDetail.getGender();
         this.nickname = userDetail.getNickname();
-        //todo refactoring
         this.affiliation = Optional.ofNullable(userProfile)
                 .map(UserProfile::getAffiliation)
                 .orElse(null);

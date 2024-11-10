@@ -1,14 +1,11 @@
 package com.swyp.glint.keyword.domain;
 
-import com.swyp.glint.common.baseentity.BaseTimeEntity;
-import com.swyp.glint.user.domain.UserDetail;
+import com.swyp.glint.core.common.baseentity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Table(name = "work")
 @Entity

@@ -1,6 +1,6 @@
 package com.swyp.glint.keyword.application;
 
-import com.swyp.glint.common.exception.NotFoundEntityException;
+import com.swyp.glint.core.common.exception.NotFoundEntityException;
 import com.swyp.glint.keyword.domain.Religion;
 import com.swyp.glint.keyword.repository.ReligionRepository;
 import jakarta.transaction.Transactional;
@@ -15,7 +15,7 @@ public class ReligionService {
 
     private final ReligionRepository religionRepository;
 
-    public Religion findById(Long religionId) { // religion id를 통한 Religion 엔티티 반환
+    public Religion getById(Long religionId) { // religion id를 통한 Religion 엔티티 반환
         return religionRepository.findById(religionId)
                 .orElseThrow(() -> new NotFoundEntityException("Religion not found with id: " + religionId));
     }

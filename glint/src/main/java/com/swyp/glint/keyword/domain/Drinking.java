@@ -1,6 +1,6 @@
 package com.swyp.glint.keyword.domain;
 
-import com.swyp.glint.common.baseentity.BaseTimeEntity;
+import com.swyp.glint.core.common.baseentity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

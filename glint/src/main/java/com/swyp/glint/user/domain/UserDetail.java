@@ -1,6 +1,6 @@
 package com.swyp.glint.user.domain;
 
-import com.swyp.glint.common.baseentity.BaseTimeEntity;
+import com.swyp.glint.core.common.baseentity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -100,7 +100,7 @@ public class UserDetail extends BaseTimeEntity {
         return age >= minAge && age <= maxAge;
     }
 
-    public boolean isHeightIn(Integer maxHeight, Integer minHeight) {
+    public boolean isHeightIn(Integer minHeight, Integer maxHeight) {
         return height >= minHeight && height <= maxHeight;
     }
 
@@ -125,5 +125,13 @@ public class UserDetail extends BaseTimeEntity {
                 Objects.nonNull(birthdate) &&
                 Objects.nonNull(height) &&
                 Objects.nonNull(profileImage);
+    }
+
+    public boolean isNotComplete() {
+        return Objects.isNull(nickname) ||
+                Objects.isNull(gender) ||
+                Objects.isNull(birthdate) ||
+                Objects.isNull(height) ||
+                Objects.isNull(profileImage);
     }
 }
