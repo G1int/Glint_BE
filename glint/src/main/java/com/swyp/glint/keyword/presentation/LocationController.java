@@ -1,13 +1,10 @@
-package com.swyp.glint.keyword.api;
+package com.swyp.glint.keyword.presentation;
 
 import com.swyp.glint.keyword.application.LocationService;
 import com.swyp.glint.keyword.application.dto.LocationListResponse;
-import com.swyp.glint.keyword.domain.Location;
 import com.swyp.glint.user.application.dto.LocationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

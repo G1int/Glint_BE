@@ -1,4 +1,4 @@
-package com.swyp.glint.meeting.api;
+package com.swyp.glint.meeting.presentation;
 
 import com.swyp.glint.meeting.application.dto.MeetingSearchCondition;
 import com.swyp.glint.meeting.application.dto.request.MeetingRequest;

@@ -7,7 +7,6 @@ import com.swyp.glint.meeting.application.dto.response.MeetingDetailResponse;
 import com.swyp.glint.meeting.application.service.MeetingService;
 import com.swyp.glint.meeting.application.usecase.UpdateMeetingUseCase;
 import com.swyp.glint.meeting.domain.Meeting;
-import com.swyp.glint.meeting.domain.MeetingDetail;
 import com.swyp.glint.meeting.domain.UserMeetingValidator;
 import com.swyp.glint.user.application.impl.UserDetailService;
 import com.swyp.glint.user.application.impl.UserProfileService;
@@ -37,7 +36,7 @@ public class UpdateMeetingUseCaseImpl implements UpdateMeetingUseCase {
         Meeting foundMeeting = meetingService.getMeeting(meetingId);
 
         // waiting 상태일때만 변경이 가능
-        if(foundMeeting.isUnableUpdatable()) {
+        if(foundMeeting.isNotUpdatable()) {
             throw new InvalidValueException(ErrorCode.NOT_MATCH_CONDITION);
         }
         // 현재 참기인원, 변경 참가인원 체크

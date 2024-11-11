@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,25 +115,6 @@ public class Meeting extends BaseTimeEntity {
     public boolean isNotJoinUser(Long userId) {
         return !joinUserIds.contains(userId);
     }
-    public boolean isJoinUser(List<Long> sendUserIds) {
-        for (Long sendUserId : sendUserIds) {
-            if (joinUserIds.contains(sendUserId)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<Long> isJoinUsers(List<Long> userIds) {
-        List<Long> invalidUser = new ArrayList<>();
-
-        userIds.forEach(userId -> {
-            if (!joinUserIds.contains(userId)) {
-                invalidUser.add(userId);
-            }
-        });
-        return invalidUser;
-    }
 
     public void addUser(Long userId) {
         if(joinUserIds.size() >= getTotalPeoPleCapacity(this.peopleCapacity)) {
@@ -204,7 +184,7 @@ public class Meeting extends BaseTimeEntity {
         return this.status.equals(MeetingStatus.WAITING.getName());
     }
 
-    public boolean isUnableUpdatable() {
+    public boolean isNotUpdatable() {
         return !this.status.equals(MeetingStatus.WAITING.getName());
     }
     
