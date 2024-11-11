@@ -1,4 +1,4 @@
-package com.swyp.glint.keyword.api;
+package com.swyp.glint.keyword.presentation;
 
 import com.swyp.glint.keyword.application.UniversityMappingService;
 import com.swyp.glint.keyword.application.UniversityService;

@@ -1,4 +1,4 @@
-package com.swyp.glint.image.api;
+package com.swyp.glint.image.presentation;
 
 import com.swyp.glint.image.application.ImageService;
 import com.swyp.glint.image.application.dto.ImageResponse;

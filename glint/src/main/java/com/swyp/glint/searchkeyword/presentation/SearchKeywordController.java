@@ -1,6 +1,5 @@
-package com.swyp.glint.searchkeyword.api;
+package com.swyp.glint.searchkeyword.presentation;
 
-import com.amazonaws.Response;
 import com.swyp.glint.searchkeyword.application.SearchKeywordService;
 import com.swyp.glint.searchkeyword.application.dto.SearchKeywordRequest;
 import com.swyp.glint.searchkeyword.application.dto.SearchKeywordResponse;

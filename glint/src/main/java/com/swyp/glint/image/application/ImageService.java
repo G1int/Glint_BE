@@ -16,13 +16,13 @@ public class ImageService  {
     public ImageResponse uploadProfileImageFile(MultipartFile imageFile) {
         ProfileImageFile profileImageFile = ProfileImageFile.of(imageFile);
 
-        return ImageResponse.of(profileImageFile.getUploadFileName(),fileUploadService.uploadProfileImageFile(profileImageFile.getUploadFileName(), profileImageFile.getImageFile()));
+        return ImageResponse.of(profileImageFile.getUploadFileName(), fileUploadService.uploadProfileImageFile(profileImageFile.getUploadFileName(), profileImageFile.getImageFile()));
     }
 
     public ImageResponse uploadAuthenticationImageFile(MultipartFile imageFile) {
         ProfileImageFile profileImageFile = ProfileImageFile.of(imageFile);
 
-        return ImageResponse.of(profileImageFile.getUploadFileName(),fileUploadService.uploadAuthenticationImageFile(profileImageFile.getUploadFileName(), profileImageFile.getImageFile()));
+        return ImageResponse.of(profileImageFile.getUploadFileName(), fileUploadService.uploadAuthenticationImageFile(profileImageFile.getUploadFileName(), profileImageFile.getImageFile()));
     }
 
 

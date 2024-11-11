@@ -2,11 +2,8 @@ package com.swyp.glint.meeting.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swyp.glint.core.system.error.ServiceExceptionHandler;
-import com.swyp.glint.keyword.domain.Religion;
-import com.swyp.glint.meeting.api.MeetingController;
 import com.swyp.glint.meeting.application.dto.request.JoinConditionRequest;
 import com.swyp.glint.meeting.application.dto.request.MeetingRequest;
-import com.swyp.glint.user.application.dto.ReligionResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

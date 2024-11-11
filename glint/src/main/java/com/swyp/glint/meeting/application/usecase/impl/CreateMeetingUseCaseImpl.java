@@ -96,7 +96,7 @@ public class CreateMeetingUseCaseImpl implements CreateMeetingUseCase {
                 .orElseGet(() -> chatRoomService.save(ChatRoom.createByMeeting(meetingId, joinUserIds)));
 
         chatRoom.updateJoinUsers(joinUserIds);
-        chatRoom.active();
+        chatRoom.activate();
 
         chatRoomService.save(chatRoom);
     }
