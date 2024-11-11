@@ -33,6 +33,13 @@ public class Drinking extends BaseTimeEntity {
                 .build();
     }
 
+    public static Drinking createNewDrinking(Long id, String drinkingName) {
+        return Drinking.builder()
+                .id(id)
+                .drinkingName(drinkingName)
+                .build();
+    }
+
     public void updateDrinking(String drinkingName) {
         this.drinkingName = drinkingName;
     }

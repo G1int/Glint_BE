@@ -6,7 +6,7 @@ import com.swyp.glint.meeting.application.service.MeetingService;
 import com.swyp.glint.meeting.application.usecase.UserMeetingUseCase;
 import com.swyp.glint.meeting.domain.JoinMeeting;
 import com.swyp.glint.meeting.domain.Meeting;
-import com.swyp.glint.meeting.domain.NextMeetingLeader;
+import com.swyp.glint.meeting.domain.MeetingLeaderSelector;
 import com.swyp.glint.user.application.impl.UserDetailService;
 import com.swyp.glint.user.domain.UserDetail;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +34,8 @@ public class UserMeetingUseCaseImpl implements UserMeetingUseCase {
             List<UserDetail> userDetails = userDetailService.getUserDetails(meeting.getJoinUserIds());
             UserDetail leaderUserDetail = userDetailService.getUserDetailBy(meeting.getLeaderUserId());
 
-            NextMeetingLeader nextMeetingLeader = new NextMeetingLeader(acceptedJoinMeeting, userDetails, leaderUserDetail);
-            meeting.changeLeader(nextMeetingLeader.getNextLeaderUserId());
+            MeetingLeaderSelector meetingLeaderSelector = new MeetingLeaderSelector(acceptedJoinMeeting, userDetails, leaderUserDetail);
+            meeting.changeLeader(meetingLeaderSelector.getNextLeaderUserId());
         }
 
         meeting.outUser(userId);

@@ -33,6 +33,13 @@ public class Religion extends BaseTimeEntity {
                 .build();
     }
 
+    public static Religion createNewReligion(Long id, String religionName) {
+        return Religion.builder()
+                .id(id)
+                .religionName(religionName)
+                .build();
+    }
+
     public void updateReligion(String religionName) {
         this.religionName = religionName;
     }

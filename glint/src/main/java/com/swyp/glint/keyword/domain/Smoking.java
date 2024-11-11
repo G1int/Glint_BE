@@ -33,6 +33,13 @@ public class Smoking extends BaseTimeEntity {
                 .build();
     }
 
+    public static Smoking createNewSmoking(Long id, String smokingName) {
+        return Smoking.builder()
+                .id(id)
+                .smokingName(smokingName)
+                .build();
+    }
+
     public void updateSmoking(String smokingName) {
         this.smokingName = smokingName;
     }

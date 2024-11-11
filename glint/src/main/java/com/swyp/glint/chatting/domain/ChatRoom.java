@@ -61,7 +61,7 @@ public class ChatRoom extends BaseTimeEntity {
     }
 
 
-    public void active() {
+    public void activate() {
         this.isActivated = true;
     }
 

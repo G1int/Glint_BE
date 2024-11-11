@@ -39,7 +39,7 @@ public class AffiliationValidator implements ConditionValidator {
             return true;
         }
 
-        if(Objects.nonNull(workName) && !joinConditionElement.getAffiliation().contains(workName)) {
+        if(Objects.nonNull(workName) && joinConditionElement.getAffiliation().contains(workName)) {
             return true;
         }
 
